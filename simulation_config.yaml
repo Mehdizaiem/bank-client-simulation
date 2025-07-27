@@ -1,0 +1,29 @@
+# Simulation Configuration
+simulation:
+  num_agents: 1000  # Start small for testing
+  time_steps: 100
+  random_seed: 42
+
+# Agent Parameters
+agents:
+  retail_ratio: 0.8
+  corporate_ratio: 0.2
+
+# Tunisian Geographic Data
+geography:
+  governorates:
+    - Tunis
+    - Ariana
+    - Ben Arous
+    - Manouba
+    - Sfax
+    - Sousse
+    - Kairouan
+    - Bizerte
+    # Add more as needed
+
+# Data Generation
+data_generation:
+  synthetic_samples: 10000
+  ctgan_epochs: 300
+  batch_size: 500

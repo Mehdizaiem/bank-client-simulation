@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+  simulation:
+    build: .
+    volumes:
+      - .:/app
+      - ./data:/app/data
+    ports:
+      - "8050:8050"  # Dash
+      - "8501:8501"  # Streamlit
+      - "8888:8888"  # Jupyter
+    environment:
+      - PYTHONPATH=/app/src
+    working_dir: /app
+
+  postgres:
+    image: postgres:14
+    environment:
+      POSTGRES_DB: simulation_db
+      POSTGRES_USER: sim_user
+      POSTGRES_PASSWORD: sim_pass
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+volumes:
+  postgres_data:

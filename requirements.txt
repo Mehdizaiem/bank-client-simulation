@@ -1,0 +1,35 @@
+# Core Data Science
+pandas>=1.5.0
+numpy>=1.21.0
+scikit-learn>=1.1.0
+
+# Synthetic Data Generation
+sdv>=1.0.0
+ctgan>=0.7.0
+
+# Agent-Based Modeling
+mesa>=2.0.0
+
+# Machine Learning
+torch>=1.12.0
+transformers>=4.20.0
+
+# Visualization
+plotly>=5.10.0
+dash>=2.6.0
+streamlit>=1.12.0
+folium>=0.12.0
+
+# Data Processing
+openpyxl>=3.0.0
+xlsxwriter>=3.0.0
+
+# Configuration
+pyyaml>=6.0
+python-dotenv>=0.20.0
+
+# Development
+pytest>=7.0.0
+black>=22.0.0
+flake8>=5.0.0
+jupyter>=1.0.0
