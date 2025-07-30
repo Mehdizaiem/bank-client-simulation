@@ -1,0 +1,123 @@
+{
+  "scenario_metadata": {
+    "name": "Branch Closure Impact Analysis",
+    "description": "Simulate the impact of closing the Sfax branch on client behavior and market share",
+    "version": "1.0",
+    "author": "Maryem - Simulation Interface Lead",
+    "created_date": "2024-01-15",
+    "tags": ["branch_strategy", "cost_optimization", "client_retention"]
+  },
+  "simulation_parameters": {
+    "duration_steps": 100,
+    "warm_up_steps": 10,
+    "agent_population": 1000,
+    "random_seed": 42,
+    "output_frequency": 5
+  },
+  "events": [
+    {
+      "event_type": "MarketingCampaignEvent",
+      "step": 5,
+      "parameters": {
+        "target_segment": "sfax_clients",
+        "campaign_type": "retention_campaign",
+        "intensity": 0.9,
+        "duration": 15,
+        "budget": 150000,
+        "channels": ["sms", "email", "branch_visit"],
+        "message": "We value your loyalty - discover our enhanced digital services"
+      }
+    },
+    {
+      "event_type": "BranchClosureEvent",
+      "step": 20,
+      "parameters": {
+        "location": "Sfax",
+        "closure_date": "2024-03-01",
+        "alternative_branches": ["Sousse", "Monastir", "Mahdia"],
+        "compensation_offered": true,
+        "digital_migration_support": true,
+        "staff_reallocation": "Sousse",
+        "reason": "cost_optimization"
+      }
+    },
+    {
+      "event_type": "DigitalTransformationEvent",
+      "step": 15,
+      "parameters": {
+        "service_type": "mobile_branch_locator",
+        "channel": "mobile_app",
+        "user_experience_score": 0.85,
+        "rollout_phases": 2,
+        "target_regions": ["Sfax", "Sousse", "Monastir"],
+        "features": ["atm_finder", "appointment_booking", "video_consultation"]
+      }
+    },
+    {
+      "event_type": "CompetitorActionEvent",
+      "step": 25,
+      "parameters": {
+        "competitor_name": "BIAT",
+        "action_type": "aggressive_acquisition",
+        "affected_region": "Sfax",
+        "impact_intensity": 0.8,
+        "duration": 20,
+        "competitor_offer": "no_fees_6_months"
+      }
+    }
+  ],
+  "expected_outcomes": {
+    "client_retention_rate": {
+      "target": 0.75,
+      "measurement_steps": [30, 50, 75, 100]
+    },
+    "digital_adoption_increase": {
+      "target": 0.4,
+      "baseline": 0.25
+    },
+    "cost_reduction": {
+      "annual_savings": 200000,
+      "roi_months": 18
+    },
+    "market_share_impact": {
+      "sfax_region": -0.05,
+      "adjacent_regions": 0.02
+    }
+  },
+  "key_metrics_to_track": [
+    "client_retention_by_segment",
+    "channel_usage_shift",
+    "competitor_client_acquisition",
+    "branch_visit_frequency",
+    "digital_engagement_score",
+    "customer_satisfaction_index",
+    "revenue_per_client",
+    "cross_selling_success_rate"
+  ],
+  "risk_factors": [
+    {
+      "risk": "high_churn_rate",
+      "probability": 0.3,
+      "impact": "high",
+      "mitigation": "enhanced_retention_campaign"
+    },
+    {
+      "risk": "competitor_aggressive_response",
+      "probability": 0.6,
+      "impact": "medium",
+      "mitigation": "counter_competitive_offers"
+    },
+    {
+      "risk": "negative_media_coverage",
+      "probability": 0.2,
+      "impact": "medium",
+      "mitigation": "proactive_communication_strategy"
+    }
+  ],
+  "validation_criteria": {
+    "minimum_client_retention": 0.7,
+    "maximum_acceptable_churn": 0.3,
+    "digital_adoption_threshold": 0.35,
+    "roi_breakeven_months": 24
+  }
+}

@@ -1,0 +1,97 @@
+{
+  "scenario_metadata": {
+    "name": "Digital Transformation Impact Analysis",
+    "description": "Simulate the impact of rolling out new digital banking services",
+    "version": "1.0",
+    "author": "Maryem - Simulation Interface Lead",
+    "created_date": "2024-01-15",
+    "tags": ["digital_transformation", "client_experience", "technology_adoption"]
+  },
+  "simulation_parameters": {
+    "duration_steps": 120,
+    "warm_up_steps": 15,
+    "agent_population": 1500,
+    "random_seed": 42,
+    "output_frequency": 5
+  },
+  "events": [
+    {
+      "event_type": "DigitalTransformationEvent",
+      "step": 10,
+      "parameters": {
+        "service_type": "online_banking_platform",
+        "channel": "web_and_mobile",
+        "user_experience_score": 0.9,
+        "rollout_phases": 3,
+        "target_regions": ["Tunis", "Sfax", "Sousse"],
+        "features": ["bill_payments", "investment_tools", "chat_support"]
+      }
+    },
+    {
+      "event_type": "MarketingCampaignEvent",
+      "step": 15,
+      "parameters": {
+        "target_segment": "all_clients",
+        "campaign_type": "digital_adoption",
+        "intensity": 0.7,
+        "duration": 25,
+        "budget": 120000,
+        "channels": ["email", "push_notifications"],
+        "message": "Experience banking at your fingertips with our new platform"
+      }
+    },
+    {
+      "event_type": "CompetitorActionEvent",
+      "step": 20,
+      "parameters": {
+        "competitor_name": "Zitouna Bank",
+        "action_type": "digital_upgrade",
+        "affected_region": "Tunis",
+        "impact_intensity": 0.65,
+        "duration": 20,
+        "competitor_offer": "enhanced_mobile_app"
+      }
+    }
+  ],
+  "expected_outcomes": {
+    "digital_adoption_rate": {
+      "target": 0.6,
+      "measurement_steps": [30, 60, 90]
+    },
+    "client_satisfaction_increase": {
+      "target": 0.3,
+      "baseline": 0.7
+    },
+    "cost_savings": {
+      "annual_savings": 150000,
+      "roi_months": 12
+    }
+  },
+  "key_metrics_to_track": [
+    "digital_transaction_volume",
+    "client_support_tickets",
+    "user_experience_score",
+    "platform_uptime",
+    "adoption_rate_by_region",
+    "client_feedback_scores"
+  ],
+  "risk_factors": [
+    {
+      "risk": "technical_issues",
+      "probability": 0.3,
+      "impact": "high",
+      "mitigation": "rigorous_testing"
+    },
+    {
+      "risk": "low_user_adoption",
+      "probability": 0.4,
+      "impact": "medium",
+      "mitigation": "training_programs"
+    }
+  ],
+  "validation_criteria": {
+    "minimum_adoption_rate": 0.5,
+    "maximum_downtime_percentage": 0.01,
+    "minimum_satisfaction_score": 0.8
+  }
+}

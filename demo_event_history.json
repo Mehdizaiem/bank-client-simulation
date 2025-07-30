@@ -1,0 +1,96 @@
+{
+  "export_timestamp": "2025-07-30T12:28:36.616281",
+  "summary": {
+    "total_events": 5,
+    "current_step": 14,
+    "event_types": {
+      "MarketingCampaignEvent": 1,
+      "CompetitorActionEvent": 1,
+      "ProductLaunchEvent": 1,
+      "BranchClosureEvent": 1,
+      "EconomicShockEvent": 1
+    },
+    "status_breakdown": {
+      "pending": 0,
+      "completed": 5,
+      "failed": 0
+    },
+    "pending_events": 0,
+    "processed_events": 5,
+    "failed_events": 0,
+    "registered_handlers": {
+      "MarketingCampaignEvent": 1,
+      "BranchClosureEvent": 1,
+      "ProductLaunchEvent": 1,
+      "CompetitorActionEvent": 1,
+      "EconomicShockEvent": 1
+    }
+  },
+  "event_history": [
+    {
+      "step": 2,
+      "event": {
+        "event_id": "6171685f-79cd-4100-9bfb-0f7fa2522989",
+        "event_type": "MarketingCampaignEvent",
+        "step": 2,
+        "timestamp": "2025-07-30T12:28:36.577688",
+        "parameters": {},
+        "status": "completed",
+        "metadata": {}
+      },
+      "processed_at": "2025-07-30T12:28:36.593353"
+    },
+    {
+      "step": 4,
+      "event": {
+        "event_id": "3752ee5d-c114-498d-8862-321102f59560",
+        "event_type": "CompetitorActionEvent",
+        "step": 4,
+        "timestamp": "2025-07-30T12:28:36.577688",
+        "parameters": {},
+        "status": "completed",
+        "metadata": {}
+      },
+      "processed_at": "2025-07-30T12:28:36.598354"
+    },
+    {
+      "step": 6,
+      "event": {
+        "event_id": "53c061be-9102-43df-8ad9-9920255b949d",
+        "event_type": "ProductLaunchEvent",
+        "step": 6,
+        "timestamp": "2025-07-30T12:28:36.577688",
+        "parameters": {},
+        "status": "completed",
+        "metadata": {}
+      },
+      "processed_at": "2025-07-30T12:28:36.605281"
+    },
+    {
+      "step": 8,
+      "event": {
+        "event_id": "b19dd0af-4115-4222-a8ca-f4b321607eb7",
+        "event_type": "BranchClosureEvent",
+        "step": 8,
+        "timestamp": "2025-07-30T12:28:36.577688",
+        "parameters": {},
+        "status": "completed",
+        "metadata": {}
+      },
+      "processed_at": "2025-07-30T12:28:36.609283"
+    },
+    {
+      "step": 10,
+      "event": {
+        "event_id": "740afad7-b77b-4a9b-9acf-0dbe740f25bc",
+        "event_type": "EconomicShockEvent",
+        "step": 10,
+        "timestamp": "2025-07-30T12:28:36.577688",
+        "parameters": {},
+        "status": "completed",
+        "metadata": {}
+      },
+      "processed_at": "2025-07-30T12:28:36.611280"
+    }
+  ]
+}

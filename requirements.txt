@@ -33,3 +33,7 @@ pytest>=7.0.0
 black>=22.0.0
 flake8>=5.0.0
 jupyter>=1.0.0
+
+
+# Validating scenarios
+jsonschema>=4.17.0

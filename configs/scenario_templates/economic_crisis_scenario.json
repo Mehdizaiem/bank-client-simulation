@@ -1,0 +1,99 @@
+{
+  "scenario_metadata": {
+    "name": "Economic Crisis Impact Analysis",
+    "description": "Simulate the impact of an economic downturn on banking operations",
+    "version": "1.0",
+    "author": "Maryem - Simulation Interface Lead",
+    "created_date": "2024-01-15",
+    "tags": ["economic_shock", "risk_management", "client_behavior"]
+  },
+  "simulation_parameters": {
+    "duration_steps": 150,
+    "warm_up_steps": 20,
+    "agent_population": 2500,
+    "random_seed": 42,
+    "output_frequency": 10
+  },
+  "events": [
+    {
+      "event_type": "EconomicShockEvent",
+      "step": 10,
+      "parameters": {
+        "shock_type": "recession",
+        "severity": 0.7,
+        "affected_sectors": ["real_estate", "tourism", "retail"],
+        "duration": 40
+      }
+    },
+    {
+      "event_type": "RegulatoryChangeEvent",
+      "step": 15,
+      "parameters": {
+        "regulation_type": "interest_rate_cap",
+        "affected_products": ["loans", "mortgages"],
+        "compliance_deadline": "2024-06-01",
+        "impact_severity": 0.5
+      }
+    },
+    {
+      "event_type": "MarketingCampaignEvent",
+      "step": 20,
+      "parameters": {
+        "target_segment": "savings_clients",
+        "campaign_type": "security_promotion",
+        "intensity": 0.6,
+        "duration": 20,
+        "budget": 80000,
+        "channels": ["email", "tv_ads"],
+        "message": "Your savings are safe with us during tough times"
+      }
+    }
+  ],
+  "expected_outcomes": {
+    "loan_default_rate": {
+      "target": 0.05,
+      "measurement_steps": [30, 60, 90, 120]
+    },
+    "savings_deposit_change": {
+      "target": -0.1,
+      "baseline": 0.0
+    },
+    "client_confidence_index": {
+      "target": 0.6,
+      "baseline": 0.75
+    }
+  },
+  "key_metrics_to_track": [
+    "loan_default_rates",
+    "deposit_withdrawal_rates",
+    "client_confidence_score",
+    "risk_exposure_levels",
+    "capital_adequacy_ratio",
+    "non_performing_loans"
+  ],
+  "risk_factors": [
+    {
+      "risk": "high_loan_defaults",
+      "probability": 0.4,
+      "impact": "high",
+      "mitigation": "enhanced_credit_screening"
+    },
+    {
+      "risk": "deposit_withdrawals",
+      "probability": 0.5,
+      "impact": "high",
+      "mitigation": "liquidity_management"
+    },
+    {
+      "risk": "regulatory_fines",
+      "probability": 0.3,
+      "impact": "medium",
+      "mitigation": "compliance_audit"
+    }
+  ],
+  "validation_criteria": {
+    "maximum_acceptable_default_rate": 0.07,
+    "minimum_liquidity_ratio": 0.2,
+    "minimum_client_confidence": 0.5
+  }
+}

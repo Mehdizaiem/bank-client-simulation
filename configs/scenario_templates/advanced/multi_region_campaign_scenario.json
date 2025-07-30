@@ -1,0 +1,155 @@
+{
+  "scenario_metadata": {
+    "name": "Multi-Region Digital Campaign",
+    "description": "Simulate a multi-region digital banking campaign with economic and regulatory challenges",
+    "version": "1.0",
+    "author": "Maryem - Simulation Interface Lead",
+    "created_date": "2024-01-20",
+    "tags": ["marketing", "multi_region", "digital_banking", "complex"],
+    "difficulty_level": "hard",
+    "estimated_duration": 180
+  },
+  "simulation_parameters": {
+    "duration_steps": 180,
+    "warm_up_steps": 20,
+    "agent_population": 5000,
+    "random_seed": 67890,
+    "output_frequency": 15,
+    "save_intermediate_results": true,
+    "enable_real_time_visualization": true
+  },
+  "events": [
+    {
+      "event_type": "MarketingCampaignEvent",
+      "step": 20,
+      "parameters": {
+        "target_segment": "urban_customers",
+        "campaign_type": "regional_launch",
+        "intensity": 0.7,
+        "duration": 30,
+        "budget": 300000,
+        "channels": ["social_media", "tv_ads", "billboards"],
+        "message": "modern_banking_solutions"
+      },
+      "description": "Launch campaign in urban regions"
+    },
+    {
+      "event_type": "DigitalTransformationEvent",
+      "step": 30,
+      "parameters": {
+        "service_type": "regional_app_rollout",
+        "channel": "mobile_app",
+        "user_experience_score": 0.95,
+        "rollout_phases": 4,
+        "target_regions": ["Tunis", "Sfax", "Sousse", "Djerba"],
+        "features": ["multi_currency_support", "real_time_transfers", "digital_wallet"]
+      },
+      "description": "Roll out enhanced mobile app in multiple regions"
+    },
+    {
+      "event_type": "EconomicShockEvent",
+      "step": 50,
+      "parameters": {
+        "shock_type": "inflation_spike",
+        "severity": 0.8,
+        "affected_sectors": ["retail", "hospitality"],
+        "duration": 40
+      },
+      "description": "Economic inflation impacting customer spending"
+    },
+    {
+      "event_type": "RegulatoryChangeEvent",
+      "step": 70,
+      "parameters": {
+        "regulation_type": "data_privacy_law",
+        "affected_products": ["digital_banking", "mobile_payments"],
+        "compliance_deadline": "2024-04-01",
+        "impact_severity": 0.75
+      },
+      "description": "New data privacy regulations affecting digital services"
+    },
+    {
+      "event_type": "CompetitorActionEvent",
+      "step": 80,
+      "parameters": {
+        "competitor_name": "BIAT",
+        "action_type": "regional_discounts",
+        "affected_region": "Sfax",
+        "impact_intensity": 0.75,
+        "duration": 20,
+        "competitor_offer": "zero_fee_accounts"
+      },
+      "description": "Competitor launches aggressive discount campaign in Sfax"
+    },
+    {
+      "event_type": "MarketingCampaignEvent",
+      "step": 90,
+      "parameters": {
+        "target_segment": "urban_customers",
+        "campaign_type": "counter_response",
+        "intensity": 0.85,
+        "duration": 25,
+        "budget": 200000,
+        "channels": ["email", "push_notifications", "social_media"],
+        "message": "exclusive_benefits_free_digital_wallet"
+      },
+      "description": "Counter campaign to retain customers"
+    }
+  ],
+  "expected_outcomes": [
+    {
+      "metric_name": "regional_adoption_rate",
+      "target_value": 0.5,
+      "tolerance": 0.05,
+      "measurement_steps": [60, 120, 180],
+      "comparison_type": "greater_than"
+    },
+    {
+      "metric_name": "customer_retention_rate",
+      "target_value": 0.85,
+      "tolerance": 0.03,
+      "measurement_steps": [90, 150, 180],
+      "comparison_type": "greater_than"
+    },
+    {
+      "metric_name": "compliance_adherence",
+      "target_value": 1.0,
+      "tolerance": 0.0,
+      "measurement_steps": [100, 180],
+      "comparison_type": "equals"
+    }
+  ],
+  "key_metrics_to_track": [
+    "regional_account_openings",
+    "digital_transaction_volume",
+    "customer_retention_rate",
+    "compliance_costs",
+    "campaign_roi",
+    "customer_satisfaction_score"
+  ],
+  "risk_factors": [
+    {
+      "risk": "low_regional_engagement",
+      "probability": 0.3,
+      "impact": "medium",
+      "mitigation": "targeted_regional_promotions"
+    },
+    {
+      "risk": "economic_downturn_impact",
+      "probability": 0.5,
+      "impact": "high",
+      "mitigation": "flexible_pricing_adjustments"
+    },
+    {
+      "risk": "regulatory_compliance_delays",
+      "probability": 0.4,
+      "impact": "high",
+      "mitigation": "early_compliance_planning"
+    }
+  ],
+  "validation_criteria": {
+    "minimum_adoption_rate": 0.45,
+    "maximum_compliance_cost": 100000,
+    "minimum_retention_rate": 0.8
+  }
+}
