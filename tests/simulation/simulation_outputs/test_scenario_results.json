@@ -1,0 +1,77 @@
+{
+  "scenario_name": "Test Scenario",
+  "start_time": "2025-07-30T11:02:08.665305",
+  "steps_completed": 50,
+  "events_processed": 1,
+  "validation_results": [
+    {
+      "metric_name": "test_metric",
+      "results": [
+        {
+          "step": 20,
+          "metric_name": "test_metric",
+          "actual_value": 0.0,
+          "target_value": 0.5,
+          "valid": false
+        },
+        {
+          "step": 40,
+          "metric_name": "test_metric",
+          "actual_value": 0.0,
+          "target_value": 0.5,
+          "valid": false
+        }
+      ]
+    }
+  ],
+  "metrics": {
+    "test_metric": [
+      {
+        "step": 0,
+        "value": 0.0
+      },
+      {
+        "step": 5,
+        "value": 0.0
+      },
+      {
+        "step": 10,
+        "value": 0.0
+      },
+      {
+        "step": 15,
+        "value": 0.0
+      },
+      {
+        "step": 20,
+        "value": 0.0
+      },
+      {
+        "step": 25,
+        "value": 0.0
+      },
+      {
+        "step": 30,
+        "value": 0.0
+      },
+      {
+        "step": 35,
+        "value": 0.0
+      },
+      {
+        "step": 40,
+        "value": 0.0
+      },
+      {
+        "step": 45,
+        "value": 0.0
+      },
+      {
+        "step": 50,
+        "value": 0.0
+      }
+    ]
+  },
+  "events_injected": 1,
+  "events_failed": 0
+}

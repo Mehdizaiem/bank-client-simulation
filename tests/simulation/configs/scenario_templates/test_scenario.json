@@ -1,0 +1,60 @@
+{
+  "scenario_metadata": {
+    "name": "Test Scenario",
+    "description": "Test scenario for validation",
+    "version": "1.0",
+    "author": "",
+    "created_date": "2025-07-29",
+    "tags": [
+      "test",
+      "validation"
+    ],
+    "difficulty_level": "medium",
+    "estimated_duration": 100
+  },
+  "simulation_parameters": {
+    "duration_steps": 50,
+    "warm_up_steps": 5,
+    "agent_population": 500,
+    "random_seed": null,
+    "output_frequency": 5,
+    "save_intermediate_results": true,
+    "enable_real_time_visualization": false
+  },
+  "events": [
+    {
+      "event_type": "MarketingCampaignEvent",
+      "step": 10,
+      "parameters": {
+        "target_segment": "test_segment",
+        "campaign_type": "test_campaign",
+        "intensity": 0.5,
+        "budget": 10000
+      },
+      "event_id": null,
+      "description": null
+    }
+  ],
+  "expected_outcomes": [
+    {
+      "metric_name": "test_metric",
+      "target_value": 0.5,
+      "tolerance": 0.1,
+      "measurement_steps": [
+        20,
+        40
+      ],
+      "comparison_type": "greater_than"
+    }
+  ],
+  "key_metrics_to_track": [
+    "test_metric"
+  ],
+  "risk_factors": [
+    {
+      "risk": "test_risk",
+      "probability": 0.3,
+      "impact": "low"
+    }
+  ]
+}
