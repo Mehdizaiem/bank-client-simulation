@@ -4,6 +4,7 @@ from .scenarios import ScenarioManager
 import pandas as pd
 import os
 from datetime import datetime
+import random
 
 class SimulationOrchestrator:
     def __init__(self, config):
@@ -53,19 +54,8 @@ class SimulationOrchestrator:
             raise RuntimeError("Simulation not initialized. Call initialize_simulation first.")
         
         scenario = self.scenario_manager.load_scenario(scenario_name)
-        print(f"Starting simulation for {scenario_name} with {steps} steps at {datetime.now()}")
-        
-        self.results = {
-            "scenario": scenario_name,
-            "start_time": str(datetime.now()),
-            "steps": [],
-            "steps_completed": 0  # <-- Add this line
-        }
-
-        for step in range(steps):
-            self.current_step = step + 1
-            self.event_system.process_events(step)
-
+        if steps == 1:  # Single step mode for step-by-step execution
+            self.event_system.process_events(self.current_step)
             if 'MarketingCampaignEvent' in [e.type for e in self.event_system.event_queue]:
                 self.model['satisfaction_level'] = self.model.apply(
                     lambda row: min(1.0, row['satisfaction_level'] + 0.1) if row['status'] == 'active' else row['satisfaction_level'],
@@ -75,19 +65,41 @@ class SimulationOrchestrator:
                     lambda row: 'churned' if row['satisfaction_level'] < 0.3 and random.random() < 0.05 else row['status'],
                     axis=1
                 )
+            return {"steps_completed": 1}
+        else:  # Full simulation mode
+            print(f"Starting simulation for {scenario_name} with {steps} steps at {datetime.now()}")
+            self.results = {
+                "scenario": scenario_name,
+                "start_time": str(datetime.now()),
+                "steps": [],
+                "steps_completed": 0
+            }
 
-            self.results["steps"].append({
-                "step": step + 1,
-                "events_processed": len(self.event_system.event_queue),
-                "active_agents": len(self.model[self.model['status'] == 'active'])
-            })
+            for step in range(steps):
+                self.current_step = step + 1
+                self.event_system.process_events(step)
 
-            self.results["steps_completed"] = step + 1  # <-- Update after each step
+                if 'MarketingCampaignEvent' in [e.type for e in self.event_system.event_queue]:
+                    self.model['satisfaction_level'] = self.model.apply(
+                        lambda row: min(1.0, row['satisfaction_level'] + 0.1) if row['status'] == 'active' else row['satisfaction_level'],
+                        axis=1
+                    )
+                    self.model['status'] = self.model.apply(
+                        lambda row: 'churned' if row['satisfaction_level'] < 0.3 and random.random() < 0.05 else row['status'],
+                        axis=1
+                    )
 
-        self.results["end_time"] = str(datetime.now())
-        print(f"Simulation completed at {self.results['end_time']}")
-        return self.results
+                self.results["steps"].append({
+                    "step": step + 1,
+                    "events_processed": len(self.event_system.event_queue),
+                    "active_agents": len(self.model[self.model['status'] == 'active'])
+                })
 
+                self.results["steps_completed"] = step + 1
+
+            self.results["end_time"] = str(datetime.now())
+            print(f"Simulation completed at {self.results['end_time']}")
+            return self.results
 
     def collect_results(self):
         """Collect and return detailed simulation results."""
@@ -113,6 +125,3 @@ class SimulationOrchestrator:
             print(f"Results saved to {filename} at {datetime.now()}")
         else:
             print("No results to save.")
-
-# Import random here to avoid circular imports if event_system uses it
-import random

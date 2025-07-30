@@ -1,5 +1,5 @@
 {
-  "export_timestamp": "2025-07-30T12:28:17.044218",
+  "export_timestamp": "2025-07-30T13:14:00.917140",
   "summary": {
     "total_events": 1,
     "current_step": 50,
@@ -20,15 +20,15 @@
     {
       "step": 10,
       "event": {
-        "event_id": "c436cfe0-88a2-42c4-8e5c-008d2371af39",
+        "event_id": "32ba0772-0e23-4e7c-b384-e643800a45e5",
         "event_type": "MarketingCampaignEvent",
         "step": 10,
-        "timestamp": "2025-07-30T12:28:17.039784",
+        "timestamp": "2025-07-30T13:14:00.899257",
         "parameters": {},
         "status": "completed",
         "metadata": {}
       },
-      "processed_at": "2025-07-30T12:28:17.042797"
+      "processed_at": "2025-07-30T13:14:00.914883"
     }
   ]
 }
