@@ -16,7 +16,8 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), '../../src'))
 from simulation.event_system import EventSystem, BaseEvent
 from simulation.event_types import (
     MarketingCampaignEvent, BranchClosureEvent, ProductLaunchEvent,
-    CompetitorActionEvent, EconomicShockEvent, create_event
+    CompetitorActionEvent, EconomicShockEvent, RegulatoryChangeEvent,
+    DigitalTransformationEvent, LoanOfferEvent, create_event
 )
 
 class TestEventSystem(unittest.TestCase):
@@ -247,7 +248,8 @@ class TestIntegrationScenarios(unittest.TestCase):
         # Register handlers for all event types
         event_types = [
             "MarketingCampaignEvent", "BranchClosureEvent", "ProductLaunchEvent",
-            "CompetitorActionEvent", "EconomicShockEvent", "RegulatoryChangeEvent"
+            "CompetitorActionEvent", "EconomicShockEvent", "RegulatoryChangeEvent",
+            "DigitalTransformationEvent", "LoanOfferEvent"
         ]
         
         for event_type in event_types:
@@ -285,16 +287,78 @@ class TestIntegrationScenarios(unittest.TestCase):
         processed_steps = [event.step for event in all_processed]
         self.assertEqual(processed_steps, [1, 3, 5, 7, 10])
 
+    def test_expanded_scenario_with_new_events(self):
+        """Test expanded scenario with NEW event types"""
+        # CREATE THE NEW EVENTS HERE - This is where you add them!
+        events = [
+            MarketingCampaignEvent(step=1, target_segment="youth", 
+                                 campaign_type="digital", intensity=0.6),
+            CompetitorActionEvent(step=3, competitor_name="BIAT", 
+                                action_type="branch_opening", affected_region="Tunis"),
+            ProductLaunchEvent(step=5, product_type="crypto_wallet", target_market="tech_savvy"),
+            EconomicShockEvent(step=7, shock_type="inflation", severity=0.4),
+            BranchClosureEvent(step=10, location="Sfax"),
+            # ADD YOUR NEW EVENTS HERE:
+            RegulatoryChangeEvent(
+                step=12,
+                regulation_type="capital_requirements",
+                affected_products=["loans", "mortgages"],
+                compliance_deadline="2024-12-31",
+                impact_severity=0.8
+            ),
+            DigitalTransformationEvent(
+                step=14,
+                service_type="ai_chatbot",
+                channel="mobile_app",
+                user_experience_score=4.2,
+                rollout_phases=3,
+                target_regions=["Tunis", "Sfax"]
+            ),
+            LoanOfferEvent(
+                step=16,
+                amount=50000.0,
+                interest_rate=3.5,
+                term_months=60,
+                target_income_level="middle_class",
+                eligibility_criteria={"min_salary": 1500, "max_age": 65}
+            )
+        ]
+        
+        # Inject all events
+        for event in events:
+            self.event_system.inject_event(event)
+        
+        # Process simulation over 20 steps
+        all_processed = []
+        for step in range(1, 21):
+            processed = self.event_system.process_events(step)
+            all_processed.extend(processed)
+        
+        # Verify all events were processed (should be 8 now)
+        self.assertEqual(len(all_processed), 8)
+        self.assertEqual(len(self.processed_events), 8)
+        self.assertEqual(len(self.event_system.event_queue), 0)
+        
+        # Verify processing order
+        processed_steps = [event.step for event in all_processed]
+        self.assertEqual(processed_steps, [1, 3, 5, 7, 10, 12, 14, 16])
+        
+        # Verify new event types were processed
+        processed_types = [event.event_type for event in all_processed]
+        self.assertIn("RegulatoryChangeEvent", processed_types)
+        self.assertIn("DigitalTransformationEvent", processed_types)
+        self.assertIn("LoanOfferEvent", processed_types)
+
 def run_demo():
-    """Run a demonstration of the event system"""
+    """Run a demonstration of the event system with NEW EVENTS"""
     print("=" * 60)
-    print("BANK CLIENT SIMULATION - EVENT SYSTEM DEMO")
+    print("BANK CLIENT SIMULATION - EXPANDED EVENT SYSTEM DEMO")
     print("=" * 60)
     
     # Initialize system
     event_system = EventSystem()
     
-    # Set up handlers
+    # Set up handlers (ADD NEW HANDLERS HERE)
     def marketing_handler(event):
         print(f"📢 MARKETING: {event.campaign_type} campaign targeting {event.target_segment}")
         print(f"   Intensity: {event.intensity}, Budget: {event.budget} TND")
@@ -317,14 +381,33 @@ def run_demo():
         if event.affected_sectors:
             print(f"   Affected sectors: {', '.join(event.affected_sectors)}")
     
+    # NEW HANDLERS FOR NEW EVENT TYPES
+    def regulatory_handler(event):
+        print(f"⚖️  REGULATORY: {event.regulation_type} change")
+        print(f"   Affected products: {', '.join(event.affected_products)}")
+        print(f"   Compliance deadline: {event.compliance_deadline}")
+        print(f"   Impact severity: {event.impact_severity}")
+    
+    def digital_handler(event):
+        print(f"💻 DIGITAL: {event.service_type} via {event.channel}")
+        print(f"   UX Score: {event.user_experience_score}, Phases: {event.rollout_phases}")
+        print(f"   Target regions: {', '.join(event.target_regions)}")
+    
+    def loan_handler(event):
+        print(f"💰 LOAN: {event.amount} TND at {event.interest_rate}% for {event.term_months} months")
+        print(f"   Target: {event.target_income_level}")
+    
     # Register handlers
     event_system.register_event_handler("MarketingCampaignEvent", marketing_handler)
     event_system.register_event_handler("BranchClosureEvent", branch_handler)
     event_system.register_event_handler("ProductLaunchEvent", product_handler)
     event_system.register_event_handler("CompetitorActionEvent", competitor_handler)
     event_system.register_event_handler("EconomicShockEvent", economic_handler)
+    event_system.register_event_handler("RegulatoryChangeEvent", regulatory_handler)
+    event_system.register_event_handler("DigitalTransformationEvent", digital_handler)
+    event_system.register_event_handler("LoanOfferEvent", loan_handler)
     
-    # Create scenario events
+    # Create scenario events - INCLUDING THE NEW ONES
     events = [
         MarketingCampaignEvent(
             step=2, target_segment="young_professionals", 
@@ -345,6 +428,30 @@ def run_demo():
         EconomicShockEvent(
             step=10, shock_type="currency_devaluation", severity=0.6,
             affected_sectors=["import", "tourism"], duration=30
+        ),
+        # NEW EVENTS ADDED HERE:
+        RegulatoryChangeEvent(
+            step=12,
+            regulation_type="Basel_IV_implementation",
+            affected_products=["corporate_loans", "retail_banking"],
+            compliance_deadline="2025-01-01",
+            impact_severity=0.9
+        ),
+        DigitalTransformationEvent(
+            step=14,
+            service_type="blockchain_payments",
+            channel="mobile_app",
+            user_experience_score=4.5,
+            rollout_phases=4,
+            target_regions=["Tunis", "Sfax", "Sousse"]
+        ),
+        LoanOfferEvent(
+            step=16,
+            amount=75000.0,
+            interest_rate=2.8,
+            term_months=84,
+            target_income_level="high_income",
+            eligibility_criteria={"min_salary": 3000, "credit_score": 750}
         )
     ]
     
@@ -363,7 +470,7 @@ def run_demo():
     print("\n🚀 STARTING SIMULATION...")
     print("=" * 60)
     
-    for step in range(1, 15):
+    for step in range(1, 20):
         print(f"\n⏰ STEP {step}")
         print("-" * 30)
         
@@ -384,9 +491,10 @@ def run_demo():
     print(f"✅ Processed events: {final_summary['processed_events']}")
     print(f"❌ Failed events: {final_summary['failed_events']}")
     print(f"⏳ Pending events: {final_summary['pending_events']}")
+    print(f"🔢 Total unique events processed: {final_summary['unique_processed_events']}")
     
     # Export history
-    filename = event_system.export_event_history("demo_event_history.json")
+    filename = event_system.export_event_history(os.path.expanduser("~/Documents/4DS1/Summer Internship/bank-client-simulation-project/bank-client-simulation/demo_event_history.json"))
     print(f"💾 Event history exported to: {filename}")
 
 
