@@ -38,7 +38,7 @@ data/synthetic/*.csv
 data/synthetic/*.parquet
 *.db
 *.sqlite
-*.csv
+mock_agents_data.csv
 # Jupyter Notebooks
 .ipynb_checkpoints
 
