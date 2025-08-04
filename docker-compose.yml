@@ -1,29 +1,79 @@
+﻿# Minimal Docker Compose for Bank Simulation Project
+# Optimized for disk space, Docker data stored on D drive
 version: '3.8'
 
 services:
-  simulation:
-    build: .
-    volumes:
-      - .:/app
-      - ./data:/app/data
-    ports:
-      - "8050:8050"  # Dash
-      - "8501:8501"  # Streamlit
-      - "8888:8888"  # Jupyter
+  # =====================================================
+  # CORE DATABASE SERVICES ONLY
+  # =====================================================
+  
+  # Primary PostgreSQL with TimescaleDB
+  timescaledb:
+    image: timescale/timescaledb:latest-pg14
+    container_name: simulation_db
     environment:
-      - PYTHONPATH=/app/src
-    working_dir: /app
-
-  postgres:
-    image: postgres:14
-    environment:
-      POSTGRES_DB: simulation_db
-      POSTGRES_USER: sim_user
-      POSTGRES_PASSWORD: sim_pass
+      POSTGRES_DB: bank_simulation
+      POSTGRES_USER: sim_admin
+      POSTGRES_PASSWORD: SimBank2024!
+      POSTGRES_INITDB_ARGS: "--encoding=UTF-8 --lc-collate=C --lc-ctype=C"
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - D:/DockerData/bank-simulation/postgres:/var/lib/postgresql/data
+      - ./database/init:/docker-entrypoint-initdb.d:ro
     ports:
       - "5432:5432"
+    networks:
+      - sim_network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U sim_admin -d bank_simulation"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    restart: unless-stopped
+    shm_size: 256mb
 
-volumes:
-  postgres_data:
+  # Redis for caching (minimal configuration)
+  redis:
+    image: redis:7-alpine
+    container_name: simulation_redis
+    volumes:
+      - D:/DockerData/bank-simulation/redis:/data
+    ports:
+      - "6379:6379"
+    networks:
+      - sim_network
+    command: redis-server --save 60 1000 --loglevel warning --maxmemory 128mb --maxmemory-policy allkeys-lru
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    restart: unless-stopped
+
+  # pgAdmin for database management (lightweight config)
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: simulation_pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@banksimulation.local
+      PGADMIN_DEFAULT_PASSWORD: admin2024
+      PGADMIN_CONFIG_SERVER_MODE: 'False'
+      PGADMIN_CONFIG_MASTER_PASSWORD_REQUIRED: 'False'
+    volumes:
+      - D:/DockerData/bank-simulation/pgadmin:/var/lib/pgadmin
+    ports:
+      - "5050:80"
+    depends_on:
+      timescaledb:
+        condition: service_healthy
+    networks:
+      - sim_network
+    restart: unless-stopped
+
+networks:
+  sim_network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.25.0.0/16
+
+# No named volumes - using direct D drive paths for better control
