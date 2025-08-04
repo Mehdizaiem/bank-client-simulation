@@ -43,7 +43,6 @@ mock_agents_data.csv
 .ipynb_checkpoints
 
 # Environment variables
-.env
 
 # Logs
 logs/
