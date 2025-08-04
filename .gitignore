@@ -38,6 +38,7 @@ data/synthetic/*.csv
 data/synthetic/*.parquet
 *.db
 *.sqlite
+*.csv
 # Jupyter Notebooks
 .ipynb_checkpoints
 
