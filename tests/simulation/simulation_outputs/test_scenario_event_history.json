@@ -1,5 +1,5 @@
 {
-  "export_timestamp": "2025-07-30T11:02:08.665305",
+  "export_timestamp": "2025-08-04T14:27:03.960423",
   "summary": {
     "total_events": 1,
     "current_step": 50,
@@ -14,21 +14,39 @@
     "pending_events": 0,
     "processed_events": 1,
     "failed_events": 0,
-    "registered_handlers": {}
+    "registered_handlers": {
+      "MarketingCampaignEvent": 1,
+      "BranchClosureEvent": 1,
+      "DigitalTransformationEvent": 1,
+      "CompetitorActionEvent": 1
+    },
+    "unique_processed_events": 1
   },
   "event_history": [
     {
       "step": 10,
       "event": {
-        "event_id": "c94d1e50-51ee-454e-9054-4908d12e6d7a",
+        "event_id": "9fb48f4d-9d5a-4a9b-9a5a-c6c08b81a380",
         "event_type": "MarketingCampaignEvent",
         "step": 10,
-        "timestamp": "2025-07-30T11:02:08.665305",
-        "parameters": {},
+        "timestamp": "2025-08-04T14:27:03.955346",
+        "parameters": {
+          "target_segment": "test_segment",
+          "campaign_type": "test_campaign",
+          "intensity": 0.5,
+          "duration": 0,
+          "budget": 10000,
+          "channels": [],
+          "message": ""
+        },
         "status": "completed",
-        "metadata": {}
+        "metadata": {
+          "results": {
+            "client_retention_rate": 0.6
+          }
+        }
       },
-      "processed_at": "2025-07-30T11:02:08.665305"
+      "processed_at": "2025-08-04T14:27:03.958427"
     }
   ]
 }

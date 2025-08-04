@@ -1,4 +1,3 @@
-# tests/simulation/test_orchestration.py
 import sys
 import os
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..')))  # Add project root to path
@@ -13,14 +12,14 @@ class TestOrchestration(unittest.TestCase):
         """Set up test fixtures before each test."""
         self.config = {"test_mode": True}
         self.orchestrator = SimulationOrchestrator(self.config)
-        self.orchestrator.initialize_simulation()  # Initialize simulation with mock data
+        self.orchestrator.initialize_simulation(n_agents=50000)  # Upscale to 50,000 agents
         self.controller = SimulationController(self.orchestrator)
 
     def test_initialization_with_mock_data(self):
         """Test initialization with automatically generated mock data."""
-        self.orchestrator.initialize_simulation()
+        self.orchestrator.initialize_simulation(n_agents=50000)
         self.assertIsNotNone(self.orchestrator.model)
-        self.assertEqual(len(self.orchestrator.model), 1000)
+        self.assertEqual(len(self.orchestrator.model), 50000)
         self.assertIn('satisfaction_level', self.orchestrator.model.columns)
         self.assertIn('status', self.orchestrator.model.columns)
 
@@ -36,10 +35,10 @@ class TestOrchestration(unittest.TestCase):
         self.assertTrue(all(col in self.orchestrator.model.columns for col in ['satisfaction_level', 'status']))
 
     def test_run_simulation(self):
-        """Test running a simulation with a scenario."""
-        self.orchestrator.initialize_simulation()
-        results = self.orchestrator.run_simulation("advanced/multi_region_campaign_scenario.json", 5)  # Relative path
-        self.assertEqual(results["steps_completed"], 5)
+        """Test running a simulation with a simple scenario."""
+        self.orchestrator.initialize_simulation(n_agents=50000)
+        results = self.orchestrator.run_simulation("branch_closure_scenario.json", 30)  # Simple scenario
+        self.assertEqual(results["steps_completed"], 30)
         self.assertGreater(len(results["steps"]), 0)
         self.assertIn("end_time", results)
 
@@ -56,21 +55,30 @@ class TestOrchestration(unittest.TestCase):
 
     def test_adjust_parameters(self):
         """Test parameter adjustment functionality."""
-        self.controller.adjust_parameters({"max_steps": 50, "speed_factor": 2.0})
+        self.controller.adjust_parameters({"max_steps": 50, "speed_factor": 2.0, "batch_size": 10000})
         self.assertEqual(self.controller.max_steps, 50)
         self.assertEqual(self.controller.speed_factor, 2.0)
+        self.assertEqual(self.orchestrator.batch_size, 10000)
         self.controller.adjust_parameters({"invalid_key": 10})  # Should ignore invalid key
-        self.assertEqual(self.controller.max_steps, 50)
+        self.assertEqual(self.orchestrator.batch_size, 10000)
 
     def test_collect_results(self):
         """Test result collection after simulation."""
-        self.orchestrator.initialize_simulation()
-        self.orchestrator.run_simulation("advanced/multi_region_campaign_scenario.json", 3)  # Relative path
-        results = self.orchestrator.collect_results()
+        self.orchestrator.initialize_simulation(n_agents=50000)
+        results = self.orchestrator.run_simulation("branch_closure_scenario.json", 30)
+        results = self.orchestrator.collect_results()  # Ensure collect_results returns the latest results
         self.assertIn("avg_satisfaction", results)
         self.assertIn("active_agents", results)
         self.assertIn("churned_agents", results)
         self.assertIn("channel_breakdown", results)
+        self.assertIn("client_retention_rate", results)
+        self.assertIn("digital_adoption_increase", results)
+        self.assertIn("satisfaction_avg", results)
+        scenario = self.orchestrator.scenario_manager.get_scenario_by_name("Branch Closure Impact Analysis")
+        for outcome in scenario.expected_outcomes:
+            if outcome.measurement_steps and 30 in outcome.measurement_steps:
+                actual_value = results.get(outcome.metric_name, 0.0)
+                self.assertTrue(outcome.validate_outcome(actual_value, 30), f"Validation failed for {outcome.metric_name}")
 
     def tearDown(self):
         """Clean up after each test."""

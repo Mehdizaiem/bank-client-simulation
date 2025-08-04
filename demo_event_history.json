@@ -1,96 +1,225 @@
 {
-  "export_timestamp": "2025-07-30T13:14:08.535166",
+  "export_timestamp": "2025-08-04T14:28:06.531303",
   "summary": {
-    "total_events": 5,
-    "current_step": 14,
+    "total_events": 8,
+    "current_step": 19,
     "event_types": {
       "MarketingCampaignEvent": 1,
       "CompetitorActionEvent": 1,
       "ProductLaunchEvent": 1,
       "BranchClosureEvent": 1,
-      "EconomicShockEvent": 1
+      "EconomicShockEvent": 1,
+      "RegulatoryChangeEvent": 1,
+      "DigitalTransformationEvent": 1,
+      "LoanOfferEvent": 1
     },
     "status_breakdown": {
       "pending": 0,
-      "completed": 5,
+      "completed": 8,
       "failed": 0
     },
     "pending_events": 0,
-    "processed_events": 5,
+    "processed_events": 8,
     "failed_events": 0,
     "registered_handlers": {
-      "MarketingCampaignEvent": 1,
-      "BranchClosureEvent": 1,
+      "MarketingCampaignEvent": 2,
+      "BranchClosureEvent": 2,
+      "DigitalTransformationEvent": 2,
+      "CompetitorActionEvent": 2,
       "ProductLaunchEvent": 1,
-      "CompetitorActionEvent": 1,
-      "EconomicShockEvent": 1
-    }
+      "EconomicShockEvent": 1,
+      "RegulatoryChangeEvent": 1,
+      "LoanOfferEvent": 1
+    },
+    "unique_processed_events": 8
   },
   "event_history": [
     {
       "step": 2,
       "event": {
-        "event_id": "393840ba-2c86-4840-9fc7-a22660b1f7f3",
+        "event_id": "285b1e3f-d7ad-4ddd-b338-e121dae2ed27",
         "event_type": "MarketingCampaignEvent",
         "step": 2,
-        "timestamp": "2025-07-30T13:14:08.506493",
-        "parameters": {},
+        "timestamp": "2025-08-04T14:28:06.402982",
+        "parameters": {
+          "target_segment": "young_professionals",
+          "campaign_type": "mobile_banking_push",
+          "intensity": 0.8,
+          "duration": 0,
+          "budget": 100000,
+          "channels": [],
+          "message": ""
+        },
         "status": "completed",
-        "metadata": {}
+        "metadata": {
+          "results": {
+            "client_retention_rate": 0.96
+          }
+        }
       },
-      "processed_at": "2025-07-30T13:14:08.520976"
+      "processed_at": "2025-08-04T14:28:06.448992"
     },
     {
       "step": 4,
       "event": {
-        "event_id": "54489688-a730-4d17-b768-23d9dbaa4c54",
+        "event_id": "bb33de9b-583b-46ee-bbd2-22a6e4b76169",
         "event_type": "CompetitorActionEvent",
         "step": 4,
-        "timestamp": "2025-07-30T13:14:08.506493",
-        "parameters": {},
+        "timestamp": "2025-08-04T14:28:06.402982",
+        "parameters": {
+          "competitor_name": "BIAT",
+          "action_type": "rate_cut",
+          "affected_region": "Tunis",
+          "impact_intensity": 0.7,
+          "duration": 0,
+          "competitor_offer": ""
+        },
         "status": "completed",
-        "metadata": {}
+        "metadata": {
+          "results": {
+            "client_retention_rate": 0.65
+          }
+        }
       },
-      "processed_at": "2025-07-30T13:14:08.523977"
+      "processed_at": "2025-08-04T14:28:06.451997"
     },
     {
       "step": 6,
       "event": {
-        "event_id": "3479e43c-8dab-4746-bc19-8673675c9136",
+        "event_id": "301389c4-a855-4aa4-8593-bce299662f12",
         "event_type": "ProductLaunchEvent",
         "step": 6,
-        "timestamp": "2025-07-30T13:14:08.506493",
-        "parameters": {},
+        "timestamp": "2025-08-04T14:28:06.402982",
+        "parameters": {
+          "product_type": "contactless_payment",
+          "target_market": "retail",
+          "pricing": 5.0,
+          "digital_only": false
+        },
         "status": "completed",
         "metadata": {}
       },
-      "processed_at": "2025-07-30T13:14:08.525978"
+      "processed_at": "2025-08-04T14:28:06.453994"
     },
     {
       "step": 8,
       "event": {
-        "event_id": "080a9b3a-ad13-4dd7-ad6b-be1ccd73f2e7",
+        "event_id": "e19d6d03-4664-4828-9eac-853d5e7524f2",
         "event_type": "BranchClosureEvent",
         "step": 8,
-        "timestamp": "2025-07-30T13:14:08.506493",
-        "parameters": {},
+        "timestamp": "2025-08-04T14:28:06.402982",
+        "parameters": {
+          "location": "Sfax",
+          "alternative_branches": [
+            "Sousse",
+            "Monastir"
+          ],
+          "compensation_offered": true,
+          "closure_date": "",
+          "digital_migration_support": false,
+          "staff_reallocation": "",
+          "reason": ""
+        },
         "status": "completed",
-        "metadata": {}
+        "metadata": {
+          "results": {
+            "churned_agents": 50
+          }
+        }
       },
-      "processed_at": "2025-07-30T13:14:08.527977"
+      "processed_at": "2025-08-04T14:28:06.456993"
     },
     {
       "step": 10,
       "event": {
-        "event_id": "d15dd4f6-f092-4246-bdc6-c1b5c7c4302d",
+        "event_id": "9f35ad2a-96b7-4d31-8fca-9e018143e0f1",
         "event_type": "EconomicShockEvent",
         "step": 10,
-        "timestamp": "2025-07-30T13:14:08.506493",
-        "parameters": {},
+        "timestamp": "2025-08-04T14:28:06.402982",
+        "parameters": {
+          "shock_type": "currency_devaluation",
+          "severity": 0.6,
+          "affected_sectors": [
+            "import",
+            "tourism"
+          ],
+          "duration": 30
+        },
         "status": "completed",
         "metadata": {}
       },
-      "processed_at": "2025-07-30T13:14:08.529975"
+      "processed_at": "2025-08-04T14:28:06.484557"
+    },
+    {
+      "step": 12,
+      "event": {
+        "event_id": "806a0206-536c-4d38-987e-1f4d2887847f",
+        "event_type": "RegulatoryChangeEvent",
+        "step": 12,
+        "timestamp": "2025-08-04T14:28:06.402982",
+        "parameters": {
+          "regulation_type": "Basel_IV_implementation",
+          "affected_products": [
+            "corporate_loans",
+            "retail_banking"
+          ],
+          "compliance_deadline": "2025-01-01",
+          "impact_severity": 0.9
+        },
+        "status": "completed",
+        "metadata": {}
+      },
+      "processed_at": "2025-08-04T14:28:06.499988"
+    },
+    {
+      "step": 14,
+      "event": {
+        "event_id": "02269f1d-ea5c-441e-9d72-71ef50feadb5",
+        "event_type": "DigitalTransformationEvent",
+        "step": 14,
+        "timestamp": "2025-08-04T14:28:06.402982",
+        "parameters": {
+          "service_type": "blockchain_payments",
+          "channel": "mobile_app",
+          "user_experience_score": 4.5,
+          "rollout_phases": 4,
+          "target_regions": [
+            "Tunis",
+            "Sfax",
+            "Sousse"
+          ],
+          "features": []
+        },
+        "status": "completed",
+        "metadata": {
+          "results": {
+            "digital_adoption_increase": 2.25
+          }
+        }
+      },
+      "processed_at": "2025-08-04T14:28:06.521512"
+    },
+    {
+      "step": 16,
+      "event": {
+        "event_id": "7c74b2c1-cee6-4013-b3d3-fd774f94be09",
+        "event_type": "LoanOfferEvent",
+        "step": 16,
+        "timestamp": "2025-08-04T14:28:06.402982",
+        "parameters": {
+          "amount": 75000.0,
+          "interest_rate": 2.8,
+          "term_months": 84,
+          "target_income_level": "high_income",
+          "eligibility_criteria": {
+            "min_salary": 3000,
+            "credit_score": 750
+          }
+        },
+        "status": "completed",
+        "metadata": {}
+      },
+      "processed_at": "2025-08-04T14:28:06.531303"
     }
   ]
 }

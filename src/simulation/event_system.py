@@ -1,8 +1,7 @@
-# src/simulation/event_system.py
 """
-Core Event System for Bank Client Simulation
+FIXED Core Event System for Bank Client Simulation
 Author: Maryem - Simulation Interface Lead
-Week: 1 - Event System Architecture
+Week: 1 - Event System Architecture (FIXED VERSION)
 """
 
 from typing import Dict, List, Callable, Any, Optional
@@ -52,19 +51,31 @@ class BaseEvent(ABC):
 
 class EventSystem:
     """
-    Core event system for managing simulation events
+    FIXED Core event system for managing simulation events
     Handles event injection, processing, and coordination
     """
     
     def __init__(self):
         self.event_queue: List[BaseEvent] = []
-        self.event_handlers: Dict[str, List[Callable]] = {}
+        self.event_handlers: Dict[str, List[Callable]] = {
+            "MarketingCampaignEvent": [self.handle_marketing_campaign],
+            "BranchClosureEvent": [self.handle_branch_closure],
+            "DigitalTransformationEvent": [self.handle_digital_transformation],
+            "CompetitorActionEvent": [self.handle_competitor_action],
+            "EconomicShockEvent": [self.handle_economic_shock],
+            "RegulatoryChangeEvent": [self.handle_regulatory_change],
+            "ProductLaunchEvent": [self.handle_product_launch],
+        }
         self.processed_events: List[BaseEvent] = []
         self.failed_events: List[BaseEvent] = []
         self.current_step: int = 0
         self.is_running: bool = False
         self.event_history: List[Dict[str, Any]] = []
+        self._processed_event_ids: set = set()  # Track processed events to prevent duplicates
         
+        # Log initialization
+        logger.info("Event system initialized with registered handlers")
+
     def register_event_handler(self, event_type: str, handler: Callable[[BaseEvent], None]):
         """
         Register handlers for different event types
@@ -106,6 +117,17 @@ class EventSystem:
             if event.step < 0:
                 raise ValueError("Event step cannot be negative")
             
+            # Check for duplicate event IDs
+            if event.event_id in self._processed_event_ids:
+                logger.warning(f"Event {event.event_id} already processed, skipping")
+                return False
+            
+            # Check if event already in queue
+            existing_ids = {e.event_id for e in self.event_queue}
+            if event.event_id in existing_ids:
+                logger.warning(f"Event {event.event_id} already in queue, skipping")
+                return False
+            
             # Add to queue
             self.event_queue.append(event)
             
@@ -131,7 +153,7 @@ class EventSystem:
     
     def process_events(self, current_step: int) -> List[BaseEvent]:
         """
-        Process events for current simulation step
+        FIXED: Process events for current simulation step
         
         Args:
             current_step: Current simulation step
@@ -145,20 +167,29 @@ class EventSystem:
         
         # Separate events for this step vs future steps
         for event in self.event_queue:
-            if event.step <= current_step:
+            if event.step <= current_step and event.event_id not in self._processed_event_ids:
                 events_to_process.append(event)
-            else:
+            elif event.step > current_step:
                 remaining_events.append(event)
+            # Skip events that were already processed
         
+        # Update the queue to only contain future events
         self.event_queue = remaining_events
         processed_this_step = []
         
-        # Process each event
+        # Process each event exactly once
         for event in events_to_process:
             try:
+                # Double-check we haven't processed this event already
+                if event.event_id in self._processed_event_ids:
+                    continue
+                    
                 event.status = "processing"
                 self._execute_event(event)
                 event.status = "completed"
+                
+                # Mark as processed
+                self._processed_event_ids.add(event.event_id)
                 self.processed_events.append(event)
                 processed_this_step.append(event)
                 
@@ -175,6 +206,7 @@ class EventSystem:
                 event.status = "failed"
                 event.metadata["error"] = str(e)
                 self.failed_events.append(event)
+                self._processed_event_ids.add(event.event_id)  # Mark as processed to avoid retry
                 logger.error(f"Error processing event {event.event_type}: {str(e)}")
         
         return processed_this_step
@@ -214,6 +246,7 @@ class EventSystem:
         self.event_queue.clear()
         self.processed_events.clear()
         self.failed_events.clear()
+        self._processed_event_ids.clear()
         
         if include_history:
             self.event_history.clear()
@@ -248,7 +281,8 @@ class EventSystem:
             "pending_events": len(self.event_queue),
             "processed_events": len(self.processed_events),
             "failed_events": len(self.failed_events),
-            "registered_handlers": {k: len(v) for k, v in self.event_handlers.items()}
+            "registered_handlers": {k: len(v) for k, v in self.event_handlers.items()},
+            "unique_processed_events": len(self._processed_event_ids)
         }
     
     def export_event_history(self, filename: str = None) -> str:
@@ -312,10 +346,60 @@ class EventSystem:
         if unhandled_types:
             warnings.append(f"Unhandled event types: {list(unhandled_types)}")
         
+        # Check consistency between processed events and tracking set
+        processed_ids_in_list = {e.event_id for e in self.processed_events}
+        if processed_ids_in_list != self._processed_event_ids:
+            issues.append("Inconsistency between processed events list and tracking set")
+        
         return {
             "valid": len(issues) == 0,
             "issues": issues,
             "warnings": warnings,
             "total_events": len(all_events),
-            "unique_event_types": len(event_types)
+            "unique_event_types": len(event_types),
+            "processed_tracking_count": len(self._processed_event_ids)
+        }
+
+    def handle_marketing_campaign(self, event: BaseEvent) -> None:
+        intensity = event.parameters.get("intensity", 0.0)
+        effect = min(1.0, intensity * 1.2)
+        event.metadata["results"] = {"client_retention_rate": effect}
+        logger.info(f"MarketingCampaignEvent: Boosting retention by {effect} at step {self.current_step}")
+        # Note: This should update a global state or return results; for now, logging the effect
+
+    def handle_branch_closure(self, event: BaseEvent) -> None:
+        event.metadata["results"] = {"churned_agents": 50}
+        logger.info(f"BranchClosureEvent: Triggering churn of 50 agents at step {self.current_step}")
+        # Note: Should update churned_agents; logging for now
+
+    def handle_digital_transformation(self, event: BaseEvent) -> None:
+        user_experience_score = event.parameters.get("user_experience_score", 0.0)
+        effect = user_experience_score * 0.5
+        event.metadata["results"] = {"digital_adoption_increase": effect}
+        logger.info(f"DigitalTransformationEvent: Increasing adoption by {effect} at step {self.current_step}")
+        # Note: Should update digital_adoption_increase; logging for now
+
+    def handle_competitor_action(self, event: BaseEvent) -> None:
+        impact_intensity = event.parameters.get("impact_intensity", 0.0)
+        effect = max(0.0, 1.0 - impact_intensity * 0.5)
+        event.metadata["results"] = {"client_retention_rate": effect}
+        logger.info(f"CompetitorActionEvent: Reducing retention by {1.0 - effect} at step {self.current_step}")
+        # Note: Should update client_retention_rate; logging for now
+
+    def handle_economic_shock(self, event: BaseEvent):
+        logger.info(f"EconomicShockEvent: Severity {event.parameters.get('severity', 0.0)} at step {event.step}")
+        event.metadata["results"] = {
+            "impact_factor": event.parameters.get("severity", 0.0)
+        }
+
+    def handle_regulatory_change(self, event: BaseEvent):
+        logger.info(f"RegulatoryChangeEvent: Impact severity {event.parameters.get('impact_severity', 0.0)} at step {event.step}")
+        event.metadata["results"] = {
+            "regulatory_impact": event.parameters.get("impact_severity", 0.0)
+        }
+
+    def handle_product_launch(self, event: BaseEvent):
+        logger.info(f"ProductLaunchEvent: Launching in {event.parameters.get('launch_governorates', [])} at step {event.step}")
+        event.metadata["results"] = {
+            "launch_regions": event.parameters.get("launch_governorates", [])
         }

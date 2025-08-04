@@ -1,6 +1,5 @@
-# src/simulation/simulation_controller.py
 import datetime
-import time  # Add for step delay
+import time
 import logging
 
 logging.basicConfig(level=logging.INFO)
@@ -13,11 +12,10 @@ class SimulationController:
         self.running = False
         self.paused = False
         self.current_step = 0
-        self.max_steps = 100  # Default max steps
-        self.speed_factor = 1.0  # Simulation speed multiplier
+        self.max_steps = 100
+        self.speed_factor = 1.0
 
     def start(self, step_by_step=False, max_steps=None):
-        """Start the simulation with configurable steps, optionally step-by-step."""
         if not self.running:
             self.running = True
             self.paused = False
@@ -39,7 +37,8 @@ class SimulationController:
             else:
                 self.orchestrator.run_simulation("advanced/multi_region_campaign_scenario.json", steps)
                 self.current_step = steps
-            self.running = False
+                # Do not set running = False here; let stop() or pause() handle it
+            # self.running = False  # Comment out or remove this line
         else:
             logger.info("Simulation is already running.")
 
@@ -59,7 +58,7 @@ class SimulationController:
             self.paused = False
             self.current_step = 0
             logger.info(f"Simulation stopped at {datetime.datetime.now()}")
-            self.orchestrator.model = None  # Reset model
+            self.orchestrator.model = None
         else:
             logger.info("No simulation to stop.")
 
@@ -73,6 +72,9 @@ class SimulationController:
                 elif key == "speed_factor" and isinstance(value, (int, float)) and value > 0:
                     self.speed_factor = value
                     logger.info(f"Speed factor updated to {value}")
+                elif key == "batch_size" and isinstance(value, int) and value > 0:
+                    self.orchestrator.batch_size = value
+                    logger.info(f"Batch size updated to {value}")
                 else:
                     logger.info(f"Invalid parameter {key} or value {value}")
         else:
@@ -85,5 +87,6 @@ class SimulationController:
             "current_step": self.current_step,
             "max_steps": self.max_steps,
             "speed_factor": self.speed_factor,
+            "batch_size": self.orchestrator.batch_size,
             "timestamp": str(datetime.datetime.now())
         }

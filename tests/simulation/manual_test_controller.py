@@ -40,3 +40,10 @@ print("Stopping simulation...")
 controller.stop()  # Should print stop time and reset
 final_status = controller.get_status()
 print(f"Final Status: {final_status}")
+
+# After the simulation completes
+results = orchestrator.collect_results()
+print("\nSimulation Results:")
+print(f"- Client Retention Rate: {results.get('client_retention_rate')}")
+print(f"- Digital Adoption Increase: {results.get('digital_adoption_increase')}")
+print(f"- Satisfaction Average: {results.get('satisfaction_avg')}")

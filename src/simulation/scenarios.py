@@ -1,4 +1,3 @@
-# src/simulation/scenarios.py
 """
 Scenario Management System
 Author: Maryem - Simulation Interface Lead
@@ -97,6 +96,16 @@ class ExpectedOutcome:
     tolerance: float = 0.1
     measurement_steps: List[int] = field(default_factory=list)
     comparison_type: str = "equals"  # equals, greater_than, less_than, range
+    extra_params: Dict[str, Any] = field(default_factory=dict)  # Store extra fields
+    
+    def __init__(self, metric_name: str, target_value: Union[float, int, str], tolerance: float = 0.1,
+                 measurement_steps: List[int] = None, comparison_type: str = "equals", **kwargs):
+        self.metric_name = metric_name
+        self.target_value = target_value
+        self.tolerance = tolerance
+        self.measurement_steps = measurement_steps if measurement_steps is not None else []
+        self.comparison_type = comparison_type
+        self.extra_params = kwargs  # Store any additional parameters
     
     def validate_outcome(self, actual_value: Union[float, int, str], step: int) -> bool:
         """Validate if actual outcome matches expectation"""
@@ -174,7 +183,8 @@ class Scenario:
                     "target_value": outcome.target_value,
                     "tolerance": outcome.tolerance,
                     "measurement_steps": outcome.measurement_steps,
-                    "comparison_type": outcome.comparison_type
+                    "comparison_type": outcome.comparison_type,
+                    **outcome.extra_params  # Include extra parameters
                 } for outcome in self.expected_outcomes
             ],
             "key_metrics_to_track": self.key_metrics,
@@ -289,7 +299,7 @@ class ScenarioManager:
         try:
             jsonschema.validate(scenario_data, self.SCENARIO_SCHEMA)
         except jsonschema.ValidationError as e:
-            raise ValueError(f"Scenario validation failed: {str(e)}")
+            raise ValueError(f"Schema validation failed: {str(e)}")
         
         # Create scenario objects
         metadata = ScenarioMetadata(**scenario_data["scenario_metadata"])
@@ -300,9 +310,9 @@ class ScenarioManager:
         for event_data in scenario_data["events"]:
             events.append(ScenarioEvent(**event_data))
         
-        # Create expected outcomes
+        # Fix for expected_outcomes: handle list of outcomes
         expected_outcomes = []
-        if "expected_outcomes" in scenario_data:
+        if "expected_outcomes" in scenario_data and isinstance(scenario_data["expected_outcomes"], list):
             for outcome_data in scenario_data["expected_outcomes"]:
                 expected_outcomes.append(ExpectedOutcome(**outcome_data))
         

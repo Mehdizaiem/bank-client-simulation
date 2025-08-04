@@ -66,24 +66,37 @@
       }
     }
   ],
-  "expected_outcomes": {
-    "client_retention_rate": {
-      "target": 0.75,
-      "measurement_steps": [30, 50, 75, 100]
+  "expected_outcomes": [
+    {
+      "metric_name": "client_retention_rate",
+      "target_value": 0.75,
+      "tolerance": 0.1,
+      "measurement_steps": [30, 50, 75, 100],
+      "comparison_type": "greater_than"
     },
-    "digital_adoption_increase": {
-      "target": 0.4,
-      "baseline": 0.25
+    {
+      "metric_name": "digital_adoption_increase",
+      "target_value": 0.4,
+      "tolerance": 0.1,
+      "baseline": 0.25,
+      "comparison_type": "greater_than"
     },
-    "cost_reduction": {
-      "annual_savings": 200000,
-      "roi_months": 18
+    {
+      "metric_name": "cost_reduction",
+      "target_value": 200000,
+      "tolerance": 50000,
+      "roi_months": 18,
+      "comparison_type": "equals"
     },
-    "market_share_impact": {
+    {
+      "metric_name": "market_share_impact",
+      "target_value": -0.05,
+      "tolerance": 0.02,
       "sfax_region": -0.05,
-      "adjacent_regions": 0.02
+      "adjacent_regions": 0.02,
+      "comparison_type": "equals"
     }
-  },
+  ],
   "key_metrics_to_track": [
     "client_retention_by_segment",
     "channel_usage_shift",
