@@ -7,7 +7,13 @@ import dash
 from dash import html, dcc, Input, Output, State, callback_context
 import sys
 import os
+from dotenv import load_dotenv
+load_dotenv()
 
+# Get configuration
+HOST = os.getenv('DASHBOARD_HOST', '0.0.0.0')
+PORT = int(os.getenv('DASHBOARD_PORT', '8050'))
+DEBUG = os.getenv('DASHBOARD_DEBUG', 'true').lower() == 'true'
 # Add the current directory to Python path to ensure imports work
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
@@ -162,4 +168,4 @@ if __name__ == '__main__':
     print("   • Interactive chat assistant")
     print("   • Real-time dashboard analytics")
     
-    app.run(debug=True, host='0.0.0.0', port=8050)
+    app.run(debug=DEBUG, host=HOST, port=PORT)
