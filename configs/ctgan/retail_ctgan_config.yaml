@@ -1,0 +1,52 @@
+# Retail Client CTGAN Configuration
+model_name: "retail_ctgan_v1"
+description: "CTGAN configuration optimized for Tunisian retail banking clients"
+
+# Training Parameters
+training:
+  epochs: 300
+  batch_size: 500
+  generator_dim: [256, 256]
+  discriminator_dim: [256, 256]
+  generator_lr: 0.0002
+  discriminator_lr: 0.0002
+  generator_decay: 0.000001
+  discriminator_decay: 0.000001
+  pac: 10
+  verbose: true
+  log_frequency: 50
+
+# Data Configuration
+data:
+  numerical_features:
+    - age
+    - monthly_income
+    - risk_tolerance
+    - satisfaction_score
+    - digital_engagement_score
+  
+  categorical_features:
+    - gender
+    - governorate
+    - education_level
+    - employment_sector
+    - preferred_channel
+  
+  preprocessing:
+    handle_outliers: true
+    outlier_method: "iqr"
+    normalization: "standard"
+    categorical_encoding: "label"
+
+# Generation Parameters
+generation:
+  default_sample_size: 5000
+  batch_generation_size: 1000
+  post_processing: true
+  validation_enabled: true
+
+# Quality Thresholds
+quality_thresholds:
+  minimum_statistical_similarity: 0.85
+  minimum_business_compliance: 0.90
+  minimum_overall_score: 0.80

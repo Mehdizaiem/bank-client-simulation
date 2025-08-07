@@ -1,0 +1,170 @@
+{
+  "evaluation_timestamp": "2025-08-07T15:55:06.814982",
+  "data_type": "corporate",
+  "original_samples": 200,
+  "synthetic_samples": 1000,
+  "statistical_similarity": {
+    "numerical_similarity": {
+      "employee_count": {
+        "ks_statistic": 0.088,
+        "ks_pvalue": 0.14545992613446834,
+        "mean_difference": 20.160000000000025,
+        "std_difference": 12.482160556257895,
+        "similarity_score": 0.912
+      },
+      "annual_revenue": {
+        "ks_statistic": 0.065,
+        "ks_pvalue": 0.46927657649438165,
+        "mean_difference": 82948.70461839344,
+        "std_difference": 41451.67008756893,
+        "similarity_score": 0.935
+      },
+      "digital_maturity_score": {
+        "ks_statistic": 0.111,
+        "ks_pvalue": 0.03120588594206696,
+        "mean_difference": 0.07283484213677488,
+        "std_difference": 0.003727233979252842,
+        "similarity_score": 0.889
+      },
+      "cash_flow_predictability": {
+        "ks_statistic": 0.101,
+        "ks_pvalue": 0.06367394947054067,
+        "mean_difference": 0.03308431843250215,
+        "std_difference": 0.004182038540980676,
+        "similarity_score": 0.899
+      },
+      "seasonal_variation": {
+        "ks_statistic": 0.094,
+        "ks_pvalue": 0.10076881874653437,
+        "mean_difference": 0.03594275150973347,
+        "std_difference": 0.0024340355683250547,
+        "similarity_score": 0.906
+      }
+    },
+    "categorical_similarity": {
+      "company_name": {
+        "chi2_statistic": 1200.0000000000002,
+        "chi2_pvalue": 0.4864270920367492,
+        "category_overlap": 0.0,
+        "similarity_score": 0
+      },
+      "business_sector": {
+        "chi2_statistic": 19.90904018093044,
+        "chi2_pvalue": 4.751238754677301e-05,
+        "category_overlap": 1.0,
+        "similarity_score": 0.8009095981906956
+      },
+      "company_size": {
+        "chi2_statistic": 285.9637628743071,
+        "chi2_pvalue": 1.0848364286814263e-61,
+        "category_overlap": 0.75,
+        "similarity_score": 0
+      },
+      "headquarters_governorate": {
+        "chi2_statistic": 10.462599004576834,
+        "chi2_pvalue": 0.005346572902586283,
+        "category_overlap": 1.0,
+        "similarity_score": 0.8953740099542317
+      },
+      "credit_rating": {
+        "chi2_statistic": 1.9280559948380909,
+        "chi2_pvalue": 0.38135369642548167,
+        "category_overlap": 1.0,
+        "similarity_score": 0.980719440051619
+      }
+    },
+    "distribution_tests": {},
+    "overall_statistical_similarity": 0.7218003048196546
+  },
+  "business_rules": {
+    "employee_count_validity": {
+      "violations": 0,
+      "compliance_rate": 1.0
+    },
+    "revenue_validity": {
+      "violations": 0,
+      "compliance_rate": 1.0
+    },
+    "size_revenue_consistency": {
+      "violations": 0,
+      "compliance_rate": 1.0
+    },
+    "digital_maturity_score_range": {
+      "violations": 0,
+      "compliance_rate": 1.0
+    },
+    "cash_flow_predictability_range": {
+      "violations": 0,
+      "compliance_rate": 1.0
+    },
+    "seasonal_variation_range": {
+      "violations": 0,
+      "compliance_rate": 1.0
+    },
+    "overall_compliance": 1.0
+  },
+  "privacy": {
+    "nearest_neighbor": {
+      "mean_min_distance": 0.9569293314421405,
+      "std_min_distance": 0.2855284750696685,
+      "min_distance_threshold": 0.1,
+      "privacy_at_risk_records": 0,
+      "privacy_score": 1.0
+    },
+    "membership_inference": {
+      "exact_matches": 0,
+      "exact_match_rate": 0.0,
+      "privacy_score": 1.0
+    },
+    "overall_privacy_score": 1.0
+  },
+  "ml_utility": {
+    "original_model_accuracy": 1.0,
+    "synthetic_model_accuracy": 1.0,
+    "cross_evaluation_accuracy": 1.0,
+    "utility_preservation_score": 1.0,
+    "features_used": 5,
+    "target_variable": "is_large"
+  },
+  "correlation_preservation": {
+    "mean_correlation_difference": 0.055739305862520475,
+    "max_correlation_difference": 0.11229136648518041,
+    "significant_differences": 0,
+    "total_correlations_compared": 10,
+    "correlation_preservation_score": 0.9442606941374795,
+    "features_analyzed": [
+      "annual_revenue",
+      "employee_count",
+      "seasonal_variation",
+      "cash_flow_predictability",
+      "digital_maturity_score"
+    ]
+  },
+  "overall_quality": {
+    "total_score": 0.9220891803255356,
+    "quality_grade": "Excellent",
+    "component_scores": {
+      "statistical_similarity": 0.7218003048196546,
+      "business_rules": 1.0,
+      "privacy": 1.0,
+      "ml_utility": 1.0,
+      "correlation_preservation": 0.9442606941374795
+    },
+    "weights_used": {
+      "statistical_similarity": 0.25,
+      "business_rules": 0.25,
+      "privacy": 0.2,
+      "ml_utility": 0.15,
+      "correlation_preservation": 0.15
+    },
+    "threshold_compliance": {
+      "statistical_similarity": false,
+      "business_rule_compliance": true,
+      "privacy_score": true,
+      "ml_utility": true,
+      "correlation_preservation": true
+    },
+    "meets_all_thresholds": false,
+    "recommendation": "Excellent quality synthetic data. Ready for production use."
+  }
+}

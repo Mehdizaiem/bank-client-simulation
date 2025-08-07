@@ -1,35 +1,48 @@
-# Core Data Science
+# Core Data Science (existing)
 pandas>=1.5.0
 numpy>=1.21.0
 scikit-learn>=1.1.0
 
-# Synthetic Data Generation
-sdv>=1.0.0
-ctgan>=0.7.0
+# CTGAN and Synthetic Data Generation 
+sdv>=1.2.0
+ctgan>=0.7.4
+torch>=2.0.0
+torchvision>=0.15.0
+torchaudio>=2.0.0
 
-# Agent-Based Modeling
+# Advanced ML and Statistics
+scipy>=1.9.0
+seaborn>=0.11.0
+matplotlib>=3.5.0
+
+# Data Quality and Validation
+deepdiff>=6.0.0
+
+# Agent-Based Modeling (existing)
 mesa>=2.0.0
 
-# Machine Learning
-torch>=1.12.0
-transformers>=4.20.0
-
-# Visualization
+# Visualization (existing)
 plotly>=5.10.0
 dash>=2.6.0
 streamlit>=1.12.0
 folium>=0.12.0
 
-# Data Processing
+# Data Processing (existing)
 openpyxl>=3.0.0
 xlsxwriter>=3.0.0
 
-# Configuration
+# Database and Infrastructure (existing)
+psycopg2-binary>=2.9.0
+redis>=4.0.0
+
+# Configuration and Monitoring
 pyyaml>=6.0
 python-dotenv>=0.20.0
 
-# Development
+# Development and Testing (existing + enhanced)
 pytest>=7.0.0
+pytest-cov>=4.0.0
 black>=22.0.0
 flake8>=5.0.0
 jupyter>=1.0.0
+ipywidgets>=8.0.0

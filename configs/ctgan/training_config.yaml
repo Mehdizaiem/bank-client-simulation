@@ -1,0 +1,71 @@
+# CTGAN Training Configuration and Schedules
+experiment_name: "tunisian_bank_ctgan_v1"
+project_description: "CTGAN implementation for Tunisian bank client simulation"
+
+# Environment Settings
+environment:
+  cuda_enabled: true
+  random_seed: 42
+  num_workers: 4
+  pin_memory: true
+
+# Training Schedule
+training_schedule:
+  retail_training:
+    priority: 1
+    estimated_duration_minutes: 45
+    resource_requirements:
+      gpu_memory_gb: 4
+      ram_gb: 8
+    
+  corporate_training:
+    priority: 2
+    estimated_duration_minutes: 60
+    resource_requirements:
+      gpu_memory_gb: 2
+      ram_gb: 4
+
+# Monitoring and Logging
+monitoring:
+  enable_mlflow: false
+  enable_wandb: false
+  log_level: "INFO"
+  save_checkpoints: true
+  checkpoint_frequency: 100
+  
+  metrics_to_track:
+    - generator_loss
+    - discriminator_loss
+    - training_time
+    - memory_usage
+    - sample_quality_score
+
+# Validation Settings
+validation:
+  validation_frequency: 50
+  validation_sample_size: 500
+  early_stopping:
+    enabled: true
+    patience: 50
+    min_delta: 0.001
+    metric: "generator_loss"
+
+# Model Persistence
+persistence:
+  save_model: true
+  save_training_data: true
+  save_generated_samples: true
+  model_versioning: true
+  compression_enabled: true
+
+# Hyperparameter Optimization (for future use)
+hyperparameter_tuning:
+  enabled: false
+  search_space:
+    epochs: [200, 300, 400]
+    batch_size: [256, 500, 750]
+    generator_lr: [0.0001, 0.0002, 0.0003]
+    pac: [5, 10, 15]
+  
+  optimization_trials: 10
+  optimization_timeout_hours: 24

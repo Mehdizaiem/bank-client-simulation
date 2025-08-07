@@ -1,72 +1,64 @@
 {
-  "generation_time": "2025-08-04T13:44:01.922524",
+  "generation_time": "2025-08-07T15:55:10.139525",
   "retail_stats": {
-    "count": 1000,
+    "count": 2000,
     "age_distribution": {
-      "count": 1000.0,
-      "mean": 39.334,
-      "std": 11.492803336372225,
+      "count": 2000.0,
+      "mean": 42.873,
+      "std": 16.66321404625097,
       "min": 18.0,
-      "25%": 31.0,
-      "50%": 39.0,
-      "75%": 47.25,
-      "max": 74.0
+      "25%": 30.0,
+      "50%": 40.0,
+      "75%": 55.0,
+      "max": 80.0
     },
     "income_distribution": {
-      "count": 1000.0,
-      "mean": 1113.75999,
-      "std": 588.9253768575495,
+      "count": 2000.0,
+      "mean": 4461.644206342604,
+      "std": 3684.282857899443,
       "min": 400.0,
-      "25%": 717.2975,
-      "50%": 965.23,
-      "75%": 1382.1374999999998,
-      "max": 4572.01
+      "25%": 1302.6174999999998,
+      "50%": 3261.88564221472,
+      "75%": 7368.324473130568,
+      "max": 14791.081639765573
     },
     "governorate_counts": {
-      "Tunis": 287,
-      "Sfax": 134,
-      "Sousse": 109,
-      "Ariana": 97,
-      "Nabeul": 59,
-      "Ben Arous": 49,
-      "Gafsa": 48,
-      "Bizerte": 47,
-      "Mahdia": 47,
-      "Manouba": 45,
-      "Kairouan": 43,
-      "Monastir": 35
+      "Ariana": 528,
+      "Sousse": 516,
+      "Tunis": 439,
+      "Sfax": 341,
+      "Nabeul": 101,
+      "Monastir": 75
     },
     "channel_preferences": {
-      "mobile": 390,
-      "branch": 342,
-      "web": 152,
-      "whatsapp": 116
+      "branch": 810,
+      "mobile": 709,
+      "web": 459,
+      "whatsapp": 22
     }
   },
   "corporate_stats": {
-    "count": 200,
+    "count": 500,
     "sector_distribution": {
-      "services": 80,
-      "manufacturing": 48,
-      "retail": 37,
-      "agriculture": 30,
-      "technology": 5
+      "services": 248,
+      "retail": 138,
+      "manufacturing": 114
     },
     "size_distribution": {
-      "micro": 172,
-      "small": 25,
-      "medium": 2,
-      "large": 1
+      "medium": 423,
+      "micro": 33,
+      "small": 30,
+      "large": 14
     },
     "revenue_stats": {
-      "count": 200.0,
-      "mean": 324897.05905,
-      "std": 2196876.658007797,
-      "min": 10382.55,
-      "25%": 44388.255,
-      "50%": 66963.39,
-      "75%": 92236.255,
-      "max": 30524333.4
+      "count": 500.0,
+      "mean": 5048632.461514138,
+      "std": 2943704.9919231324,
+      "min": 10000.0,
+      "25%": 2863249.7948446954,
+      "50%": 5238736.348961724,
+      "75%": 7260589.372347695,
+      "max": 11757748.12328916
     }
   }
 }
