@@ -324,6 +324,55 @@ class CorporateClientAgent(BaseClientAgent):
         
         return random.random() < drop_prob
     
+    # ============ MISSING METHODS - NOW ADDED ============
+    
+    def adopt_product(self, product: str):
+        """Adopt a new corporate banking product"""
+        if product not in self.current_products:
+            self.current_products.append(product)
+            self.product_history.append({
+                'product': product,
+                'action': 'adopted',
+                'step': self.model.current_step,
+                'reason': 'business_need'
+            })
+            
+            # Positive experience - corporate adoptions are more significant
+            experience_quality = 0.8 if self.relationship_manager_assigned else 0.6
+            self.add_experience('product_adoption', 'branch', experience_quality, 
+                              f'Adopted {product} for business needs')
+            
+            # Update satisfaction
+            self.satisfaction_level = min(1.0, self.satisfaction_level + 0.05)
+            
+            # Update relationship quality if RM involved
+            if self.relationship_manager_assigned:
+                self.relationship_quality = min(1.0, self.relationship_quality + 0.02)
+    
+    def drop_product(self, product: str):
+        """Drop a corporate banking product"""
+        if product in self.current_products and product != 'business_checking':
+            self.current_products.remove(product)
+            self.product_history.append({
+                'product': product,
+                'action': 'dropped',
+                'step': self.model.current_step,
+                'reason': 'not_needed'
+            })
+            
+            # Negative impact on satisfaction (less than retail)
+            self.satisfaction_level = max(0, self.satisfaction_level - 0.03)
+            
+            # Impact on relationship quality
+            if self.relationship_manager_assigned:
+                self.relationship_quality = max(0, self.relationship_quality - 0.01)
+            
+            # Add experience
+            self.add_experience('product_cancellation', 'branch', 0.4, 
+                              f'Cancelled {product}')
+    
+    # ============ REST OF THE METHODS ============
+    
     def conduct_business_review(self):
         """Conduct periodic business review"""
         self.business_events.append({
@@ -336,10 +385,22 @@ class CorporateClientAgent(BaseClientAgent):
             # Growth scenario
             self.annual_revenue *= random.uniform(1.05, 1.15)
             self.growth_orientation = min(1.0, self.growth_orientation + 0.1)
+            
+            # May need new products
+            if self.annual_revenue > 1000000 and 'business_credit_line' not in self.current_products:
+                if random.random() < 0.5:
+                    self.adopt_product('business_credit_line')
+                    
         elif random.random() < 0.1:
             # Contraction scenario
             self.annual_revenue *= random.uniform(0.85, 0.95)
             self.cash_flow_stability *= 0.9
+            
+            # May drop non-essential products
+            non_essential = [p for p in self.current_products 
+                           if p not in ['business_checking', 'cash_management']]
+            if non_essential and random.random() < 0.3:
+                self.drop_product(random.choice(non_essential))
     
     def manage_cash_flow(self):
         """Manage cash flow and liquidity"""
@@ -355,6 +416,11 @@ class CorporateClientAgent(BaseClientAgent):
         # Poor cash flow may trigger financing needs
         if self.cash_flow_stability < 0.3:
             self.financing_needs['working_capital'] = min(1.0, self.financing_needs['working_capital'] + 0.2)
+            
+            # Consider overdraft protection
+            if 'overdraft_protection' not in self.current_products:
+                if random.random() < 0.4:
+                    self.adopt_product('overdraft_protection')
     
     def evaluate_financing_options(self):
         """Evaluate financing options for growth"""
@@ -365,6 +431,11 @@ class CorporateClientAgent(BaseClientAgent):
             experience_quality = 0.7 if self.relationship_manager_assigned else 0.5
             self.add_experience('financing_consultation', 'branch', experience_quality, 
                               'Discussed financing options')
+            
+            # May adopt financing products
+            if 'term_loan' not in self.current_products and self.growth_orientation > 0.7:
+                if random.random() < 0.3:
+                    self.adopt_product('term_loan')
     
     def consider_digital_upgrades(self):
         """Consider upgrading digital banking capabilities"""
@@ -376,6 +447,11 @@ class CorporateClientAgent(BaseClientAgent):
             if self.digital_maturity_score > 0.6 and 'online_banking_corporate' not in self.current_products:
                 if random.random() < 0.3:
                     self.adopt_product('online_banking_corporate')
+            
+            # API banking for large companies
+            if self.company_size == 'large' and self.digital_maturity_score > 0.7:
+                if 'api_banking' not in self.current_products and random.random() < 0.2:
+                    self.adopt_product('api_banking')
     
     def interact_with_relationship_manager(self):
         """Interact with relationship manager"""
@@ -387,6 +463,14 @@ class CorporateClientAgent(BaseClientAgent):
         
         # Update relationship quality
         self.relationship_quality = 0.9 * self.relationship_quality + 0.1 * interaction_quality
+        
+        # RM may suggest products
+        if interaction_quality > 0.7 and random.random() < 0.2:
+            # Suggest a relevant product based on needs
+            if self.cash_flow_stability < 0.5 and 'cash_management' not in self.current_products:
+                self.adopt_product('cash_management')
+            elif self.international_operations and 'fx_services' not in self.current_products:
+                self.adopt_product('fx_services')
     
     def get_export_data(self) -> Dict[str, Any]:
         """Export corporate-specific data for analysis"""
@@ -405,7 +489,9 @@ class CorporateClientAgent(BaseClientAgent):
             'transaction_volume': self.transaction_volume,
             'relationship_quality': self.relationship_quality,
             'has_rm': self.relationship_manager_assigned,
-            'products_list': ','.join(self.current_products)
+            'products_list': ','.join(self.current_products),
+            'financing_needs_max': max(self.financing_needs.values()),
+            'business_events_count': len(self.business_events)
         }
         
         return {**base_data, **corporate_data}
