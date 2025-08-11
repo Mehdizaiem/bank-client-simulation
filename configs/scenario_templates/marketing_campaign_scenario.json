@@ -1,0 +1,240 @@
+{
+  "scenario_metadata": {
+    "name": "Digital Banking Marketing Campaign",
+    "description": "Multi-phase marketing campaign to promote digital banking services to young professionals",
+    "version": "1.2",
+    "author": "Maryem - Simulation Interface Lead",
+    "created_date": "2024-01-15",
+    "tags": ["marketing", "digital_banking", "customer_acquisition", "youth_segment"],
+    "difficulty_level": "medium",
+    "estimated_duration": 120
+  },
+  "simulation_parameters": {
+    "duration_steps": 120,
+    "warm_up_steps": 15,
+    "agent_population": 2000,
+    "random_seed": 12345,
+    "output_frequency": 10,
+    "save_intermediate_results": true,
+    "enable_real_time_visualization": true
+  },
+  "events": [
+    {
+      "event_type": "MarketingCampaignEvent",
+      "step": 20,
+      "parameters": {
+        "target_segment": "young_professionals",
+        "campaign_type": "awareness_building",
+        "intensity": 0.6,
+        "duration": 25,
+        "budget": 200000,
+        "channels": ["social_media", "online_ads", "influencer_partnerships"],
+        "message_theme": "banking_made_simple"
+      },
+      "description": "Phase 1: Awareness building through digital channels"
+    },
+    {
+      "event_type": "DigitalTransformationEvent",
+      "step": 25,
+      "parameters": {
+        "service_type": "mobile_app_upgrade",
+        "channel": "mobile_app",
+        "user_experience_score": 0.9,
+        "rollout_phases": 3,
+        "features": ["biometric_login", "instant_transfers", "expense_tracking", "investment_insights"]
+      },
+      "description": "Launch enhanced mobile app features"
+    },
+    {
+      "event_type": "ProductLaunchEvent",
+      "step": 30,
+      "parameters": {
+        "product_type": "digital_savings_challenge",
+        "target_market": "young_professionals",
+        "pricing": 0.0,
+        "digital_only": true,
+        "launch_governorates": ["Tunis", "Sfax", "Sousse", "Monastir"],
+        "gamification_elements": ["progress_tracking", "rewards_system", "social_sharing"]
+      },
+      "description": "Launch gamified savings product for millennials"
+    },
+    {
+      "event_type": "MarketingCampaignEvent",
+      "step": 35,
+      "parameters": {
+        "target_segment": "young_professionals",
+        "campaign_type": "product_promotion",
+        "intensity": 0.8,
+        "duration": 20,
+        "budget": 150000,
+        "channels": ["email", "push_notifications", "in_app_messages"],
+        "message_theme": "save_smart_earn_more",
+        "promotional_offer": "bonus_interest_3_months"
+      },
+      "description": "Phase 2: Intensive product promotion with limited-time offer"
+    },
+    {
+      "event_type": "CompetitorActionEvent",
+      "step": 45,
+      "parameters": {
+        "competitor_name": "Attijari Bank",
+        "action_type": "counter_campaign",
+        "affected_region": "Tunis",
+        "impact_intensity": 0.7,
+        "duration": 15,
+        "competitor_strategy": "higher_interest_rates"
+      },
+      "description": "Competitor response with aggressive counter-offer"
+    },
+    {
+      "event_type": "MarketingCampaignEvent",
+      "step": 50,
+      "parameters": {
+        "target_segment": "young_professionals",
+        "campaign_type": "retention_defense",
+        "intensity": 0.9,
+        "duration": 15,
+        "budget": 100000,
+        "channels": ["personal_calls", "branch_visits", "premium_support"],
+        "message_theme": "valued_customer_exclusive",
+        "defensive_offer": "loyalty_bonus_program"
+      },
+      "description": "Phase 3: Defensive retention campaign against competitor"
+    },
+    {
+      "event_type": "DigitalTransformationEvent",
+      "step": 65,
+      "parameters": {
+        "service_type": "ai_financial_advisor",
+        "channel": "mobile_app",
+        "user_experience_score": 0.85,
+        "rollout_phases": 2,
+        "features": ["personalized_recommendations", "spending_analysis", "goal_tracking", "chatbot_support"]
+      },
+      "description": "Launch AI-powered financial advisory features"
+    },
+    {
+      "event_type": "MarketingCampaignEvent",
+      "step": 70,
+      "parameters": {
+        "target_segment": "young_professionals",
+        "campaign_type": "success_stories",
+        "intensity": 0.5,
+        "duration": 30,
+        "budget": 75000,
+        "channels": ["social_media", "testimonial_videos", "case_studies"],
+        "message_theme": "real_success_stories",
+        "social_proof_strategy": "user_generated_content"
+      },
+      "description": "Phase 4: Social proof campaign with customer success stories"
+    },
+    {
+      "event_type": "RegulatoryChangeEvent",
+      "step": 80,
+      "parameters": {
+        "regulation_type": "digital_banking_standards",
+        "compliance_cost": 50000,
+        "affected_products": ["mobile_banking", "digital_payments"],
+        "implementation_period": 20,
+        "regulatory_requirements": ["enhanced_security", "transaction_limits", "identity_verification"]
+      },
+      "description": "New regulatory requirements for digital banking services"
+    },
+    {
+      "event_type": "MarketingCampaignEvent",
+      "step": 100,
+      "parameters": {
+        "target_segment": "young_professionals",
+        "campaign_type": "loyalty_consolidation",
+        "intensity": 0.6,
+        "duration": 20,
+        "budget": 125000,
+        "channels": ["email", "mobile_app", "personalized_offers"],
+        "message_theme": "exclusive_member_benefits",
+        "loyalty_program": "premium_tier_upgrade"
+      },
+      "description": "Phase 5: Consolidation campaign to build long-term loyalty"
+    }
+  ],
+  "expected_outcomes": {
+    "customer_acquisition_rate": {
+      "target": 0.15,
+      "tolerance": 0.03,
+      "measurement_steps": [30, 60, 90, 120],
+      "comparison_type": "greater_than"
+    },
+    "digital_engagement_increase": {
+      "target": 0.4,
+      "tolerance": 0.05,
+      "measurement_steps": [45, 75, 105],
+      "comparison_type": "greater_than"
+    },
+    "campaign_roi": {
+      "target": 2.5,
+      "tolerance": 0.3,
+      "measurement_steps": [120],
+      "comparison_type": "greater_than"
+    },
+    "mobile_app_adoption": {
+      "target": 0.6,
+      "tolerance": 0.08,
+      "measurement_steps": [40, 80, 120],
+      "comparison_type": "greater_than"
+    },
+    "customer_satisfaction_score": {
+      "target": 8.0,
+      "tolerance": 0.5,
+      "measurement_steps": [60, 120],
+      "comparison_type": "greater_than"
+    },
+    "churn_rate": {
+      "target": 0.05,
+      "tolerance": 0.02,
+      "measurement_steps": [90, 120],
+      "comparison_type": "less_than"
+    }
+  },
+  "key_metrics_to_track": [
+    "new_account_openings",
+    "digital_channel_engagement",
+    "campaign_conversion_rate",
+    "customer_acquisition_cost",
+    "mobile_app_usage_frequency",
+    "customer_satisfaction_index",
+    "churn_rate_by_segment",
+    "loyalty_program_enrollment"
+  ],
+  "risk_factors": [
+    {
+      "risk": "low_campaign_engagement",
+      "probability": 0.25,
+      "impact": "medium",
+      "mitigation": "multi_channel_approach"
+    },
+    {
+      "risk": "competitor_counter_campaign",
+      "probability": 0.5,
+      "impact": "high",
+      "mitigation": "unique_value_proposition"
+    },
+    {
+      "risk": "technical_issues_with_app",
+      "probability": 0.3,
+      "impact": "high",
+      "mitigation": "rigorous_testing_and_support"
+    },
+    {
+      "risk": "regulatory_compliance_delays",
+      "probability": 0.4,
+      "impact": "medium",
+      "mitigation": "proactive_compliance_strategy"
+    }
+  ],
+  "validation_criteria": {
+    "minimum_acquisition_rate": 0.12,
+    "maximum_acceptable_churn": 0.07,
+    "minimum_app_adoption_rate": 0.5,
+    "minimum_satisfaction_score": 7.5,
+    "maximum_cost_per_acquisition": 400
+  }
+}

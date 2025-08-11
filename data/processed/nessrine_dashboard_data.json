@@ -1,0 +1,72 @@
+{
+  "generation_time": "2025-08-04T13:44:01.922524",
+  "retail_stats": {
+    "count": 1000,
+    "age_distribution": {
+      "count": 1000.0,
+      "mean": 39.334,
+      "std": 11.492803336372225,
+      "min": 18.0,
+      "25%": 31.0,
+      "50%": 39.0,
+      "75%": 47.25,
+      "max": 74.0
+    },
+    "income_distribution": {
+      "count": 1000.0,
+      "mean": 1113.75999,
+      "std": 588.9253768575495,
+      "min": 400.0,
+      "25%": 717.2975,
+      "50%": 965.23,
+      "75%": 1382.1374999999998,
+      "max": 4572.01
+    },
+    "governorate_counts": {
+      "Tunis": 287,
+      "Sfax": 134,
+      "Sousse": 109,
+      "Ariana": 97,
+      "Nabeul": 59,
+      "Ben Arous": 49,
+      "Gafsa": 48,
+      "Bizerte": 47,
+      "Mahdia": 47,
+      "Manouba": 45,
+      "Kairouan": 43,
+      "Monastir": 35
+    },
+    "channel_preferences": {
+      "mobile": 390,
+      "branch": 342,
+      "web": 152,
+      "whatsapp": 116
+    }
+  },
+  "corporate_stats": {
+    "count": 200,
+    "sector_distribution": {
+      "services": 80,
+      "manufacturing": 48,
+      "retail": 37,
+      "agriculture": 30,
+      "technology": 5
+    },
+    "size_distribution": {
+      "micro": 172,
+      "small": 25,
+      "medium": 2,
+      "large": 1
+    },
+    "revenue_stats": {
+      "count": 200.0,
+      "mean": 324897.05905,
+      "std": 2196876.658007797,
+      "min": 10382.55,
+      "25%": 44388.255,
+      "50%": 66963.39,
+      "75%": 92236.255,
+      "max": 30524333.4
+    }
+  }
+}
