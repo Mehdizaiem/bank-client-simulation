@@ -1,0 +1,43 @@
+{
+  "archetype_analysis": {
+    "total_samples": 10000,
+    "archetype_enhanced_samples": 10000,
+    "archetype_distribution": {
+      "Young Digital Professional": 1500,
+      "High Net Worth Tunisian": 500,
+      "Diaspora Client": 500
+    }
+  },
+  "strategic_value_assessment": {
+    "High Net Worth Tunisian": {
+      "sample_count": 500,
+      "business_value": "Premium banking products, wealth management",
+      "geographic_focus": [
+        "Tunis",
+        "Ariana"
+      ]
+    },
+    "Young Digital Professional": {
+      "sample_count": 1500,
+      "business_value": "Digital banking adoption, future high-value clients",
+      "geographic_focus": [
+        "Tunis",
+        "Ariana"
+      ]
+    },
+    "Diaspora Client": {
+      "sample_count": 500,
+      "business_value": "Remittance services, international banking",
+      "geographic_focus": [
+        "Tunis",
+        "Sfax"
+      ]
+    }
+  },
+  "business_recommendations": [
+    "Strategic segments represent 2500 samples with high business value",
+    "Focus marketing campaigns on geographic concentrations identified",
+    "Develop specialized products for each strategic segment",
+    "Monitor archetype performance for portfolio optimization"
+  ]
+}

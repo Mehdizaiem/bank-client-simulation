@@ -1,17 +1,18 @@
 #!/usr/bin/env python3
 """
-Strategic Client Archetype Blending System - Week 3
-Expert-defined client archetypes for underrepresented strategic segments
-Based on Tunisian banking executive insights and market analysis.
+COMPLETE ARCHETYPE BLENDING ENGINE - FIXED VERSION
+All missing methods implemented, Windows-compatible logging
 """
 
-from venv import logger
 import pandas as pd
 import numpy as np
 from typing import Dict, List, Optional, Any
 from dataclasses import dataclass
 from enum import Enum
 import logging
+
+# Windows-compatible logging setup
+logger = logging.getLogger(__name__)
 
 class StrategicSegment(Enum):
     """Strategic client segments identified by banking executives"""
@@ -34,13 +35,13 @@ class ClientArchetype:
     geographic_concentration: List[str]
 
 class ArchetypeBlendingEngine:
-    """Enterprise archetype blending with strategic intelligence"""
+    """Enterprise archetype blending with strategic intelligence - COMPLETE VERSION"""
     
     def __init__(self):
         self.retail_archetypes = self._define_retail_archetypes()
         self.corporate_archetypes = self._define_corporate_archetypes()
         
-        logger.info("🎭 Strategic Archetype Blending Engine initialized")
+        logger.info("Strategic Archetype Blending Engine initialized")
     
     def _define_retail_archetypes(self) -> List[ClientArchetype]:
         """Define strategic retail client archetypes"""
@@ -164,7 +165,7 @@ class ArchetypeBlendingEngine:
                                        target_count: int) -> pd.DataFrame:
         """Blend strategic archetypes with CTGAN synthetic data"""
         
-        logger.info(f"🎭 Blending {data_type} archetypes with synthetic data...")
+        logger.info(f"Blending {data_type} archetypes with synthetic data...")
         
         archetypes = (self.retail_archetypes if data_type == 'retail' 
                      else self.corporate_archetypes)
@@ -183,7 +184,7 @@ class ArchetypeBlendingEngine:
                 )
                 archetype_samples.append(archetype_data)
                 
-                logger.info(f"   Generated {len(archetype_data)} samples for {archetype.name}")
+                logger.info(f"Generated {len(archetype_data)} samples for {archetype.name}")
         
         # Combine archetype samples with synthetic data
         if archetype_samples:
@@ -204,7 +205,7 @@ class ArchetypeBlendingEngine:
         # Add archetype metadata
         final_data['archetype_enhanced'] = True
         
-        logger.info(f"✅ Archetype blending completed: {len(final_data)} total samples")
+        logger.info(f"Archetype blending completed: {len(final_data)} total samples")
         return final_data
     
     def _generate_archetype_samples(self, archetype: ClientArchetype, 
@@ -226,6 +227,149 @@ class ArchetypeBlendingEngine:
         
         return pd.DataFrame(samples)
     
+    def _generate_retail_archetype_sample(self, chars: Dict, index: int) -> Dict:
+        """Generate a single retail archetype sample - MISSING METHOD IMPLEMENTED"""
+        
+        sample = {}
+        
+        # Generate client ID
+        sample['client_id'] = f'ARCH_R_{index+1:05d}'
+        
+        # Age
+        if 'age_range' in chars:
+            min_age, max_age = chars['age_range']
+            sample['age'] = np.random.randint(min_age, max_age + 1)
+        else:
+            sample['age'] = np.random.randint(25, 65)
+        
+        # Income
+        if 'monthly_income_range' in chars:
+            min_income, max_income = chars['monthly_income_range']
+            sample['monthly_income'] = np.random.uniform(min_income, max_income)
+        else:
+            sample['monthly_income'] = np.random.uniform(1000, 5000)
+        
+        # Gender
+        sample['gender'] = np.random.choice(['M', 'F'])
+        
+        # Governorate
+        if 'governorates' in chars:
+            sample['governorate'] = np.random.choice(chars['governorates'])
+        else:
+            sample['governorate'] = np.random.choice(['Tunis', 'Sfax', 'Sousse'])
+        
+        # Education
+        if 'education_level' in chars:
+            sample['education_level'] = chars['education_level']
+        else:
+            sample['education_level'] = np.random.choice(['secondary', 'university'])
+        
+        # Employment
+        if 'employment_sector' in chars:
+            sample['employment_sector'] = chars['employment_sector']
+        else:
+            sample['employment_sector'] = np.random.choice(['private', 'public'])
+        
+        # Channel preference
+        if 'preferred_channels' in chars:
+            sample['preferred_channel'] = np.random.choice(chars['preferred_channels'])
+        else:
+            sample['preferred_channel'] = np.random.choice(['mobile', 'branch', 'web'])
+        
+        # Risk tolerance
+        if 'risk_tolerance_range' in chars:
+            min_risk, max_risk = chars['risk_tolerance_range']
+            sample['risk_tolerance'] = np.random.uniform(min_risk, max_risk)
+        else:
+            sample['risk_tolerance'] = np.random.uniform(0.3, 0.8)
+        
+        # Satisfaction score
+        if 'satisfaction_expectations' in chars:
+            min_sat, max_sat = chars['satisfaction_expectations']
+            sample['satisfaction_score'] = np.random.uniform(min_sat, max_sat)
+        else:
+            sample['satisfaction_score'] = np.random.uniform(0.6, 1.0)
+        
+        # Digital engagement
+        if 'digital_engagement' in chars:
+            min_dig, max_dig = chars['digital_engagement']
+            sample['digital_engagement_score'] = np.random.uniform(min_dig, max_dig)
+        else:
+            sample['digital_engagement_score'] = np.random.uniform(0.5, 0.9)
+        
+        return sample
+    
+    def _generate_corporate_archetype_sample(self, chars: Dict, index: int) -> Dict:
+        """Generate a single corporate archetype sample - MISSING METHOD IMPLEMENTED"""
+        
+        sample = {}
+        
+        # Generate client ID
+        sample['client_id'] = f'ARCH_C_{index+1:05d}'
+        
+        # Company name
+        sample['company_name'] = f'ArchetypeCompany_{index+1:03d}'
+        
+        # Business sector
+        if 'business_sector' in chars:
+            if isinstance(chars['business_sector'], list):
+                sample['business_sector'] = np.random.choice(chars['business_sector'])
+            else:
+                sample['business_sector'] = chars['business_sector']
+        else:
+            sample['business_sector'] = np.random.choice(['services', 'manufacturing', 'retail'])
+        
+        # Company size
+        if 'company_size' in chars:
+            sample['company_size'] = np.random.choice(chars['company_size'])
+        else:
+            sample['company_size'] = np.random.choice(['small', 'medium'])
+        
+        # Employee count
+        if 'employee_range' in chars:
+            min_emp, max_emp = chars['employee_range']
+            sample['employee_count'] = np.random.randint(min_emp, max_emp + 1)
+        else:
+            sample['employee_count'] = np.random.randint(10, 100)
+        
+        # Annual revenue
+        if 'revenue_range' in chars:
+            min_rev, max_rev = chars['revenue_range']
+            sample['annual_revenue'] = np.random.uniform(min_rev, max_rev)
+        else:
+            sample['annual_revenue'] = np.random.uniform(100000, 2000000)
+        
+        # Headquarters
+        if 'headquarters' in chars:
+            sample['headquarters_governorate'] = np.random.choice(chars['headquarters'])
+        else:
+            sample['headquarters_governorate'] = np.random.choice(['Tunis', 'Sfax', 'Sousse'])
+        
+        # Credit rating
+        if 'credit_rating' in chars:
+            sample['credit_rating'] = np.random.choice(chars['credit_rating'])
+        else:
+            sample['credit_rating'] = np.random.choice(['A', 'B', 'C'])
+        
+        # Digital maturity
+        if 'digital_maturity_range' in chars:
+            min_dig, max_dig = chars['digital_maturity_range']
+            sample['digital_maturity_score'] = np.random.uniform(min_dig, max_dig)
+        else:
+            sample['digital_maturity_score'] = np.random.uniform(0.3, 0.8)
+        
+        # Cash flow predictability
+        if 'cash_flow_predictability' in chars:
+            min_cf, max_cf = chars['cash_flow_predictability']
+            sample['cash_flow_predictability'] = np.random.uniform(min_cf, max_cf)
+        else:
+            sample['cash_flow_predictability'] = np.random.uniform(0.5, 0.9)
+        
+        # Seasonal variation
+        sample['seasonal_variation'] = np.random.uniform(0.1, 0.5)
+        
+        return sample
+    
     def generate_archetype_report(self, blended_df: pd.DataFrame, 
                                  data_type: str) -> Dict:
         """Generate strategic archetype blending report"""
@@ -233,7 +377,7 @@ class ArchetypeBlendingEngine:
         report = {
             'archetype_analysis': {
                 'total_samples': len(blended_df),
-                'archetype_enhanced_samples': (blended_df.get('archetype_enhanced', False)).sum(),
+                'archetype_enhanced_samples': int((blended_df.get('archetype_enhanced', False)).sum()),
                 'archetype_distribution': {}
             },
             'strategic_value_assessment': {},
@@ -269,3 +413,31 @@ class ArchetypeBlendingEngine:
         ]
         
         return report
+
+# Test the implementation
+if __name__ == "__main__":
+    # Test the archetype blender
+    blender = ArchetypeBlendingEngine()
+    
+    # Create sample synthetic data
+    sample_retail = pd.DataFrame({
+        'client_id': ['R_001', 'R_002', 'R_003'] * 100,
+        'age': np.random.randint(18, 80, 300),
+        'monthly_income': np.random.uniform(500, 8000, 300),
+        'gender': np.random.choice(['M', 'F'], 300),
+        'governorate': np.random.choice(['Tunis', 'Sfax', 'Sousse'], 300)
+    })
+    
+    try:
+        # Test archetype blending
+        blended_data = blender.blend_archetypes_with_synthetic(sample_retail, 'retail', 1000)
+        print(f"SUCCESS: Blended {len(blended_data)} retail clients")
+        
+        # Test report generation
+        report = blender.generate_archetype_report(blended_data, 'retail')
+        print(f"SUCCESS: Generated archetype report")
+        
+        print("All missing methods implemented successfully!")
+        
+    except Exception as e:
+        print(f"ERROR: {e}")

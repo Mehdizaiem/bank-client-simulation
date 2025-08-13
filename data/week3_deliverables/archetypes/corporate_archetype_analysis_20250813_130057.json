@@ -1,0 +1,44 @@
+{
+  "archetype_analysis": {
+    "total_samples": 2000,
+    "archetype_enhanced_samples": 2000,
+    "archetype_distribution": {
+      "Export Champion": 240,
+      "Family Business Legacy": 200,
+      "Tech Scale-up": 60
+    }
+  },
+  "strategic_value_assessment": {
+    "Tech Scale-up": {
+      "sample_count": 60,
+      "business_value": "Innovation banking, venture capital partnerships",
+      "geographic_focus": [
+        "Tunis",
+        "Ariana"
+      ]
+    },
+    "Export Champion": {
+      "sample_count": 240,
+      "business_value": "Trade finance, foreign exchange, export credits",
+      "geographic_focus": [
+        "Sfax",
+        "Sousse"
+      ]
+    },
+    "Family Business Legacy": {
+      "sample_count": 200,
+      "business_value": "Relationship banking, succession planning, family wealth",
+      "geographic_focus": [
+        "Sfax",
+        "Kairouan",
+        "Bizerte"
+      ]
+    }
+  },
+  "business_recommendations": [
+    "Strategic segments represent 500 samples with high business value",
+    "Focus marketing campaigns on geographic concentrations identified",
+    "Develop specialized products for each strategic segment",
+    "Monitor archetype performance for portfolio optimization"
+  ]
+}
