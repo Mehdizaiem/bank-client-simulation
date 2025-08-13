@@ -1,0 +1,20 @@
+{
+  "scenario_name": "Digital Transformation Impact Analysis",
+  "total_steps": 21,
+  "events_processed": 3,
+  "final_metrics": {
+    "average_satisfaction": 0.8056925378908882,
+    "churn_rate": 0.0025,
+    "digital_usage": 0.5333333333333333,
+    "active_products": 1772
+  },
+  "segment_performance": {
+    "high_value_retail": 0.7555283009599598,
+    "young_digital": 0.8037778884802114,
+    "large_corporates": 0.8213267310219623,
+    "tech_companies": 0.8096508420807103,
+    "standard_retail": 0.8145067992358919,
+    "standard_corporate": 0.7690498639992124
+  },
+  "outcome_validation": []
+}

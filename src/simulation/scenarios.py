@@ -66,27 +66,38 @@ class SimulationParameters:
 
 @dataclass
 class ScenarioEvent:
-    """Individual event within a scenario"""
-    event_type: str
-    step: int
-    parameters: Dict[str, Any]
-    event_id: Optional[str] = None
-    description: Optional[str] = None
+    """Individual event within a scenario - ENHANCED"""
+    
+    def __init__(self, event_type: str, step: int, parameters: Dict[str, Any], 
+                 event_id: Optional[str] = None, description: Optional[str] = None):
+        self.event_type = event_type
+        self.step = step
+        self.parameters = parameters
+        self.event_id = event_id
+        self.description = description
     
     def to_base_event(self) -> BaseEvent:
-        """Convert to BaseEvent for execution"""
-        parameters = self.parameters.copy()  # Create a copy to avoid modifying original
-        parameters["step"] = self.step  # Add step to parameters
-        return create_event(self.event_type, **parameters)
-    
-    def to_dict(self) -> Dict[str, Any]:
-        return {
-            "event_type": self.event_type,
-            "step": self.step,
-            "parameters": self.parameters,
-            "event_id": self.event_id,
-            "description": self.description
-        }
+        """Convert to BaseEvent for execution - ENHANCED"""
+        try:
+            # Use the enhanced create_event function
+            return create_event(self.event_type, step=self.step, **self.parameters)
+        except Exception as e:
+            # Fallback: create basic event with all parameters in extra_params
+            from .event_system import BaseEvent
+            
+            @dataclass
+            class GenericEvent(BaseEvent):
+                extra_params: Dict[str, Any] = field(default_factory=dict)
+                
+                def __post_init__(self):
+                    super().__post_init__()
+                    self.parameters = self.extra_params
+            
+            return GenericEvent(
+                event_type=self.event_type,
+                step=self.step,
+                extra_params=self.parameters
+            )
 
 @dataclass
 class ExpectedOutcome:
