@@ -270,7 +270,6 @@ def create_event(event_type: str, **kwargs) -> BaseEvent:
         "EconomicShockEvent": EconomicShockEvent,
         "RegulatoryChangeEvent": RegulatoryChangeEvent,
         "DigitalTransformationEvent": DigitalTransformationEvent,
-        "LoanOfferEvent": LoanOfferEvent
     }
     
     if event_type not in event_classes:
