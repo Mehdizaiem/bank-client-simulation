@@ -1,0 +1,267 @@
+{
+  "scenario_name": "Digital Transformation Impact Analysis",
+  "start_time": "2025-08-13T15:12:41.147886",
+  "metadata": {
+    "name": "Digital Transformation Impact Analysis",
+    "description": "Simulate the impact of rolling out new digital banking services",
+    "version": "1.0",
+    "author": "Maryem - Simulation Interface Lead",
+    "created_date": "2024-01-15",
+    "tags": [
+      "digital_transformation",
+      "client_experience",
+      "technology_adoption"
+    ],
+    "difficulty_level": "medium",
+    "estimated_duration": 100
+  },
+  "metrics": [
+    {
+      "step": 10,
+      "metric": "average_satisfaction",
+      "value": 0.6022168267344762,
+      "timestamp": "2025-08-13T15:12:41.392063"
+    },
+    {
+      "step": 10,
+      "metric": "churn_rate",
+      "value": 0.013333333333333334,
+      "timestamp": "2025-08-13T15:12:41.393063"
+    },
+    {
+      "step": 10,
+      "metric": "digital_usage",
+      "value": 0.5661988958964229,
+      "timestamp": "2025-08-13T15:12:41.393063"
+    },
+    {
+      "step": 20,
+      "metric": "average_satisfaction",
+      "value": 0.6033345908393996,
+      "timestamp": "2025-08-13T15:12:41.455132"
+    },
+    {
+      "step": 20,
+      "metric": "churn_rate",
+      "value": 0.006666666666666667,
+      "timestamp": "2025-08-13T15:12:41.455132"
+    },
+    {
+      "step": 20,
+      "metric": "digital_usage",
+      "value": 0.5661988958964229,
+      "timestamp": "2025-08-13T15:12:41.456131"
+    },
+    {
+      "step": 30,
+      "metric": "average_satisfaction",
+      "value": 0.6076814348548635,
+      "timestamp": "2025-08-13T15:12:41.515457"
+    },
+    {
+      "step": 30,
+      "metric": "churn_rate",
+      "value": 0.0033333333333333335,
+      "timestamp": "2025-08-13T15:12:41.516960"
+    },
+    {
+      "step": 30,
+      "metric": "digital_usage",
+      "value": 0.5661988958964229,
+      "timestamp": "2025-08-13T15:12:41.516960"
+    },
+    {
+      "step": 40,
+      "metric": "average_satisfaction",
+      "value": 0.6125548442316211,
+      "timestamp": "2025-08-13T15:12:41.584613"
+    },
+    {
+      "step": 40,
+      "metric": "churn_rate",
+      "value": 0.0008333333333333334,
+      "timestamp": "2025-08-13T15:12:41.584613"
+    },
+    {
+      "step": 40,
+      "metric": "digital_usage",
+      "value": 0.5661988958964229,
+      "timestamp": "2025-08-13T15:12:41.584613"
+    },
+    {
+      "step": 50,
+      "metric": "average_satisfaction",
+      "value": 0.6147507178476878,
+      "timestamp": "2025-08-13T15:12:41.653133"
+    },
+    {
+      "step": 50,
+      "metric": "churn_rate",
+      "value": 0.0016666666666666668,
+      "timestamp": "2025-08-13T15:12:41.653133"
+    },
+    {
+      "step": 50,
+      "metric": "digital_usage",
+      "value": 0.5661988958964229,
+      "timestamp": "2025-08-13T15:12:41.653133"
+    },
+    {
+      "step": 60,
+      "metric": "average_satisfaction",
+      "value": 0.6214235384078081,
+      "timestamp": "2025-08-13T15:12:41.721757"
+    },
+    {
+      "step": 60,
+      "metric": "churn_rate",
+      "value": 0.0008333333333333334,
+      "timestamp": "2025-08-13T15:12:41.721757"
+    },
+    {
+      "step": 60,
+      "metric": "digital_usage",
+      "value": 0.5661988958964229,
+      "timestamp": "2025-08-13T15:12:41.721757"
+    },
+    {
+      "step": 70,
+      "metric": "average_satisfaction",
+      "value": 0.6246487676537228,
+      "timestamp": "2025-08-13T15:12:41.780553"
+    },
+    {
+      "step": 70,
+      "metric": "churn_rate",
+      "value": 0.0016666666666666668,
+      "timestamp": "2025-08-13T15:12:41.780553"
+    },
+    {
+      "step": 70,
+      "metric": "digital_usage",
+      "value": 0.5661988958964229,
+      "timestamp": "2025-08-13T15:12:41.780553"
+    },
+    {
+      "step": 80,
+      "metric": "average_satisfaction",
+      "value": 0.6268902363479679,
+      "timestamp": "2025-08-13T15:12:41.839837"
+    },
+    {
+      "step": 80,
+      "metric": "churn_rate",
+      "value": 0.0008333333333333334,
+      "timestamp": "2025-08-13T15:12:41.839837"
+    },
+    {
+      "step": 80,
+      "metric": "digital_usage",
+      "value": 0.5661988958964229,
+      "timestamp": "2025-08-13T15:12:41.839837"
+    },
+    {
+      "step": 90,
+      "metric": "average_satisfaction",
+      "value": 0.6280664248976393,
+      "timestamp": "2025-08-13T15:12:41.898466"
+    },
+    {
+      "step": 90,
+      "metric": "churn_rate",
+      "value": 0.0,
+      "timestamp": "2025-08-13T15:12:41.898466"
+    },
+    {
+      "step": 90,
+      "metric": "digital_usage",
+      "value": 0.5661988958964229,
+      "timestamp": "2025-08-13T15:12:41.899970"
+    },
+    {
+      "step": 100,
+      "metric": "average_satisfaction",
+      "value": 0.6338875126279423,
+      "timestamp": "2025-08-13T15:12:41.960355"
+    },
+    {
+      "step": 100,
+      "metric": "churn_rate",
+      "value": 0.0,
+      "timestamp": "2025-08-13T15:12:41.960355"
+    },
+    {
+      "step": 100,
+      "metric": "digital_usage",
+      "value": 0.5661988958964229,
+      "timestamp": "2025-08-13T15:12:41.960355"
+    },
+    {
+      "step": 110,
+      "metric": "average_satisfaction",
+      "value": 0.6334065195856143,
+      "timestamp": "2025-08-13T15:12:42.021066"
+    },
+    {
+      "step": 110,
+      "metric": "churn_rate",
+      "value": 0.0008333333333333334,
+      "timestamp": "2025-08-13T15:12:42.021066"
+    },
+    {
+      "step": 110,
+      "metric": "digital_usage",
+      "value": 0.5661988958964229,
+      "timestamp": "2025-08-13T15:12:42.021066"
+    },
+    {
+      "step": 120,
+      "metric": "average_satisfaction",
+      "value": 0.6364498332952065,
+      "timestamp": "2025-08-13T15:12:42.081315"
+    },
+    {
+      "step": 120,
+      "metric": "churn_rate",
+      "value": 0.0,
+      "timestamp": "2025-08-13T15:12:42.081315"
+    },
+    {
+      "step": 120,
+      "metric": "digital_usage",
+      "value": 0.5661988958964229,
+      "timestamp": "2025-08-13T15:12:42.081315"
+    }
+  ],
+  "events": [
+    {
+      "step": 10,
+      "event_type": "DigitalTransformationEvent",
+      "description": "Digital transformation with boost 0.1",
+      "impact": {
+        "engagement_boost": 0.1
+      },
+      "timestamp": "2025-08-13T15:12:41.385891"
+    },
+    {
+      "step": 15,
+      "event_type": "MarketingCampaignEvent",
+      "description": "Marketing campaign targeting ['digital_first']",
+      "impact": {
+        "target_segments": [
+          "digital_first"
+        ],
+        "effectiveness": 0.2
+      },
+      "timestamp": "2025-08-13T15:12:41.418549"
+    }
+  ],
+  "final_results": {
+    "average_satisfaction": 0.6364498332952065,
+    "churn_rate": 0.0,
+    "digital_usage": 0.5661988958964229,
+    "active_products": 1.9916666666666667
+  },
+  "end_time": "2025-08-13T15:12:42.083315",
+  "outcome_validation": []
+}

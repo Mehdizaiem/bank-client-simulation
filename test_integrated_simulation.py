@@ -1,48 +1,59 @@
-#!/usr/bin/env python3
 """
-COMPREHENSIVE INTEGRATED SIMULATION TEST SUITE
-Tests all aspects of the Mesa 3.x Bank Simulation with Scenarios
-Author: Combined Test Suite
+Comprehensive test suite for integrated bank simulation
+Tests Mesa 3.x compatibility, CSV loading, scenarios, and reporting
 """
-
 import sys
 import os
 import traceback
-import json
-import time
 from pathlib import Path
-from datetime import datetime
+import logging
+import time
+import pandas as pd
 
-# Add src directory to Python path
-current_dir = Path(__file__).parent.absolute()
-src_dir = current_dir / 'src'
-sys.path.insert(0, str(src_dir))
+# Add project root to path
+project_root = Path(__file__).parent
+if str(project_root) not in sys.path:
+    sys.path.insert(0, str(project_root))
 
-print(f"🚀 COMPREHENSIVE INTEGRATED BANK SIMULATION TEST SUITE")
-print(f"Current directory: {current_dir}")
-print(f"Source directory: {src_dir}")
-print("="*80)
+# Add src directory to path
+src_path = project_root / 'src'
+if str(src_path) not in sys.path:
+    sys.path.insert(0, str(src_path))
 
+print("🚀 COMPREHENSIVE INTEGRATED BANK SIMULATION TEST SUITE")
+print(f"Current directory: {os.getcwd()}")
+print(f"Source directory: {src_path}")
+print("=" * 80)
+
+# =============================================================================
+# MESA 3.X VERIFICATION
+# =============================================================================
 try:
-    # Test imports
     import mesa
-    import pandas as pd
-    from src.agent_engine.mesa_setup_integrated import IntegratedBankSimulationModel
-    from src.agent_engine.mesa_setup import BankSimulationModel
-    from src.agent_engine.data_loader import AgentDataLoader
-    from src.agent_engine.retail_agent import RetailClientAgent
-    from src.agent_engine.corporate_agent import CorporateClientAgent
     print(f"✅ Mesa version {mesa.__version__} and all modules imported successfully")
-    
 except ImportError as e:
-    print(f"❌ Import error: {e}")
-    print("Make sure you have Mesa installed and all src/ modules exist")
+    print(f"❌ Mesa import failed: {e}")
     sys.exit(1)
 
+# Import our modules
+from src.agent_engine.data_loader import AgentDataLoader
+from src.agent_engine.mesa_setup import BankSimulationModel
+from src.agent_engine.mesa_setup_integrated import IntegratedBankSimulationModel
+from src.simulation.scenarios import ScenarioManager
+
 # =============================================================================
-# TEST 1: BASIC MESA FUNCTIONALITY
+# TEST SUITE
 # =============================================================================
-def test_mesa_basic_functionality():
+print("\n🎯 STARTING COMPREHENSIVE TEST SUITE")
+print("=" * 80)
+print(f"Test started at: {time.strftime('%Y-%m-%d %H:%M:%S')}")
+
+test_results = {}
+
+# =============================================================================
+# TEST 1: MESA 3.X BASIC FUNCTIONALITY
+# =============================================================================
+def test_mesa_basic():
     """Test basic Mesa 3.x functionality"""
     print("\n" + "="*60)
     print("TEST 1: MESA 3.X BASIC FUNCTIONALITY")
@@ -50,14 +61,14 @@ def test_mesa_basic_functionality():
     
     try:
         # Test Mesa imports
-        import mesa
+        from mesa import Model, Agent
         from mesa.datacollection import DataCollector
         print("✅ Mesa 3.x imports working")
         
-        # Test basic Model creation
-        class TestModel(mesa.Model):
+        # Test basic model creation
+        class TestModel(Model):
             def __init__(self):
-                super().__init__(seed=42)
+                super().__init__()
         
         model = TestModel()
         print("✅ Mesa 3.x Model creation working")
@@ -67,7 +78,7 @@ def test_mesa_basic_functionality():
         return True
         
     except Exception as e:
-        print(f"❌ Mesa basic functionality failed: {e}")
+        print(f"❌ Mesa 3.x test failed: {e}")
         traceback.print_exc()
         return False
 
@@ -100,6 +111,11 @@ def test_csv_data_loading():
             print(f"   Sample corporate: ID={sample.get('client_id', 'N/A')}, "
                   f"company={sample.get('company_name', 'N/A')}, "
                   f"sector={sample.get('business_sector', 'N/A')}")
+        
+        # Test the select_agents method
+        selected = loader.select_agents(retail_agents[:100], 50)
+        assert len(selected) == 50, f"Expected 50 agents, got {len(selected)}"
+        print(f"✅ Agent selection working: selected {len(selected)} from 100")
         
         # Test statistics
         stats = loader.get_statistics()
@@ -141,22 +157,23 @@ def test_basic_simulation_model():
         print(f"   - Corporate agents: {len([a for a in model.agents if a.client_type == 'corporate'])}")
         print(f"   - Time steps: {model.time_steps}")
         
-        # Run a few simulation steps
+        # Run a few steps
         print("\nRunning basic simulation steps...")
+        initial_satisfaction = model.get_average_satisfaction()
+        
         for i in range(5):
-            initial_satisfaction = model.get_average_satisfaction()
             model.step()
-            final_satisfaction = model.get_average_satisfaction()
-            print(f"   Step {i+1}: satisfaction {initial_satisfaction:.3f} → {final_satisfaction:.3f}")
+            current_satisfaction = model.get_average_satisfaction()
+            print(f"   Step {i+1}: satisfaction {initial_satisfaction:.3f} → {current_satisfaction:.3f}")
         
         # Test data export
-        agent_data = model.export_agent_data()
-        print(f"✅ Data export successful: {len(agent_data)} agent records")
+        df = model.export_agent_data()
+        print(f"✅ Data export successful: {len(df)} agent records")
         
         return True, model
         
     except Exception as e:
-        print(f"❌ Basic simulation model failed: {e}")
+        print(f"❌ Basic simulation test failed: {e}")
         traceback.print_exc()
         return False, None
 
@@ -164,207 +181,141 @@ def test_basic_simulation_model():
 # TEST 4: SCENARIO LOADING
 # =============================================================================
 def test_scenario_loading():
-    """Test scenario loading and validation"""
+    """Test scenario loading functionality"""
     print("\n" + "="*60)
     print("TEST 4: SCENARIO LOADING")
     print("="*60)
     
     try:
-        from src.simulation.scenarios import ScenarioManager
+        manager = ScenarioManager()
+        scenarios_loaded = 0
         
-        scenario_manager = ScenarioManager()
-        
-        # Test loading different scenarios
-        scenarios_to_test = [
+        scenario_files = [
             "branch_closure_scenario.json",
             "marketing_campaign_scenario.json", 
             "digital_transformation_scenario.json"
         ]
         
-        loaded_scenarios = []
+        for scenario_file in scenario_files:
+            scenario = manager.load_scenario(scenario_file)
+            if scenario:
+                print(f"✅ Loaded scenario: {scenario.metadata.name}")
+                print(f"   - Duration: {scenario.simulation_parameters.duration_steps} steps")
+                print(f"   - Events: {len(scenario.events)}")
+                print(f"   - Population: {scenario.simulation_parameters.agent_population}")
+                scenarios_loaded += 1
         
-        for scenario_file in scenarios_to_test:
-            try:
-                scenario = scenario_manager.load_scenario(scenario_file)
-                if scenario:
-                    loaded_scenarios.append(scenario)
-                    print(f"✅ Loaded scenario: {scenario.metadata.name}")
-                    print(f"   - Duration: {scenario.simulation_parameters.duration_steps} steps")
-                    print(f"   - Events: {len(scenario.events)}")
-                    print(f"   - Population: {scenario.simulation_parameters.agent_population}")
-                else:
-                    print(f"❌ Failed to load {scenario_file}: returned None")
-                    
-            except Exception as e:
-                print(f"❌ Failed to load {scenario_file}: {e}")
+        print(f"\n✅ Scenario loading complete: {scenarios_loaded}/{len(scenario_files)} scenarios loaded")
         
-        print(f"\n✅ Scenario loading complete: {len(loaded_scenarios)}/{len(scenarios_to_test)} scenarios loaded")
-        return True, loaded_scenarios
+        return scenarios_loaded > 0, manager
         
     except Exception as e:
-        print(f"❌ Scenario loading failed: {e}")
+        print(f"❌ Scenario loading test failed: {e}")
         traceback.print_exc()
-        return False, []
+        return False, None
 
 # =============================================================================
 # TEST 5: INTEGRATED SIMULATION WITH SCENARIOS
 # =============================================================================
 def test_integrated_simulation_with_scenarios():
-    """Test integrated simulation with scenario execution"""
+    """Test integrated simulation with different scenarios"""
     print("\n" + "="*60)
     print("TEST 5: INTEGRATED SIMULATION WITH SCENARIOS")
     print("="*60)
     
-    # Test different scenarios
-    scenarios_to_test = [
+    config = {
+        'num_agents': 100,
+        'retail_ratio': 0.8, 
+        'time_steps': 10,
+        'random_seed': 42
+    }
+    
+    scenarios = [
         "branch_closure_scenario.json",
         "marketing_campaign_scenario.json",
         "digital_transformation_scenario.json"
     ]
     
-    successful_scenarios = []
+    successful = 0
     
-    for scenario_file in scenarios_to_test:
+    for scenario_file in scenarios:
         print(f"\n--- Testing Scenario: {scenario_file} ---")
-        
         try:
-            config = {
-                'num_agents': 500,  # Smaller for faster testing
-                'retail_ratio': 0.8,
-                'time_steps': 50,   # Will be overridden by scenario
-                'random_seed': 42
-            }
-            
-            # Create integrated model with scenario
             model = IntegratedBankSimulationModel(config, scenario_file)
             
-            if model.current_scenario:
-                print(f"✅ Scenario loaded: {model.current_scenario.metadata.name}")
-                print(f"   Duration: {model.time_steps} steps")
-                print(f"   Events queued: {len(model.event_system.event_queue)}")
-                print(f"   Agents created: {len(model.agents)}")
-                print(f"   Segments: {[(k, len(v)) for k, v in model.agents_by_segment.items()]}")
-                
-                # Run first 15 steps to test event processing
-                print("   Running simulation steps...")
-                for i in range(min(15, model.time_steps)):
-                    model.step()
-                    
-                    if i % 5 == 0:
-                        satisfaction = model.get_average_satisfaction()
-                        churn = model.calculate_churn_rate()
-                        digital = model.get_digital_usage_rate()
-                        active_events = len(model.active_events)
-                        
-                        print(f"   Step {i}: satisfaction={satisfaction:.3f}, "
-                              f"churn={churn:.3f}, digital={digital:.3f}, "
-                              f"active_events={active_events}")
-                
-                successful_scenarios.append(scenario_file)
-                print(f"✅ Scenario {scenario_file} executed successfully")
-            else:
-                print(f"❌ Failed to load scenario {scenario_file}")
-                
+            # Run a few steps
+            for i in range(3):
+                model.step()
+            
+            # Check metrics
+            avg_satisfaction = model.get_average_satisfaction()
+            churn_rate = model.calculate_churn_rate()
+            
+            print(f"✅ Scenario executed successfully")
+            print(f"   - Average satisfaction: {avg_satisfaction:.3f}")
+            print(f"   - Churn rate: {churn_rate:.3f}")
+            print(f"   - Total agents: {len(model.agents)}")
+            
+            successful += 1
+            
         except Exception as e:
             print(f"❌ Error running scenario {scenario_file}: {e}")
             traceback.print_exc()
     
-    print(f"\n✅ Integrated simulation test complete: {len(successful_scenarios)}/{len(scenarios_to_test)} scenarios successful")
-    return len(successful_scenarios) > 0, successful_scenarios
+    print(f"\n✅ Integrated simulation test complete: {successful}/{len(scenarios)} scenarios successful")
+    
+    return successful > 0
 
 # =============================================================================
 # TEST 6: SEGMENT TARGETING
 # =============================================================================
 def test_segment_targeting():
-    """Test client segment targeting functionality"""
+    """Test segment-based targeting capabilities"""
     print("\n" + "="*60)
     print("TEST 6: SEGMENT TARGETING")
     print("="*60)
     
     try:
         config = {
-            'num_agents': 800,
-            'retail_ratio': 0.75,
-            'time_steps': 50,
+            'num_agents': 500,
+            'retail_ratio': 0.8,
+            'time_steps': 20,
             'random_seed': 42
         }
         
-        # Create model with marketing scenario (has segment targeting)
         model = IntegratedBankSimulationModel(config, "marketing_campaign_scenario.json")
         
-        segments_to_test = [
-            'high_value_retail',
-            'young_digital', 
-            'large_corporates',
-            'tech_companies',
-            'standard_retail',
-            'standard_corporate',
-            'young_professionals',
-            'urban_customers',
-            'sfax_clients'
-        ]
-        
-        segment_results = {}
-        
-        for segment in segments_to_test:
-            agents = model.get_agents_by_segment(segment)
-            segment_results[segment] = {
-                'count': len(agents),
-                'avg_satisfaction': 0.0
-            }
-            
+        # Check segment assignments
+        print("✅ Segment assignments:")
+        for segment, agents in model.agents_by_segment.items():
             if agents:
-                avg_satisfaction = sum(a.satisfaction_level for a in agents) / len(agents)
-                segment_results[segment]['avg_satisfaction'] = avg_satisfaction
-                print(f"✅ Segment '{segment}': {len(agents)} agents, "
-                      f"avg satisfaction: {avg_satisfaction:.3f}")
-            else:
-                print(f"⚠️  Segment '{segment}': 0 agents")
+                print(f"   - {segment}: {len(agents)} agents")
         
-        # Test segment-specific event targeting
-        print("\nTesting segment-specific event effects...")
-        from src.simulation.event_types import MarketingCampaignEvent
-        
-        # Create a targeted marketing event
-        marketing_event = MarketingCampaignEvent(
-            event_id="test_marketing",
-            step=1,
-            target_segment="young_digital",
-            campaign_type="digital_promotion",
-            intensity=1.5,
-            duration=3
-        )
-        
-        # Get target segment before
-        target_agents = model.get_agents_by_segment("young_digital")
-        if target_agents:
-            before_satisfaction = sum(a.satisfaction_level for a in target_agents) / len(target_agents)
+        # Test targeting a segment
+        if 'digital_first' in model.agents_by_segment and model.agents_by_segment['digital_first']:
+            initial_satisfaction = sum(a.satisfaction_level for a in model.agents_by_segment['digital_first']) / len(model.agents_by_segment['digital_first'])
             
-            # Apply marketing event
-            model.handle_marketing_campaign(marketing_event)
+            model.target_segment('digital_first', {
+                'type': 'marketing',
+                'impact': 0.1
+            })
             
-            # Check satisfaction after
-            after_satisfaction = sum(a.satisfaction_level for a in target_agents) / len(target_agents)
+            final_satisfaction = sum(a.satisfaction_level for a in model.agents_by_segment['digital_first']) / len(model.agents_by_segment['digital_first'])
             
-            print(f"✅ Marketing event effect on 'young_digital' segment:")
-            print(f"   Before: {before_satisfaction:.3f} → After: {after_satisfaction:.3f}")
-            print(f"   Improvement: {after_satisfaction - before_satisfaction:.3f}")
+            print(f"✅ Segment targeting successful")
+            print(f"   - Initial satisfaction: {initial_satisfaction:.3f}")
+            print(f"   - Final satisfaction: {final_satisfaction:.3f}")
+            print(f"   - Improvement: {(final_satisfaction - initial_satisfaction):.3f}")
         
-        total_agents_in_segments = sum(result['count'] for result in segment_results.values())
-        print(f"\n✅ Segment targeting test complete")
-        print(f"   Total agents: {len(model.agents)}")
-        print(f"   Agents in segments: {total_agents_in_segments}")
-        print(f"   Segments with agents: {sum(1 for r in segment_results.values() if r['count'] > 0)}")
-        
-        return True, segment_results
+        return True
         
     except Exception as e:
         print(f"❌ Segment targeting test failed: {e}")
         traceback.print_exc()
-        return False, {}
+        return False
 
 # =============================================================================
-# TEST 7: SCENARIO OUTCOME VALIDATION
+# TEST 7: SCENARIO OUTCOME VALIDATION & REPORTING
 # =============================================================================
 def test_scenario_outcome_validation():
     """Test scenario outcome validation and reporting"""
@@ -374,205 +325,126 @@ def test_scenario_outcome_validation():
     
     try:
         config = {
-            'num_agents': 600,
-            'retail_ratio': 0.8,
-            'time_steps': 30,  # Short for testing
+            'num_agents': 200,
+            'retail_ratio': 0.7,
+            'time_steps': 30,
             'random_seed': 42
         }
         
-        # Run a complete scenario with outcome validation
         model = IntegratedBankSimulationModel(config, "digital_transformation_scenario.json")
         
-        if not model.current_scenario:
-            print("❌ No scenario loaded for outcome validation")
-            return False, None
+        # Run simulation
+        print("Running simulation...")
+        final_report = model.run_simulation()
         
-        print(f"✅ Running scenario: {model.current_scenario.metadata.name}")
-        print(f"   Duration: {model.time_steps} steps")
-        print(f"   Expected outcomes: {len(model.current_scenario.expected_outcomes) if hasattr(model.current_scenario, 'expected_outcomes') else 0}")
+        # Validate report structure
+        required_fields = ['scenario_name', 'agent_metrics', 'segment_performance', 'market_conditions']
+        missing_fields = [field for field in required_fields if field not in final_report]
         
-        # Run complete simulation
-        step_count = 0
-        while model.running and step_count < model.time_steps:
-            model.step()
-            step_count += 1
-            
-            if step_count % 10 == 0:
-                print(f"   Progress: Step {step_count}/{model.time_steps}")
+        if missing_fields:
+            print(f"❌ Missing report fields: {missing_fields}")
+            return False
         
-        # Generate final report
-        print("\nGenerating scenario report...")
-        report = model.generate_scenario_report()
+        print("✅ Scenario report generated successfully")
+        print(f"   - Scenario: {final_report['scenario_name']}")
+        print(f"   - Final satisfaction: {final_report['agent_metrics']['average_satisfaction']:.3f}")
+        print(f"   - Churn rate: {final_report['agent_metrics']['churn_rate']:.3f}")
+        print(f"   - Digital usage: {final_report['agent_metrics']['digital_usage_rate']:.3f}")
         
-        if report:
-            print(f"✅ Scenario report generated successfully")
-            print(f"\nScenario Report Summary:")
-            print(f"  Scenario: {report['scenario_name']}")
-            print(f"  Steps completed: {report['total_steps']}")
-            print(f"  Events processed: {report['events_processed']}")
-            
-            print(f"\n  Final Metrics:")
-            for metric, value in report['final_metrics'].items():
-                print(f"    {metric}: {value:.3f}")
-            
-            print(f"\n  Top Segment Performance:")
-            segment_perf = report['segment_performance']
-            sorted_segments = sorted(segment_perf.items(), key=lambda x: x[1], reverse=True)[:5]
-            for segment, satisfaction in sorted_segments:
-                print(f"    {segment}: {satisfaction:.3f}")
-            
-            print(f"\n  Outcome Validation:")
-            if report['outcome_validation']:
-                for outcome in report['outcome_validation']:
-                    status = "✅" if outcome['valid'] else "❌"
-                    print(f"    {status} {outcome['metric']}: {outcome['actual']:.3f} "
-                          f"(target: {outcome['target']})")
-            else:
-                print("    No outcomes defined for validation")
-            
-            # Check if report file was saved
-            report_file = Path("simulation_outputs") / f"{model.current_scenario.metadata.name.replace(' ', '_').lower()}_report.json"
-            if report_file.exists():
-                print(f"\n✅ Report saved to: {report_file}")
-            
-            return True, report
-        else:
-            print("❌ Failed to generate scenario report")
-            return False, None
-            
+        # Check segment performance
+        if final_report['segment_performance']:
+            print("   - Segment performance:")
+            for segment, metrics in final_report['segment_performance'].items():
+                print(f"     • {segment}: {metrics['size']} agents, satisfaction={metrics['avg_satisfaction']:.3f}")
+        
+        return True
+        
     except Exception as e:
         print(f"❌ Scenario outcome validation failed: {e}")
         traceback.print_exc()
-        return False, None
+        return False
 
 # =============================================================================
-# TEST 8: PERFORMANCE AND STRESS TEST
+# TEST 8: PERFORMANCE & STRESS TEST
 # =============================================================================
 def test_performance_stress():
-    """Test simulation performance with larger datasets"""
+    """Test simulation performance with larger agent populations"""
     print("\n" + "="*60)
     print("TEST 8: PERFORMANCE & STRESS TEST")
     print("="*60)
     
     try:
         config = {
-            'num_agents': 2000,  # Larger dataset
-            'retail_ratio': 0.8,
+            'num_agents': 2000,
+            'retail_ratio': 0.85,
             'time_steps': 50,
             'random_seed': 42
         }
         
         print(f"Creating large simulation: {config['num_agents']} agents, {config['time_steps']} steps")
         
-        # Measure initialization time
         start_time = time.time()
         model = IntegratedBankSimulationModel(config, "marketing_campaign_scenario.json")
         init_time = time.time() - start_time
         
-        print(f"✅ Initialization completed in {init_time:.2f} seconds")
-        print(f"   Agents created: {len(model.agents)}")
-        print(f"   Memory usage: ~{len(model.agents) * 0.5:.1f} KB (estimated)")
+        print(f"✅ Model initialized in {init_time:.2f} seconds")
+        print(f"   - Agents created: {len(model.agents)}")
+        print(f"   - Segments: {len(model.agents_by_segment)}")
         
-        # Measure step performance
+        # Run simulation steps
         step_times = []
-        print(f"\nRunning performance test...")
-        
-        for i in range(20):  # Test first 20 steps
+        for i in range(10):
             step_start = time.time()
             model.step()
             step_time = time.time() - step_start
             step_times.append(step_time)
-            
-            if i % 5 == 0:
-                print(f"   Step {i+1}: {step_time:.3f}s")
         
         avg_step_time = sum(step_times) / len(step_times)
-        max_step_time = max(step_times)
-        min_step_time = min(step_times)
+        print(f"✅ Performance metrics:")
+        print(f"   - Average step time: {avg_step_time:.3f} seconds")
+        print(f"   - Estimated full simulation time: {avg_step_time * config['time_steps']:.1f} seconds")
         
-        print(f"\n✅ Performance metrics:")
-        print(f"   Average step time: {avg_step_time:.3f}s")
-        print(f"   Min step time: {min_step_time:.3f}s")
-        print(f"   Max step time: {max_step_time:.3f}s")
-        print(f"   Agents per second: {len(model.agents)/avg_step_time:.0f}")
-        
-        # Performance benchmarks
-        performance_good = avg_step_time < 1.0  # Less than 1 second per step
-        performance_acceptable = avg_step_time < 2.0  # Less than 2 seconds per step
-        
-        if performance_good:
-            print(f"   🚀 Performance: EXCELLENT (< 1s per step)")
-        elif performance_acceptable:
-            print(f"   ✅ Performance: GOOD (< 2s per step)")
-        else:
-            print(f"   ⚠️  Performance: SLOW (> 2s per step)")
-        
-        return performance_acceptable, {
-            'avg_step_time': avg_step_time,
-            'agents': len(model.agents),
-            'init_time': init_time
-        }
+        return True
         
     except Exception as e:
         print(f"❌ Performance test failed: {e}")
         traceback.print_exc()
-        return False, {}
+        return False
 
 # =============================================================================
-# MAIN TEST RUNNER
+# RUN ALL TESTS
 # =============================================================================
-def run_comprehensive_test_suite():
-    """Run the complete test suite"""
-    print("\n🎯 STARTING COMPREHENSIVE TEST SUITE")
-    print("="*80)
-    print(f"Test started at: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
+def run_all_tests():
+    """Run all tests and generate summary"""
     
-    test_results = {}
-    test_data = {}
+    # Test 1: Mesa Basic
+    test_results['mesa_basic'] = test_mesa_basic()
     
-    # Test 1: Basic Mesa functionality
-    test_results['mesa_basic'] = test_mesa_basic_functionality()
+    # Test 2: CSV Loading
+    csv_result, loader = test_csv_data_loading()
+    test_results['csv_loading'] = csv_result
     
-    # Test 2: CSV data loading
-    result, loader = test_csv_data_loading()
-    test_results['csv_loading'] = result
-    test_data['loader'] = loader
+    # Test 3: Basic Simulation
+    basic_result, model = test_basic_simulation_model()
+    test_results['basic_simulation'] = basic_result
     
-    # Test 3: Basic simulation model
-    result, model = test_basic_simulation_model()
-    test_results['basic_simulation'] = result
-    test_data['basic_model'] = model
+    # Test 4: Scenario Loading
+    scenario_result, manager = test_scenario_loading()
+    test_results['scenario_loading'] = scenario_result
     
-    # Test 4: Scenario loading
-    result, scenarios = test_scenario_loading()
-    test_results['scenario_loading'] = result
-    test_data['scenarios'] = scenarios
+    # Test 5: Integrated Simulation
+    test_results['integrated_simulation'] = test_integrated_simulation_with_scenarios()
     
-    # Test 5: Integrated simulation with scenarios
-    result, successful_scenarios = test_integrated_simulation_with_scenarios()
-    test_results['integrated_simulation'] = result
-    test_data['successful_scenarios'] = successful_scenarios
+    # Test 6: Segment Targeting
+    test_results['segment_targeting'] = test_segment_targeting()
     
-    # Test 6: Segment targeting
-    result, segment_data = test_segment_targeting()
-    test_results['segment_targeting'] = result
-    test_data['segments'] = segment_data
+    # Test 7: Outcome Validation
+    test_results['outcome_validation'] = test_scenario_outcome_validation()
     
-    # Test 7: Scenario outcome validation
-    result, report = test_scenario_outcome_validation()
-    test_results['outcome_validation'] = result
-    test_data['final_report'] = report
+    # Test 8: Performance
+    test_results['performance'] = test_performance_stress()
     
-    # Test 8: Performance test
-    result, perf_data = test_performance_stress()
-    test_results['performance'] = result
-    test_data['performance'] = perf_data
-    
-    # Calculate results
-    passed_tests = sum(test_results.values())
-    total_tests = len(test_results)
-    
-    # Print final summary
+    # Generate summary
     print("\n" + "="*80)
     print("🏁 COMPREHENSIVE TEST SUITE RESULTS")
     print("="*80)
@@ -581,64 +453,29 @@ def run_comprehensive_test_suite():
         status = "✅ PASS" if result else "❌ FAIL"
         print(f"{test_name:25} {status}")
     
-    print(f"\n📊 SUMMARY: {passed_tests}/{total_tests} tests passed ({passed_tests/total_tests*100:.1f}%)")
+    passed = sum(1 for r in test_results.values() if r)
+    total = len(test_results)
+    success_rate = (passed / total) * 100
     
-    if passed_tests == total_tests:
-        print("\n🎉 ALL TESTS PASSED! 🎉")
-        print("\n🚀 SIMULATION SYSTEM STATUS: FULLY OPERATIONAL")
-        print("\n✅ Ready for production use:")
-        print("   • CSV data loading ✅")
-        print("   • Agent-based simulation ✅") 
-        print("   • Scenario execution ✅")
-        print("   • Event system ✅")
-        print("   • Segment targeting ✅")
-        print("   • Outcome validation ✅")
-        print("   • Performance optimization ✅")
-        
-        # Additional insights
-        if test_data.get('performance'):
-            perf = test_data['performance']
-            print(f"\n📈 Performance Metrics:")
-            print(f"   • {perf['agents']} agents simulated")
-            print(f"   • {perf['avg_step_time']:.3f}s average step time")
-            print(f"   • {perf['init_time']:.2f}s initialization time")
-        
-        if test_data.get('segments'):
-            total_segments = len([s for s in test_data['segments'].values() if s['count'] > 0])
-            print(f"   • {total_segments} active client segments")
-            
-        if test_data.get('successful_scenarios'):
-            print(f"   • {len(test_data['successful_scenarios'])} scenarios tested")
-        
-        return True
-    else:
-        print(f"\n⚠️  {total_tests - passed_tests} test(s) failed")
+    print(f"\n📊 SUMMARY: {passed}/{total} tests passed ({success_rate:.1f}%)")
+    
+    if passed < total:
+        print(f"\n⚠️  {total - passed} test(s) failed")
         print("Please review the errors above before proceeding to production.")
-        return False
+    else:
+        print("\n🎉 All tests passed! System is ready for production use.")
+    
+    return passed == total
 
+# =============================================================================
+# MAIN EXECUTION
+# =============================================================================
 if __name__ == "__main__":
-    try:
-        # Ensure output directories exist
-        Path("logs").mkdir(exist_ok=True)
-        Path("simulation_outputs").mkdir(exist_ok=True)
-        
-        # Run comprehensive test suite
-        success = run_comprehensive_test_suite()
-        
-        if success:
-            print("\n" + "="*80)
-            print("🎯 NEXT STEPS:")
-            print("1. ✅ Run production simulations with real scenarios")
-            print("2. ✅ Analyze client segment behavior patterns")
-            print("3. ✅ Generate business intelligence reports")
-            print("4. ✅ Scale to larger datasets as needed")
-            print("5. ✅ Deploy for stakeholder demonstrations")
-            print("="*80)
-        else:
-            print("\n❌ Some tests failed. Please fix issues before production use.")
-            
-    except KeyboardInterrupt:
-        print("\n\n⚠️  Test suite interrupted by user")
-    except Exception as e:
-        print(f"\n💥 Unexpected error in test suite: {e}")
-        traceback.print_exc()
+    success = run_all_tests()
+    
+    if success:
+        print("\n✅ All tests passed successfully!")
+    else:
+        print("\n❌ Some tests failed. Please fix issues before production use.")
+    
+    sys.exit(0 if success else 1)

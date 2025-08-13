@@ -1,12 +1,13 @@
 """
 Data loader for retail and corporate agent CSV files
-Loads and prepares agent data from Mehdi's processed CSVs
+Loads and prepares agent data from Hamza's processed CSVs
 """
 import pandas as pd
 import os
 from pathlib import Path
 from typing import Dict, List, Any
 import logging
+import random
 
 class AgentDataLoader:
     """Load and prepare agent data from CSV files"""
@@ -96,6 +97,25 @@ class AgentDataLoader:
             self.logger.error(f"Error loading corporate agents: {e}")
             return []
     
+    def select_agents(self, agent_list: List[Dict[str, Any]], num_agents: int) -> List[Dict[str, Any]]:
+        """
+        Select a specified number of agents from the list
+        
+        Args:
+            agent_list: List of agent dictionaries to select from
+            num_agents: Number of agents to select
+        
+        Returns:
+            List of selected agent dictionaries
+        """
+        if len(agent_list) <= num_agents:
+            return agent_list
+        
+        # Random selection without replacement
+        selected = random.sample(agent_list, num_agents)
+        self.logger.info(f"Selected {len(selected)} agents from {len(agent_list)} available")
+        return selected
+    
     def load_all_agents(self, num_agents: int = None, retail_ratio: float = 0.8) -> List[Dict[str, Any]]:
         """
         Load both retail and corporate agents
@@ -118,14 +138,14 @@ class AgentDataLoader:
             num_retail = int(num_agents * retail_ratio)
             num_corporate = num_agents - num_retail
             
-            # Take the specified number of each type
-            # Use all available if requested more than available
-            selected_retail = retail_agents[:min(num_retail, len(retail_agents))]
-            selected_corporate = corporate_agents[:min(num_corporate, len(corporate_agents))]
+            # Select the specified number of each type
+            selected_retail = self.select_agents(retail_agents, num_retail)
+            selected_corporate = self.select_agents(corporate_agents, num_corporate)
             
             all_agents = selected_retail + selected_corporate
             
-            self.logger.info(f"Selected {len(selected_retail)} retail and {len(selected_corporate)} corporate agents")
+        self.logger.info(f"Selected {len([a for a in all_agents if a['client_type'] == 'retail'])} retail and "
+                        f"{len([a for a in all_agents if a['client_type'] == 'corporate'])} corporate agents")
         
         return all_agents
     
@@ -133,23 +153,37 @@ class AgentDataLoader:
         """Get statistics about loaded data"""
         stats = {}
         
-        if self.retail_data is not None:
+        # Load data if not already loaded
+        if self.retail_data is None:
+            self.load_retail_agents()
+        if self.corporate_data is None:
+            self.load_corporate_agents()
+        
+        # Retail statistics
+        if self.retail_data is not None and len(self.retail_data) > 0:
             stats['retail'] = {
                 'count': len(self.retail_data),
                 'avg_age': self.retail_data['age'].mean(),
                 'avg_income': self.retail_data['monthly_income'].mean(),
                 'avg_satisfaction': self.retail_data['satisfaction_score'].mean(),
                 'governorates': self.retail_data['governorate'].unique().tolist(),
-                'channels': self.retail_data['preferred_channel'].unique().tolist()
+                'preferred_channels': self.retail_data['preferred_channel'].value_counts().to_dict()
             }
         
-        if self.corporate_data is not None:
+        # Corporate statistics
+        if self.corporate_data is not None and len(self.corporate_data) > 0:
             stats['corporate'] = {
                 'count': len(self.corporate_data),
-                'sectors': self.corporate_data['business_sector'].unique().tolist(),
                 'avg_revenue': self.corporate_data['annual_revenue'].mean(),
-                'avg_digital_maturity': self.corporate_data['digital_maturity_score'].mean(),
-                'company_sizes': self.corporate_data['company_size'].unique().tolist()
+                'sectors': self.corporate_data['business_sector'].unique().tolist(),
+                'company_sizes': self.corporate_data['company_size'].value_counts().to_dict(),
+                'avg_digital_maturity': self.corporate_data['digital_maturity_score'].mean()
             }
         
         return stats
+    
+    def reset(self):
+        """Reset loaded data"""
+        self.retail_data = None
+        self.corporate_data = None
+        self.logger.info("Data loader reset")

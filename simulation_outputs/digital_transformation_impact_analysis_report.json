@@ -1,0 +1,43 @@
+{
+  "scenario_name": "Digital Transformation Impact Analysis",
+  "total_steps": 120,
+  "events_processed": 3,
+  "agent_metrics": {
+    "total_agents": 1200,
+    "retail_agents": 1000,
+    "corporate_agents": 200,
+    "average_satisfaction": 0.6364498332952065,
+    "churn_rate": 0.0,
+    "digital_usage_rate": 0.5661988958964229,
+    "active_products": 1.9916666666666667
+  },
+  "final_metrics": {
+    "average_satisfaction": 0.6364498332952065,
+    "churn_rate": 0.0,
+    "digital_usage": 0.5661988958964229,
+    "active_products": 1.9916666666666667
+  },
+  "segment_performance": {
+    "high_value_retail": {
+      "size": 0,
+      "avg_satisfaction": 0.0
+    },
+    "young_digital": {
+      "size": 0,
+      "avg_satisfaction": 0.0
+    },
+    "large_corporates": {
+      "size": 0,
+      "avg_satisfaction": 0.0
+    },
+    "tech_companies": {
+      "size": 0,
+      "avg_satisfaction": 0.0
+    }
+  },
+  "outcome_validation": [],
+  "market_conditions": {
+    "volatility": 0.1412147525085849,
+    "economic_climate": 0.24047033784407443
+  }
+}

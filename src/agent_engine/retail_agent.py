@@ -48,6 +48,16 @@ class RetailClientAgent(BaseClientAgent):
         # RETAIL PRODUCT PORTFOLIO
         self.initialize_retail_products()
         
+        # PRODUCT HISTORY TRACKING
+        self.product_history = []
+        
+        # SOCIAL INFLUENCE SUSCEPTIBILITY
+        self.influence_susceptibility = random.uniform(0.1, 0.8)
+        
+        # TRUST AND PRICE SENSITIVITY
+        self.trust_level = random.uniform(0.3, 0.9)
+        self.price_sensitivity = random.uniform(0.2, 0.8)
+        
         # LIFE EVENTS TRACKING
         self.life_events = []
         self.next_life_event_check = random.randint(10, 30)

@@ -61,6 +61,9 @@ class CorporateClientAgent(BaseClientAgent):
         # Initialize corporate products
         self.initialize_corporate_products()
         
+        # PRODUCT HISTORY TRACKING
+        self.product_history = []
+        
         # Business events tracking
         self.business_events = []
         self.next_business_review = random.randint(5, 15)
