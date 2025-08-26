@@ -1,0 +1,351 @@
+{
+  "model_type": "retail_ctgan",
+  "training_duration_seconds": 29.438711166381836,
+  "training_samples": 100,
+  "processed_samples": 100,
+  "discrete_columns": [
+    "client_id",
+    "age_group",
+    "income_quintile"
+  ],
+  "config": {
+    "epochs": 300,
+    "batch_size": 500,
+    "generator_dim": [
+      256,
+      256
+    ],
+    "discriminator_dim": [
+      256,
+      256
+    ],
+    "generator_lr": 0.0002,
+    "discriminator_lr": 0.0002,
+    "generator_decay": 1e-06,
+    "discriminator_decay": 1e-06,
+    "pac": 10,
+    "verbose": true,
+    "cuda": false,
+    "log_frequency": 50
+  },
+  "preprocessing_info": {
+    "categorical_mappings": {
+      "gender": {
+        "encoder": "LabelEncoder()",
+        "classes": [
+          "F",
+          "M"
+        ]
+      },
+      "governorate": {
+        "encoder": "LabelEncoder()",
+        "classes": [
+          "Ariana",
+          "Sfax",
+          "Sousse",
+          "Tunis"
+        ]
+      },
+      "education_level": {
+        "encoder": "LabelEncoder()",
+        "classes": [
+          "primary",
+          "secondary",
+          "university"
+        ]
+      },
+      "employment_sector": {
+        "encoder": "LabelEncoder()",
+        "classes": [
+          "private",
+          "public",
+          "self_employed"
+        ]
+      },
+      "preferred_channel": {
+        "encoder": "LabelEncoder()",
+        "classes": [
+          "branch",
+          "mobile",
+          "web"
+        ]
+      }
+    },
+    "numerical_scalers": {
+      "age": "StandardScaler()",
+      "monthly_income": "StandardScaler()",
+      "risk_tolerance": "StandardScaler()",
+      "satisfaction_score": "StandardScaler()",
+      "digital_engagement_score": "StandardScaler()"
+    },
+    "feature_info": {
+      "client_id": {
+        "type": "discrete",
+        "categories": 5
+      },
+      "age": {
+        "type": "continuous",
+        "min": -1.6555610563732164,
+        "max": 1.753933354118553,
+        "std": 1.005037815259212
+      },
+      "monthly_income": {
+        "type": "continuous",
+        "min": -1.6344609929451235,
+        "max": 1.7171172377506552,
+        "std": 1.0050378152592119
+      },
+      "gender": {
+        "type": "continuous",
+        "min": 0.0,
+        "max": 1.0,
+        "std": 0.4902071300001973
+      },
+      "governorate": {
+        "type": "continuous",
+        "min": 0.0,
+        "max": 3.0,
+        "std": 1.129762646029526
+      },
+      "education_level": {
+        "type": "continuous",
+        "min": 0.0,
+        "max": 2.0,
+        "std": 0.8164965809277261
+      },
+      "employment_sector": {
+        "type": "continuous",
+        "min": 0.0,
+        "max": 2.0,
+        "std": 0.8487066809581685
+      },
+      "preferred_channel": {
+        "type": "continuous",
+        "min": 0.0,
+        "max": 2.0,
+        "std": 0.8102873913406629
+      },
+      "risk_tolerance": {
+        "type": "continuous",
+        "min": -1.5293418281244684,
+        "max": 1.7463521939480713,
+        "std": 1.005037815259212
+      },
+      "satisfaction_score": {
+        "type": "continuous",
+        "min": -1.6140772920401956,
+        "max": 1.920492851298635,
+        "std": 1.0050378152592119
+      },
+      "digital_engagement_score": {
+        "type": "continuous",
+        "min": -1.739782235108416,
+        "max": 1.7971188488254914,
+        "std": 1.0050378152592119
+      },
+      "age_group": {
+        "type": "discrete",
+        "categories": 5
+      },
+      "income_quintile": {
+        "type": "discrete",
+        "categories": 5
+      },
+      "digital_adoption": {
+        "type": "continuous",
+        "min": 0.048589772906150644,
+        "max": 0.9472046012565957,
+        "std": 0.22502732664741953
+      },
+      "risk_income_ratio": {
+        "type": "continuous",
+        "min": 0.011001941231362562,
+        "max": 8.628736574251214,
+        "std": 2.5315361219267616
+      }
+    },
+    "quality_report": {
+      "total_records": 100,
+      "missing_values": {
+        "client_id": 0,
+        "age": 0,
+        "monthly_income": 0,
+        "gender": 0,
+        "governorate": 0,
+        "education_level": 0,
+        "employment_sector": 0,
+        "preferred_channel": 0,
+        "risk_tolerance": 0,
+        "satisfaction_score": 0,
+        "digital_engagement_score": 0
+      },
+      "duplicate_records": "0",
+      "numerical_stats": {
+        "age": {
+          "count": 100.0,
+          "mean": 47.62,
+          "std": 17.981348361257254,
+          "min": 18.0,
+          "25%": 33.0,
+          "50%": 47.0,
+          "75%": 60.5,
+          "max": 79.0
+        },
+        "monthly_income": {
+          "count": 100.0,
+          "mean": 4159.607161377517,
+          "std": 2241.512982525382,
+          "min": 514.3059801747825,
+          "25%": 2128.0110010709777,
+          "50%": 4145.516540358599,
+          "75%": 5908.512140421445,
+          "max": 7989.254685578908
+        },
+        "risk_tolerance": {
+          "count": 100.0,
+          "mean": 0.46475680523689566,
+          "std": 0.30434017929906476,
+          "min": 0.0016496871620227394,
+          "25%": 0.18422543881272105,
+          "50%": 0.4111864863827538,
+          "75%": 0.7839004240637475,
+          "max": 0.9935778423720948
+        },
+        "satisfaction_score": {
+          "count": 100.0,
+          "mean": 0.6253111100330517,
+          "std": 0.1957786473852289,
+          "min": 0.3108932202650516,
+          "25%": 0.4569857744391672,
+          "50%": 0.6113503494597436,
+          "75%": 0.7862969724496836,
+          "max": 0.9994179217685637
+        },
+        "digital_engagement_score": {
+          "count": 100.0,
+          "mean": 0.49307419231991945,
+          "std": 0.282197917131242,
+          "min": 0.004572251840290642,
+          "25%": 0.28466219263348896,
+          "50%": 0.4941120995312267,
+          "75%": 0.724607584241528,
+          "max": 0.9976753011299898
+        }
+      },
+      "categorical_stats": {
+        "client_id": {
+          "R_001": 20,
+          "R_002": 20,
+          "R_003": 20,
+          "R_004": 20,
+          "R_005": 20
+        },
+        "gender": {
+          "F": 61,
+          "M": 39
+        },
+        "governorate": {
+          "Tunis": 28,
+          "Sousse": 25,
+          "Sfax": 24,
+          "Ariana": 23
+        },
+        "education_level": {
+          "university": 45,
+          "secondary": 30,
+          "primary": 25
+        },
+        "employment_sector": {
+          "self_employed": 43,
+          "private": 30,
+          "public": 27
+        },
+        "preferred_channel": {
+          "web": 38,
+          "mobile": 34,
+          "branch": 28
+        }
+      },
+      "correlation_matrix": {
+        "age": {
+          "age": 1.0,
+          "monthly_income": 0.13231292483081258,
+          "risk_tolerance": 0.06615354029411784,
+          "satisfaction_score": -0.1622011494044974,
+          "digital_engagement_score": -0.1176951612883371
+        },
+        "monthly_income": {
+          "age": 0.13231292483081258,
+          "monthly_income": 1.0,
+          "risk_tolerance": 0.08971459499321338,
+          "satisfaction_score": -0.028145739648657655,
+          "digital_engagement_score": -0.15762499837384936
+        },
+        "risk_tolerance": {
+          "age": 0.06615354029411784,
+          "monthly_income": 0.08971459499321338,
+          "risk_tolerance": 1.0,
+          "satisfaction_score": 0.22497931370336202,
+          "digital_engagement_score": -0.00048192510590785667
+        },
+        "satisfaction_score": {
+          "age": -0.1622011494044974,
+          "monthly_income": -0.028145739648657655,
+          "risk_tolerance": 0.22497931370336202,
+          "satisfaction_score": 1.0,
+          "digital_engagement_score": -0.021132099813878726
+        },
+        "digital_engagement_score": {
+          "age": -0.1176951612883371,
+          "monthly_income": -0.15762499837384936,
+          "risk_tolerance": -0.00048192510590785667,
+          "satisfaction_score": -0.021132099813878726,
+          "digital_engagement_score": 1.0
+        }
+      },
+      "data_types": {
+        "client_id": "object",
+        "age": "int32",
+        "monthly_income": "float64",
+        "gender": "object",
+        "governorate": "object",
+        "education_level": "object",
+        "employment_sector": "object",
+        "preferred_channel": "object",
+        "risk_tolerance": "float64",
+        "satisfaction_score": "float64",
+        "digital_engagement_score": "float64"
+      }
+    },
+    "config": {
+      "numerical_features": [
+        "age",
+        "monthly_income",
+        "risk_tolerance",
+        "satisfaction_score",
+        "digital_engagement_score"
+      ],
+      "categorical_features": [
+        "gender",
+        "governorate",
+        "education_level",
+        "employment_sector",
+        "preferred_channel"
+      ],
+      "normalization_method": "standard",
+      "handle_outliers": true,
+      "outlier_method": "iqr",
+      "categorical_encoding": "label"
+    }
+  },
+  "training_metrics": {
+    "loss_history": [],
+    "memory_usage": [],
+    "training_checkpoints": [],
+    "final_status": "completed",
+    "total_epochs": 300
+  },
+  "model_path": "..\\..\\data\\ctgan\\models\\retail_ctgan_model.pkl",
+  "training_file": "..\\..\\data\\ctgan\\training_data\\retail_training_data_20250807_154753.csv",
+  "timestamp": "2025-08-07T15:48:22.366790"
+}

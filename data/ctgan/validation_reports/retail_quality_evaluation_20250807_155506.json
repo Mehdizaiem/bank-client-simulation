@@ -1,0 +1,174 @@
+{
+  "evaluation_timestamp": "2025-08-07T15:54:57.256928",
+  "data_type": "retail",
+  "original_samples": 1000,
+  "synthetic_samples": 5000,
+  "statistical_similarity": {
+    "numerical_similarity": {
+      "age": {
+        "ks_statistic": 0.1232,
+        "ks_pvalue": 1.8273061695105765e-11,
+        "mean_difference": 2.8830000000000027,
+        "std_difference": 0.7618902621343544,
+        "similarity_score": 0.8768
+      },
+      "monthly_income": {
+        "ks_statistic": 0.2198,
+        "ks_pvalue": 9.294810144911714e-36,
+        "mean_difference": 2136.711638838572,
+        "std_difference": 391.98256070247135,
+        "similarity_score": 0.7802
+      },
+      "risk_tolerance": {
+        "ks_statistic": 0.256,
+        "ks_pvalue": 1.63968921019619e-48,
+        "mean_difference": 0.17975702719804287,
+        "std_difference": 0.01853129817716176,
+        "similarity_score": 0.744
+      },
+      "satisfaction_score": {
+        "ks_statistic": 0.0864,
+        "ks_pvalue": 7.495629562081517e-06,
+        "mean_difference": 0.024368997991094266,
+        "std_difference": 0.004191822022580977,
+        "similarity_score": 0.9136
+      },
+      "digital_engagement_score": {
+        "ks_statistic": 0.0812,
+        "ks_pvalue": 3.2223168657667184e-05,
+        "mean_difference": 0.04995143963652876,
+        "std_difference": 0.0024826272396696325,
+        "similarity_score": 0.9188000000000001
+      }
+    },
+    "categorical_similarity": {
+      "gender": {
+        "chi2_statistic": 105.88409001784153,
+        "chi2_pvalue": 7.817676712361343e-25,
+        "category_overlap": 1.0,
+        "similarity_score": 0
+      },
+      "governorate": {
+        "chi2_statistic": 88.91248146507714,
+        "chi2_pvalue": 3.750818524708338e-19,
+        "category_overlap": 1.0,
+        "similarity_score": 0.11087518534922869
+      },
+      "education_level": {
+        "chi2_statistic": 84.47615231255618,
+        "chi2_pvalue": 4.53144381018376e-19,
+        "category_overlap": 1.0,
+        "similarity_score": 0.15523847687443815
+      },
+      "employment_sector": {
+        "chi2_statistic": 11.89617966149398,
+        "chi2_pvalue": 0.002610822871899288,
+        "category_overlap": 1.0,
+        "similarity_score": 0.8810382033850602
+      },
+      "preferred_channel": {
+        "chi2_statistic": 50.659421275882885,
+        "chi2_pvalue": 9.987261969697442e-12,
+        "category_overlap": 1.0,
+        "similarity_score": 0.4934057872411711
+      }
+    },
+    "distribution_tests": {},
+    "overall_statistical_similarity": 0.5873957652849897
+  },
+  "business_rules": {
+    "age_range": {
+      "violations": 0,
+      "compliance_rate": 1.0
+    },
+    "income_range": {
+      "violations": 0,
+      "compliance_rate": 1.0
+    },
+    "risk_tolerance_range": {
+      "violations": 0,
+      "compliance_rate": 1.0
+    },
+    "satisfaction_score_range": {
+      "violations": 0,
+      "compliance_rate": 1.0
+    },
+    "digital_engagement_score_range": {
+      "violations": 0,
+      "compliance_rate": 1.0
+    },
+    "gender_validity": {
+      "violations": 0,
+      "compliance_rate": 1.0
+    },
+    "income_education_consistency": {
+      "violations": 0,
+      "compliance_rate": 1.0
+    },
+    "overall_compliance": 1.0
+  },
+  "privacy": {
+    "nearest_neighbor": {
+      "mean_min_distance": 0.6382949246806772,
+      "std_min_distance": 0.16859110583010337,
+      "min_distance_threshold": 0.1,
+      "privacy_at_risk_records": 1,
+      "privacy_score": 0.9998
+    },
+    "membership_inference": {
+      "exact_matches": 0,
+      "exact_match_rate": 0.0,
+      "privacy_score": 1.0
+    },
+    "overall_privacy_score": 0.9999
+  },
+  "ml_utility": {
+    "original_model_accuracy": 1.0,
+    "synthetic_model_accuracy": 1.0,
+    "cross_evaluation_accuracy": 1.0,
+    "utility_preservation_score": 1.0,
+    "features_used": 5,
+    "target_variable": "high_income"
+  },
+  "correlation_preservation": {
+    "mean_correlation_difference": 0.023548876804327396,
+    "max_correlation_difference": 0.06489242449615615,
+    "significant_differences": 0,
+    "total_correlations_compared": 10,
+    "correlation_preservation_score": 0.9764511231956726,
+    "features_analyzed": [
+      "satisfaction_score",
+      "monthly_income",
+      "digital_engagement_score",
+      "age",
+      "risk_tolerance"
+    ]
+  },
+  "overall_quality": {
+    "total_score": 0.8932966098005983,
+    "quality_grade": "Good",
+    "component_scores": {
+      "statistical_similarity": 0.5873957652849897,
+      "business_rules": 1.0,
+      "privacy": 0.9999,
+      "ml_utility": 1.0,
+      "correlation_preservation": 0.9764511231956726
+    },
+    "weights_used": {
+      "statistical_similarity": 0.25,
+      "business_rules": 0.25,
+      "privacy": 0.2,
+      "ml_utility": 0.15,
+      "correlation_preservation": 0.15
+    },
+    "threshold_compliance": {
+      "statistical_similarity": false,
+      "business_rule_compliance": true,
+      "privacy_score": true,
+      "ml_utility": true,
+      "correlation_preservation": true
+    },
+    "meets_all_thresholds": false,
+    "recommendation": "Good quality synthetic data. Consider minor improvements in lower-scoring areas."
+  }
+}

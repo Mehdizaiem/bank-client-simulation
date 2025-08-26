@@ -1,0 +1,51 @@
+# Corporate Client CTGAN Configuration
+model_name: "corporate_ctgan_v1"
+description: "CTGAN configuration optimized for Tunisian corporate banking clients"
+
+# Training Parameters (Adjusted for smaller dataset)
+training:
+  epochs: 500
+  batch_size: 200
+  generator_dim: [128, 128]
+  discriminator_dim: [128, 128]
+  generator_lr: 0.0001
+  discriminator_lr: 0.0001
+  generator_decay: 0.000001
+  discriminator_decay: 0.000001
+  pac: 5
+  verbose: true
+  log_frequency: 25
+
+# Data Configuration
+data:
+  numerical_features:
+    - employee_count
+    - annual_revenue
+    - digital_maturity_score
+    - cash_flow_predictability
+    - seasonal_variation
+  
+  categorical_features:
+    - business_sector
+    - company_size
+    - headquarters_governorate
+    - credit_rating
+  
+  preprocessing:
+    handle_outliers: true
+    outlier_method: "iqr"
+    normalization: "standard"
+    categorical_encoding: "label"
+
+# Generation Parameters
+generation:
+  default_sample_size: 1000
+  batch_generation_size: 500
+  post_processing: true
+  validation_enabled: true
+
+# Quality Thresholds
+quality_thresholds:
+  minimum_statistical_similarity: 0.80
+  minimum_business_compliance: 0.85
+  minimum_overall_score: 0.75

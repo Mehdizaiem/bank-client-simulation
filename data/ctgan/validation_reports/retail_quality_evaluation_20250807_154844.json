@@ -1,0 +1,146 @@
+{
+  "evaluation_timestamp": "2025-08-07T15:48:41.349729",
+  "data_type": "retail",
+  "original_samples": 100,
+  "synthetic_samples": 100,
+  "statistical_similarity": {
+    "numerical_similarity": {
+      "age": {
+        "ks_statistic": 0.05,
+        "ks_pvalue": 0.9996892272702655,
+        "mean_difference": 0.05420079861620053,
+        "std_difference": 0.43036197787995434,
+        "similarity_score": 0.95
+      },
+      "monthly_income": {
+        "ks_statistic": 0.1,
+        "ks_pvalue": 0.7020569828664881,
+        "mean_difference": 73.00902083056917,
+        "std_difference": 84.9738560905439,
+        "similarity_score": 0.9
+      },
+      "risk_tolerance": {
+        "ks_statistic": 0.0,
+        "ks_pvalue": 1.0,
+        "mean_difference": 0.0,
+        "std_difference": 0.0,
+        "similarity_score": 1.0
+      },
+      "satisfaction_score": {
+        "ks_statistic": 0.0,
+        "ks_pvalue": 1.0,
+        "mean_difference": 0.0,
+        "std_difference": 0.0,
+        "similarity_score": 1.0
+      },
+      "digital_engagement_score": {
+        "ks_statistic": 0.0,
+        "ks_pvalue": 1.0,
+        "mean_difference": 0.0,
+        "std_difference": 0.0,
+        "similarity_score": 1.0
+      }
+    },
+    "categorical_similarity": {
+      "gender": {
+        "chi2_statistic": 0.0,
+        "chi2_pvalue": 1.0,
+        "category_overlap": 1.0,
+        "similarity_score": 1.0
+      }
+    },
+    "distribution_tests": {},
+    "overall_statistical_similarity": 0.975
+  },
+  "business_rules": {
+    "age_range": {
+      "violations": 5,
+      "compliance_rate": 0.95
+    },
+    "income_range": {
+      "violations": 0,
+      "compliance_rate": 1.0
+    },
+    "risk_tolerance_range": {
+      "violations": 0,
+      "compliance_rate": 1.0
+    },
+    "satisfaction_score_range": {
+      "violations": 0,
+      "compliance_rate": 1.0
+    },
+    "digital_engagement_score_range": {
+      "violations": 0,
+      "compliance_rate": 1.0
+    },
+    "gender_validity": {
+      "violations": 0,
+      "compliance_rate": 1.0
+    },
+    "overall_compliance": 0.9916666666666667
+  },
+  "privacy": {
+    "nearest_neighbor": {
+      "mean_min_distance": 0.21164418741673188,
+      "std_min_distance": 0.17918858921835565,
+      "min_distance_threshold": 0.1,
+      "privacy_at_risk_records": 27,
+      "privacy_score": 0.73
+    },
+    "membership_inference": {
+      "exact_matches": 0,
+      "exact_match_rate": 0.0,
+      "privacy_score": 1.0
+    },
+    "overall_privacy_score": 0.865
+  },
+  "ml_utility": {
+    "original_model_accuracy": 1.0,
+    "synthetic_model_accuracy": 1.0,
+    "cross_evaluation_accuracy": 1.0,
+    "utility_preservation_score": 1.0,
+    "features_used": 5,
+    "target_variable": "high_income"
+  },
+  "correlation_preservation": {
+    "mean_correlation_difference": 0.009935118314311599,
+    "max_correlation_difference": 0.0459097984792676,
+    "significant_differences": 0,
+    "total_correlations_compared": 10,
+    "correlation_preservation_score": 0.9900648816856884,
+    "features_analyzed": [
+      "risk_tolerance",
+      "digital_engagement_score",
+      "satisfaction_score",
+      "monthly_income",
+      "age"
+    ]
+  },
+  "overall_quality": {
+    "total_score": 0.96317639891952,
+    "quality_grade": "Excellent",
+    "component_scores": {
+      "statistical_similarity": 0.975,
+      "business_rules": 0.9916666666666667,
+      "privacy": 0.865,
+      "ml_utility": 1.0,
+      "correlation_preservation": 0.9900648816856884
+    },
+    "weights_used": {
+      "statistical_similarity": 0.25,
+      "business_rules": 0.25,
+      "privacy": 0.2,
+      "ml_utility": 0.15,
+      "correlation_preservation": 0.15
+    },
+    "threshold_compliance": {
+      "statistical_similarity": true,
+      "business_rule_compliance": true,
+      "privacy_score": false,
+      "ml_utility": true,
+      "correlation_preservation": true
+    },
+    "meets_all_thresholds": false,
+    "recommendation": "Excellent quality synthetic data. Ready for production use."
+  }
+}
