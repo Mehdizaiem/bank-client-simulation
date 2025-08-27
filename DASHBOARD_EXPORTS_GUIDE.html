@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Bank Simulation - Dashboard Exports Guide</title>
+<style>
+  body { font-family: -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif; margin: 24px; color: #222; }
+  h1 { margin-bottom: 0; }
+  h2 { margin-top: 28px; }
+  code, pre { background: #f5f5f7; padding: 2px 6px; border-radius: 4px; }
+  pre { padding: 12px; overflow: auto; }
+  .file { font-weight: 600; }
+  ul { line-height: 1.6; }
+  .ok { color: #0a7b17; font-weight: 600; }
+  .warn { color: #b26a00; font-weight: 600; }
+</style>
+</head>
+<body>
+  <h1>Bank Simulation - Dashboard Exports Guide</h1>
+  <p class="ok">Status: Ready for dashboard ingestion</p>
+
+  <h2>Where to find the files</h2>
+  <ul>
+    <li>Directory: <code>output/dashboard_exports/</code></li>
+    <li>Main bundle: <span class="file">dashboard_bundle_enhanced.json</span> (recommended single entrypoint)</li>
+    <li>Components (optional direct use):
+      <ul>
+        <li><span class="file">simulation_metrics_enhanced.json</span></li>
+        <li><span class="file">agent_analytics_enhanced.json</span></li>
+        <li><span class="file">agents_data_enhanced.csv</span> (tabular convenience)</li>
+      </ul>
+    </li>
+  </ul>
+
+  <h2>High-level schema</h2>
+  <p><span class="file">dashboard_bundle_enhanced.json</span>:</p>
+  <pre>{
+  "export_info": {"version": "2.0", "created_at": "ISO-8601", ...},
+  "simulation_metrics": {  // time-series + KPIs for charts
+    "schema_version": "2.0",
+    "metadata": { "simulation_id": "SIM_YYYYMMDD_HHMMSS", "config": { ... } },
+    "kpis": {
+      "final_metrics": {"total_agents", "final_retention_rate", "final_satisfaction", "final_churn_rate", "final_digital_adoption"},
+      "summary_statistics": {"avg_satisfaction", "min_satisfaction", "max_satisfaction", "satisfaction_trend"},
+      "performance_indicators": {"simulation_success", "data_points_collected", "alerts_triggered"}
+    },
+    "time_series": {
+      "timestamps": [{"step", "percentage_complete", "simulated_date"}, ...],
+      "metrics": {
+        "core_metrics": {"satisfaction"[], "churn_rate"[], "digital_adoption"[], "active_agents"[], "retention_rate"[]},
+        "business_metrics": {"avg_products_per_client"[], "high_value_clients"[], "at_risk_clients"[], "net_promoter_score"[]},
+        "channel_metrics": {"digital_usage"[], "branch_usage"[], "mobile_usage"[]}
+      }
+    },
+    "alerts": []
+  },
+  "agent_analytics": { // distributions + stats + samples
+    "schema_version": "2.0",
+    "summary": {"total_agents", "data_completeness"},
+    "segmentation": {
+      "by_type", "by_status", "by_channel", "by_governorate",
+      "by_satisfaction_tier": {"high", "medium", "low"},
+      "by_value_tier": {"premium", "standard", "basic"}
+    },
+    "statistics": { "satisfaction": {mean, median, std, q25, q75}, "demographics": { age{}, income{} } },
+    "top_governorates": { ... },
+    "sample_agents": [ {"agent_id", "client_type", "satisfaction_level", "age", "income", "products", "status", "preferred_channel", "governorate"}, ... ]
+  },
+  "quick_stats": { // handy KPIs for cards
+    "headline_numbers": {"total_clients", "active_clients", "satisfaction_score", "digital_adoption", "retention_rate"},
+    "period": {"start", "end", "days_simulated"}
+  }
+}</pre>
+
+  <h2>Common chart mappings</h2>
+  <ul>
+    <li><b>Line chart: Satisfaction over time</b>: <code>simulation_metrics.time_series.metrics.core_metrics.satisfaction</code></li>
+    <li><b>Line chart: Churn rate over time</b>: <code>simulation_metrics.time_series.metrics.core_metrics.churn_rate</code></li>
+    <li><b>Area chart: Channel usage %</b>: <code>simulation_metrics.time_series.metrics.channel_metrics.(digital_usage|branch_usage|mobile_usage)</code></li>
+    <li><b>Bar: Agents by governorate</b>: <code>agent_analytics.segmentation.by_governorate</code></li>
+    <li><b>Donut: Satisfaction tiers</b>: <code>agent_analytics.segmentation.by_satisfaction_tier</code></li>
+    <li><b>KPIs</b>: <code>quick_stats.headline_numbers</code></li>
+  </ul>
+
+  <h2>Usage example (JavaScript)</h2>
+  <pre><code>fetch('output/dashboard_exports/dashboard_bundle_enhanced.json')
+  .then(r =&gt; r.json())
+  .then(bundle =&gt; {
+    const satisfactionSeries = bundle.simulation_metrics.time_series.metrics.core_metrics.satisfaction;
+    const churnSeries = bundle.simulation_metrics.time_series.metrics.core_metrics.churn_rate;
+    const byGov = bundle.agent_analytics.segmentation.by_governorate;
+    // Render with your chart library
+  });</code></pre>
+
+  <h2>Usage example (Python)</h2>
+  <pre><code>import json
+from pathlib import Path
+
+bundle = json.loads(Path('output/dashboard_exports/dashboard_bundle_enhanced.json').read_text(encoding='utf-8'))
+satisfaction = bundle['simulation_metrics']['time_series']['metrics']['core_metrics']['satisfaction']
+by_gov = bundle['agent_analytics']['segmentation']['by_governorate']
+</code></pre>
+
+  <h2>Notes</h2>
+  <ul>
+    <li>All timestamps are ISO-8601 or synthetic <code>simulated_date</code> strings.</li>
+    <li>Percentages in channel metrics are 0-100; rates in core metrics are 0-1.</li>
+    <li>CSV <code>agents_data_enhanced.csv</code> mirrors agent fields for ad-hoc analysis.</li>
+  </ul>
+
+  <h2>Contact</h2>
+  <p>For questions, ping the simulation team. Include the <code>simulation_id</code> from the bundle metadata.</p>
+</body>
+</html>

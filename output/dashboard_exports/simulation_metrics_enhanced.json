@@ -1,0 +1,434 @@
+{
+  "schema_version": "2.0",
+  "generated_at": "2025-08-27T16:12:25.484473",
+  "metadata": {
+    "simulation_id": "SIM_20250827_161225",
+    "environment": "production",
+    "config": {
+      "num_agents": 1000,
+      "retail_ratio": 0.8,
+      "time_steps": 100,
+      "random_seed": 42
+    },
+    "data_quality": {
+      "status": "validated",
+      "completeness": 100,
+      "warnings": []
+    }
+  },
+  "kpis": {
+    "final_metrics": {
+      "total_agents": 1000,
+      "final_retention_rate": 100.0,
+      "final_satisfaction": 0.6193,
+      "final_churn_rate": 0.0,
+      "final_digital_adoption": 0.4645
+    },
+    "summary_statistics": {
+      "avg_satisfaction": 0.6069,
+      "min_satisfaction": 0.5962,
+      "max_satisfaction": 0.6193,
+      "satisfaction_trend": "improving"
+    },
+    "performance_indicators": {
+      "simulation_success": true,
+      "data_points_collected": 21,
+      "alerts_triggered": 0
+    }
+  },
+  "time_series": {
+    "timestamps": [
+      {
+        "step": 0,
+        "percentage_complete": 0.0,
+        "simulated_date": "2024-01-01"
+      },
+      {
+        "step": 5,
+        "percentage_complete": 5.0,
+        "simulated_date": "2024-01-06"
+      },
+      {
+        "step": 10,
+        "percentage_complete": 10.0,
+        "simulated_date": "2024-01-11"
+      },
+      {
+        "step": 15,
+        "percentage_complete": 15.0,
+        "simulated_date": "2024-01-16"
+      },
+      {
+        "step": 20,
+        "percentage_complete": 20.0,
+        "simulated_date": "2024-01-21"
+      },
+      {
+        "step": 25,
+        "percentage_complete": 25.0,
+        "simulated_date": "2024-01-26"
+      },
+      {
+        "step": 30,
+        "percentage_complete": 30.0,
+        "simulated_date": "2024-02-01"
+      },
+      {
+        "step": 35,
+        "percentage_complete": 35.0,
+        "simulated_date": "2024-02-06"
+      },
+      {
+        "step": 40,
+        "percentage_complete": 40.0,
+        "simulated_date": "2024-02-11"
+      },
+      {
+        "step": 45,
+        "percentage_complete": 45.0,
+        "simulated_date": "2024-02-16"
+      },
+      {
+        "step": 50,
+        "percentage_complete": 50.0,
+        "simulated_date": "2024-02-21"
+      },
+      {
+        "step": 55,
+        "percentage_complete": 55.00000000000001,
+        "simulated_date": "2024-02-26"
+      },
+      {
+        "step": 60,
+        "percentage_complete": 60.0,
+        "simulated_date": "2024-03-01"
+      },
+      {
+        "step": 65,
+        "percentage_complete": 65.0,
+        "simulated_date": "2024-03-06"
+      },
+      {
+        "step": 70,
+        "percentage_complete": 70.0,
+        "simulated_date": "2024-03-11"
+      },
+      {
+        "step": 75,
+        "percentage_complete": 75.0,
+        "simulated_date": "2024-03-16"
+      },
+      {
+        "step": 80,
+        "percentage_complete": 80.0,
+        "simulated_date": "2024-03-21"
+      },
+      {
+        "step": 85,
+        "percentage_complete": 85.0,
+        "simulated_date": "2024-03-26"
+      },
+      {
+        "step": 90,
+        "percentage_complete": 90.0,
+        "simulated_date": "2024-04-01"
+      },
+      {
+        "step": 95,
+        "percentage_complete": 95.0,
+        "simulated_date": "2024-04-06"
+      },
+      {
+        "step": 99,
+        "percentage_complete": 99.0,
+        "simulated_date": "2024-04-10"
+      }
+    ],
+    "metrics": {
+      "core_metrics": {
+        "satisfaction": [
+          0.5962,
+          0.597,
+          0.5991,
+          0.6019,
+          0.6025,
+          0.6038,
+          0.6014,
+          0.6,
+          0.604,
+          0.6053,
+          0.6076,
+          0.6071,
+          0.606,
+          0.61,
+          0.6126,
+          0.6136,
+          0.6147,
+          0.6132,
+          0.6135,
+          0.6169,
+          0.6193
+        ],
+        "churn_rate": [
+          0.058,
+          0.023,
+          0.014,
+          0.007,
+          0.004,
+          0.003,
+          0.004,
+          0.006,
+          0.002,
+          0.003,
+          0.002,
+          0.0,
+          0.001,
+          0.001,
+          0.001,
+          0.0,
+          0.001,
+          0.0,
+          0.001,
+          0.0,
+          0.0
+        ],
+        "digital_adoption": [
+          0.4645,
+          0.4645,
+          0.4645,
+          0.4645,
+          0.4645,
+          0.4645,
+          0.4645,
+          0.4645,
+          0.4645,
+          0.4645,
+          0.4645,
+          0.4645,
+          0.4645,
+          0.4645,
+          0.4645,
+          0.4645,
+          0.4645,
+          0.4645,
+          0.4645,
+          0.4645,
+          0.4645
+        ],
+        "active_agents": [
+          1000,
+          1000,
+          1000,
+          1000,
+          1000,
+          1000,
+          1000,
+          1000,
+          1000,
+          1000,
+          1000,
+          1000,
+          1000,
+          1000,
+          1000,
+          1000,
+          1000,
+          1000,
+          1000,
+          1000,
+          1000
+        ],
+        "retention_rate": [
+          100.0,
+          100.0,
+          100.0,
+          100.0,
+          100.0,
+          100.0,
+          100.0,
+          100.0,
+          100.0,
+          100.0,
+          100.0,
+          100.0,
+          100.0,
+          100.0,
+          100.0,
+          100.0,
+          100.0,
+          100.0,
+          100.0,
+          100.0,
+          100.0
+        ]
+      },
+      "business_metrics": {
+        "avg_products_per_client": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "high_value_clients": [
+          114,
+          114,
+          114,
+          114,
+          114,
+          114,
+          114,
+          114,
+          114,
+          114,
+          114,
+          114,
+          114,
+          114,
+          114,
+          114,
+          114,
+          114,
+          114,
+          114,
+          114
+        ],
+        "at_risk_clients": [
+          58,
+          23,
+          14,
+          7,
+          4,
+          3,
+          4,
+          6,
+          2,
+          3,
+          2,
+          0,
+          1,
+          1,
+          1,
+          0,
+          1,
+          0,
+          1,
+          0,
+          0
+        ],
+        "net_promoter_score": [
+          36.7,
+          38.0,
+          29.7,
+          36.2,
+          23.4,
+          29.7,
+          40.1,
+          34.6,
+          30.1,
+          29.1,
+          23.5,
+          34.6,
+          29.3,
+          32.4,
+          35.8,
+          31.7,
+          30.7,
+          30.2,
+          35.7,
+          31.5,
+          31.5
+        ]
+      },
+      "channel_metrics": {
+        "digital_usage": [
+          46.45,
+          46.45,
+          46.45,
+          46.45,
+          46.45,
+          46.45,
+          46.45,
+          46.45,
+          46.45,
+          46.45,
+          46.45,
+          46.45,
+          46.45,
+          46.45,
+          46.45,
+          46.45,
+          46.45,
+          46.45,
+          46.45,
+          46.45,
+          46.45
+        ],
+        "branch_usage": [
+          53.55,
+          53.55,
+          53.55,
+          53.55,
+          53.55,
+          53.55,
+          53.55,
+          53.55,
+          53.55,
+          53.55,
+          53.55,
+          53.55,
+          53.55,
+          53.55,
+          53.55,
+          53.55,
+          53.55,
+          53.55,
+          53.55,
+          53.55,
+          53.55
+        ],
+        "mobile_usage": [
+          27.87,
+          27.87,
+          27.87,
+          27.87,
+          27.87,
+          27.87,
+          27.87,
+          27.87,
+          27.87,
+          27.87,
+          27.87,
+          27.87,
+          27.87,
+          27.87,
+          27.87,
+          27.87,
+          27.87,
+          27.87,
+          27.87,
+          27.87,
+          27.87
+        ]
+      }
+    },
+    "trends": {}
+  },
+  "alerts": []
+}
