@@ -1,0 +1,57 @@
+{
+  "metadata": {
+    "start_time": "2025-08-27 15:21:59",
+    "config": {
+      "num_agents": 100,
+      "retail_ratio": 0.8,
+      "time_steps": 50,
+      "random_seed": 42
+    },
+    "total_agents": 100,
+    "end_time": "2025-08-27 15:21:59"
+  },
+  "time_series": {
+    "step": [
+      0,
+      10,
+      20,
+      30,
+      40
+    ],
+    "satisfaction": [
+      0.6168700273154045,
+      0.6105576214792063,
+      0.6036352744224965,
+      0.5918398140143513,
+      0.5918990192829274
+    ],
+    "churn_rate": [
+      0.04,
+      0.02,
+      0.01,
+      0.02,
+      0.01
+    ],
+    "digital_adoption": [
+      0.4491037437218653,
+      0.4491037437218653,
+      0.4491037437218653,
+      0.4491037437218653,
+      0.4491037437218653
+    ],
+    "active_agents": [
+      100,
+      100,
+      100,
+      100,
+      100
+    ]
+  },
+  "final_state": {
+    "total_steps_completed": 50,
+    "final_satisfaction": 0.5918990192829274,
+    "final_churn_rate": 0.01,
+    "final_digital_adoption": 0.4491037437218653,
+    "final_active_agents": 100
+  }
+}

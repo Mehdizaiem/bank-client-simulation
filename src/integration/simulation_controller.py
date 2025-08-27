@@ -13,7 +13,7 @@ import logging
 from src.simulation.bank_simulation_model import BankSimulationModel
 from src.simulation.integrated_bank_simulation_model import IntegratedBankSimulationModel
 from src.simulation.scenario_manager import ScenarioManager
-from src.data_generation.data_loader import DataLoader
+from src.agent_engine.data_loader import DataLoader
 from src.reporting.simulation_reporter import SimulationReporter
 
 logging.basicConfig(level=logging.INFO)

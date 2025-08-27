@@ -324,6 +324,14 @@ class EventSystem:
         
         return result
     
+    def get_events_at_step(self, step: int) -> List[BaseEvent]:
+        """Return all events scheduled or processed exactly at the given step."""
+        events = []
+        events.extend([e for e in self.event_queue if e.step == step])
+        events.extend([e for e in self.processed_events if e.step == step])
+        events.extend([e for e in self.failed_events if e.step == step])
+        return events
+    
     def validate_system_state(self) -> Dict[str, Any]:
         """Validate the current state of the event system"""
         issues = []

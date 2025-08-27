@@ -280,8 +280,10 @@ class ScenarioManager:
         Returns:
             Scenario: Loaded and validated scenario
         """
-        # Convert scenario_file to Path object
+        # Convert scenario_file to Path object and accept names without .json
         scenario_path = Path(scenario_file) if not isinstance(scenario_file, Path) else scenario_file
+        if scenario_path.suffix.lower() != '.json':
+            scenario_path = Path(str(scenario_path) + '.json')
         
         # If not absolute, join with template_directory
         if not scenario_path.is_absolute():

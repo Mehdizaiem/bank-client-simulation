@@ -33,6 +33,7 @@ class BaseClientAgent(mesa.Agent):
         self.satisfaction_level = random.uniform(0.4, 0.8)
         self.loyalty_score = random.uniform(0.3, 0.9)
         self.churn_probability = 0.1
+        self.status = 'active'
         
         # PRODUCT OWNERSHIP - Initialize with basic products
         self.owned_products = self._initialize_products()

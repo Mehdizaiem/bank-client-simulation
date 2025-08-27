@@ -1,0 +1,26 @@
+{
+  "scenario_name": "Branch Closure Impact Analysis",
+  "events_processed": [],
+  "metrics": [
+    {
+      "step": 0,
+      "satisfaction": 0.5994076707283092,
+      "events_at_step": 0
+    },
+    {
+      "step": 5,
+      "satisfaction": 0.5991852445972118,
+      "events_at_step": 1
+    },
+    {
+      "step": 10,
+      "satisfaction": 0.6005496124653257,
+      "events_at_step": 0
+    },
+    {
+      "step": 15,
+      "satisfaction": 0.603351884786904,
+      "events_at_step": 1
+    }
+  ]
+}

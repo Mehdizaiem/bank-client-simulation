@@ -150,6 +150,20 @@ class BankSimulationModel(mesa.Model):
             return 0
         return sum(a.satisfaction_level for a in self.agents) / len(self.agents)
     
+    def calculate_churn_rate(self) -> float:
+        """Calculate proportion of agents at churn risk (satisfaction < 0.3)."""
+        if len(self.agents) == 0:
+            return 0.0
+        at_risk = sum(1 for a in self.agents if getattr(a, 'satisfaction_level', 0) < 0.3)
+        return at_risk / len(self.agents)
+
+    def get_digital_adoption_rate(self) -> float:
+        """Average digital engagement across agents (0-1)."""
+        digital_agents = [a for a in self.agents if hasattr(a, 'digital_engagement_score')]
+        if not digital_agents:
+            return 0.0
+        return sum(getattr(a, 'digital_engagement_score', 0.0) for a in digital_agents) / len(digital_agents)
+    
     def export_agent_data(self, filename: str = None):
         """Export current agent data to CSV"""
         if filename is None:
@@ -160,10 +174,13 @@ class BankSimulationModel(mesa.Model):
             agent_data.append({
                 'agent_id': agent.unique_id,
                 'client_type': agent.client_type,
-                'satisfaction': agent.satisfaction_level,
+                'satisfaction_level': agent.satisfaction_level,
                 'age': getattr(agent, 'age', None),
                 'income': getattr(agent, 'income', None),
-                'products': len(getattr(agent, 'owned_products', []))  # Safe access
+                'products': len(getattr(agent, 'owned_products', [])),  # Safe access
+                'status': getattr(agent, 'status', 'active'),
+                'preferred_channel': getattr(agent, 'preferred_channel', None),
+                'governorate': getattr(agent, 'governorate', None)
             })
         
         df = pd.DataFrame(agent_data)
