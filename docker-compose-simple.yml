@@ -1,0 +1,77 @@
+﻿version: '3.8'
+
+services:
+  # Database - TimescaleDB
+  timescaledb:
+    image: timescale/timescaledb:latest-pg14
+    container_name: simulation_timescaledb
+    environment:
+      POSTGRES_DB: bank_simulation
+      POSTGRES_USER: sim_admin
+      POSTGRES_PASSWORD: SimBank2024!
+    volumes:
+      - timescale_data:/var/lib/postgresql/data
+      - ./database/init:/docker-entrypoint-initdb.d
+    ports:
+      - "5432:5432"
+    networks:
+      - simulation_network
+    restart: unless-stopped
+
+  # Redis for caching
+  redis:
+    image: redis:7-alpine
+    container_name: simulation_redis
+    volumes:
+      - redis_data:/data
+      - ./redis/redis.conf:/usr/local/etc/redis/redis.conf
+    ports:
+      - "6379:6379"
+    networks:
+      - simulation_network
+    command: redis-server /usr/local/etc/redis/redis.conf
+    restart: unless-stopped
+
+  # pgAdmin for database management
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: simulation_pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@banksimulation.local
+      PGADMIN_DEFAULT_PASSWORD: admin2024
+      PGADMIN_CONFIG_SERVER_MODE: 'False'
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
+    ports:
+      - "5050:80"
+    depends_on:
+      - timescaledb
+    networks:
+      - simulation_network
+    restart: unless-stopped
+
+  # Jupyter for development
+  jupyter:
+    image: jupyter/scipy-notebook:latest
+    container_name: simulation_jupyter
+    environment:
+      JUPYTER_ENABLE_LAB: "yes"
+      JUPYTER_TOKEN: simulation2024
+    volumes:
+      - ./notebooks:/home/jovyan/notebooks
+      - ./src:/home/jovyan/src
+      - ./data:/home/jovyan/data
+    ports:
+      - "8888:8888"
+    networks:
+      - simulation_network
+    restart: unless-stopped
+
+networks:
+  simulation_network:
+    driver: bridge
+
+volumes:
+  timescale_data:
+  redis_data:
+  pgadmin_data:

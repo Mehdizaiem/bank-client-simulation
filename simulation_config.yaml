@@ -27,3 +27,15 @@ data_generation:
   synthetic_samples: 10000
   ctgan_epochs: 300
   batch_size: 500
+
+dashboard:
+  host: "0.0.0.0"
+  port: 8050
+  debug: true
+  update_interval: 5000
+  enable_real_time: true
+  max_agents: 10000
+  color_palette:
+    - "#1f77b4"
+    - "#ff7f0e"
+    - "#2ca02c"

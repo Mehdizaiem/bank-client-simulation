@@ -1,0 +1,311 @@
+/* Bank Client Simulation Platform - Custom CSS */
+
+/* Global Styles */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background-color: #f9fafb;
+    color: #1f2937;
+}
+
+/* Chart Container Improvements */
+.chart-container {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    border: 1px solid #e5e7eb;
+    padding: 20px;
+    margin: 10px;
+    display: flex;
+    flex-direction: column;
+    min-height: 400px;
+}
+
+.chart-container h4 {
+    color: #1f2937;
+    font-size: 1.1rem;
+    font-weight: 600;
+    text-align: center;
+    margin-bottom: 15px;
+    margin-top: 0;
+}
+
+/* Chart Row Layout */
+.chart-row {
+    display: flex !important;
+    gap: 20px !important;
+    margin-bottom: 30px !important;
+    align-items: stretch !important;
+    justify-content: space-between !important;
+}
+
+/* Plotly Chart Styling */
+.js-plotly-plot {
+    width: 100% !important;
+    height: 300px !important;
+    flex-grow: 1;
+}
+
+.plot-container {
+    width: 100% !important;
+    height: 300px !important;
+    flex-grow: 1;
+}
+
+.main-svg {
+    width: 100% !important;
+    height: 300px !important;
+}
+
+/* Chart specific improvements */
+.plotly .modebar {
+    display: none !important;
+}
+
+.plotly .plotly-graph-div {
+    background: white !important;
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+    .chart-row {
+        flex-direction: column !important;
+        gap: 15px !important;
+    }
+    
+    .chart-container {
+        width: 100% !important;
+        margin: 5px 0 !important;
+    }
+}
+
+@media (max-width: 768px) {
+    .js-plotly-plot {
+        height: 250px !important;
+    }
+    .plot-container {
+        height: 250px !important;
+    }
+    .main-svg {
+        height: 250px !important;
+    }
+    
+    .chart-container {
+        padding: 15px;
+        min-height: 300px;
+    }
+    
+    .chart-container h4 {
+        font-size: 1rem;
+    }
+}
+
+/* Page Content Improvements */
+.page-content {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 30px 20px;
+}
+
+/* Card Styling */
+.metric-card {
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    border: 1px solid #e5e7eb;
+    padding: 25px 20px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+}
+
+.metric-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+/* Control Panel Styling */
+.control-panel {
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    border: 1px solid #e5e7eb;
+}
+
+.control-panel h3 {
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: #1f2937;
+    margin-bottom: 15px;
+    margin-top: 0;
+}
+
+/* Button Styling */
+.btn-primary {
+    background: linear-gradient(135deg, #1e40af, #3b82f6);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 12px 24px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(30, 64, 175, 0.3);
+}
+
+.btn-secondary {
+    background: linear-gradient(135deg, #7c3aed, #8b5cf6);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 12px 24px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-secondary:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(124, 58, 237, 0.3);
+}
+
+/* Dropdown Styling */
+.Select-control {
+    border: 1px solid #e5e7eb !important;
+    border-radius: 6px !important;
+    box-shadow: none !important;
+}
+
+.Select-control:hover {
+    border-color: #1e40af !important;
+}
+
+/* Scrollbar Styling */
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #c1c1c1;
+    border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #a8a8a8;
+}
+
+/* Loading States */
+.loading-spinner {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border: 3px solid rgba(30, 64, 175, 0.3);
+    border-radius: 50%;
+    border-top-color: #1e40af;
+    animation: spin 1s ease-in-out infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* Animation Improvements */
+.fade-in {
+    animation: fadeIn 0.3s ease-in;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Focus States */
+button:focus,
+input:focus,
+select:focus {
+    outline: 2px solid #1e40af;
+    outline-offset: 2px;
+}
+
+/* Sidebar Improvements */
+.sidebar {
+    background: white;
+    border-right: 1px solid #e5e7eb;
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.05);
+}
+
+.nav-button {
+    transition: all 0.3s ease;
+    border-radius: 12px;
+    margin: 0 15px 8px 15px;
+    padding: 15px 20px;
+}
+
+.nav-button:hover {
+    background-color: rgba(30, 64, 175, 0.1);
+    transform: translateX(2px);
+}
+
+.nav-button.active {
+    background-color: #1e40af;
+    color: white;
+    box-shadow: 0 4px 12px rgba(30, 64, 175, 0.3);
+}
+
+/* Header Improvements */
+.header {
+    background: white;
+    border-bottom: 1px solid #e5e7eb;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Status Indicators */
+.status-online {
+    color: #10b981;
+}
+
+.status-offline {
+    color: #ef4444;
+}
+
+.status-warning {
+    color: #f59e0b;
+}
+
+/* Utility Classes */
+.text-center { text-align: center; }
+.text-left { text-align: left; }
+.text-right { text-align: right; }
+
+.mb-0 { margin-bottom: 0 !important; }
+.mb-1 { margin-bottom: 0.25rem !important; }
+.mb-2 { margin-bottom: 0.5rem !important; }
+.mb-3 { margin-bottom: 1rem !important; }
+.mb-4 { margin-bottom: 1.5rem !important; }
+.mb-5 { margin-bottom: 3rem !important; }
+
+.mt-0 { margin-top: 0 !important; }
+.mt-1 { margin-top: 0.25rem !important; }
+.mt-2 { margin-top: 0.5rem !important; }
+.mt-3 { margin-top: 1rem !important; }
+.mt-4 { margin-top: 1.5rem !important; }
+.mt-5 { margin-top: 3rem !important; }
+
+.p-0 { padding: 0 !important; }
+.p-1 { padding: 0.25rem !important; }
+.p-2 { padding: 0.5rem !important; }
+.p-3 { padding: 1rem !important; }
+.p-4 { padding: 1.5rem !important; }
+.p-5 { padding: 3rem !important; }

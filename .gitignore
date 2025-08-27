@@ -42,7 +42,6 @@ data/synthetic/*.parquet
 .ipynb_checkpoints
 
 # Environment variables
-.env
 
 # Logs
 logs/
