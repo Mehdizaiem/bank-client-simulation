@@ -44,7 +44,10 @@ def test_basic_simulation():
         print(f"✅ Model created with {len(model.agents)} agents")
         
         # Collect data during simulation
+        now_ts = time.strftime('%Y-%m-%d %H:%M:%S')
         simulation_data = {
+            'schema_version': '1.0',
+            'generated_at': now_ts,
             'metadata': {
                 'start_time': time.strftime('%Y-%m-%d %H:%M:%S'),
                 'config': config,
@@ -92,9 +95,11 @@ def test_basic_simulation():
         
         simulation_data['metadata']['end_time'] = time.strftime('%Y-%m-%d %H:%M:%S')
         
-        # Save to JSON for dashboard
-        output_file = 'simulation_output_for_dashboard.json'
-        with open(output_file, 'w') as f:
+        # Save to JSON for dashboard (enhanced + path under output/dashboard_exports)
+        export_dir = Path('output') / 'dashboard_exports'
+        export_dir.mkdir(parents=True, exist_ok=True)
+        output_file = export_dir / 'simulation_output_for_dashboard.json'
+        with open(output_file, 'w', encoding='utf-8') as f:
             json.dump(simulation_data, f, indent=2)
         
         print(f"\n✅ Simulation complete! Output saved to: {output_file}")
@@ -140,28 +145,57 @@ def test_scenario_simulation():
             print("⚠️ Running without scenario")
         
         # Run and collect data
+        now_ts = time.strftime('%Y-%m-%d %H:%M:%S')
         scenario_data = {
+            'schema_version': '1.0',
+            'generated_at': now_ts,
             'scenario_name': model.current_scenario.metadata.name if model.current_scenario else 'none',
+            'scenario_duration_steps': getattr(model, 'time_steps', 0),
+            'agent_population': len(model.agents),
             'events_processed': [],
-            'metrics': []
+            'metrics': [],
+            'timeline': []
         }
         
         print("\nRunning scenario simulation...")
         for step in range(20):
             model.step()
             
+            # Collect a timeline snapshot every 5 steps
             if step % 5 == 0:
                 metrics = {
                     'step': step,
                     'satisfaction': model.get_average_satisfaction(),
+                    'churn_rate': model.calculate_churn_rate(),
+                    'digital_adoption': model.get_digital_usage_rate(),
                     'events_at_step': len(model.event_system.get_events_at_step(step)) if hasattr(model, 'event_system') else 0
                 }
                 scenario_data['metrics'].append(metrics)
                 print(f"  Step {step}: {metrics}")
+            # Record event types that occurred exactly this step
+            events_now = model.event_system.get_events_at_step(step) if hasattr(model, 'event_system') else []
+            if events_now:
+                scenario_data['timeline'].append({
+                    'step': step,
+                    'events': [e.event_type for e in events_now]
+                })
         
+        # Populate events_processed summary
+        if hasattr(model, 'event_system'):
+            processed = getattr(model.event_system, 'processed_events', [])
+            by_type = {}
+            for ev in processed:
+                by_type[ev.event_type] = by_type.get(ev.event_type, 0) + 1
+            scenario_data['events_processed'] = {
+                'total': len(processed),
+                'by_type': by_type
+            }
+
         # Save scenario output
-        output_file = 'scenario_output_for_dashboard.json'
-        with open(output_file, 'w') as f:
+        export_dir = Path('output') / 'dashboard_exports'
+        export_dir.mkdir(parents=True, exist_ok=True)
+        output_file = export_dir / 'scenario_output_for_dashboard.json'
+        with open(output_file, 'w', encoding='utf-8') as f:
             json.dump(scenario_data, f, indent=2)
         
         print(f"\n✅ Scenario simulation complete! Output saved to: {output_file}")
@@ -219,9 +253,16 @@ def test_agent_export():
         }
         
         # Save agent analysis
-        output_file = 'agent_analysis_for_dashboard.json'
-        with open(output_file, 'w') as f:
-            json.dump(dashboard_agents, f, indent=2, default=str)
+        export_dir = Path('output') / 'dashboard_exports'
+        export_dir.mkdir(parents=True, exist_ok=True)
+        output_file = export_dir / 'agent_analysis_for_dashboard.json'
+        enriched_agents = {
+            'schema_version': '1.0',
+            'generated_at': time.strftime('%Y-%m-%d %H:%M:%S'),
+            **dashboard_agents
+        }
+        with open(output_file, 'w', encoding='utf-8') as f:
+            json.dump(enriched_agents, f, indent=2, default=str)
         
         print(f"\n✅ Agent data exported to: {output_file}")
         print("\n📊 Agent Distribution:")
@@ -279,7 +320,7 @@ if __name__ == "__main__":
     agent_result = test_agent_export()
     results.append(('Agent Export', agent_result is not None))
     
-    # Summary
+    # Summary and bundle export for dashboard consumption
     print("\n" + "="*80)
     print("📋 TEST SUMMARY")
     print("="*80)
@@ -295,10 +336,21 @@ if __name__ == "__main__":
     
     if passed > 0:
         print("\n📊 Generated Output Files:")
-        print("   - simulation_output_for_dashboard.json")
-        print("   - scenario_output_for_dashboard.json (if scenario worked)")
-        print("   - agent_analysis_for_dashboard.json")
+        print("   - output/dashboard_exports/simulation_output_for_dashboard.json")
+        print("   - output/dashboard_exports/scenario_output_for_dashboard.json (if scenario worked)")
+        print("   - output/dashboard_exports/agent_analysis_for_dashboard.json")
         print("   - agents_data.csv")
-        print("\n💡 Share these JSON files with Nessrine for the dashboard!")
+        # Create a bundle file aggregating the three for easy import
+        export_dir = Path('output') / 'dashboard_exports'
+        bundle = {
+            'simulation': json.load(open(export_dir / 'simulation_output_for_dashboard.json', 'r', encoding='utf-8')) if (export_dir / 'simulation_output_for_dashboard.json').exists() else {},
+            'scenario': json.load(open(export_dir / 'scenario_output_for_dashboard.json', 'r', encoding='utf-8')) if (export_dir / 'scenario_output_for_dashboard.json').exists() else {},
+            'agents': json.load(open(export_dir / 'agent_analysis_for_dashboard.json', 'r', encoding='utf-8')) if (export_dir / 'agent_analysis_for_dashboard.json').exists() else {}
+        }
+        bundle_file = export_dir / 'dashboard_bundle.json'
+        with open(bundle_file, 'w', encoding='utf-8') as f:
+            json.dump(bundle, f, indent=2)
+        print(f"   - output/dashboard_exports/dashboard_bundle.json")
+        print("\n💡 Share these files with the dashboard team.")
     
     print("\n✨ Test complete!")

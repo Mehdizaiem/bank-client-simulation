@@ -1,0 +1,59 @@
+{
+  "schema_version": "1.0",
+  "generated_at": "2025-08-27 16:01:16",
+  "scenario_name": "Branch Closure Impact Analysis",
+  "scenario_duration_steps": 100,
+  "agent_population": 1000,
+  "events_processed": {
+    "total": 3,
+    "by_type": {
+      "MarketingCampaignEvent": 1,
+      "DigitalTransformationEvent": 1,
+      "BranchClosureEvent": 1
+    }
+  },
+  "metrics": [
+    {
+      "step": 0,
+      "satisfaction": 0.5970300333417782,
+      "churn_rate": 0.055,
+      "digital_adoption": 0.47541747088598385,
+      "events_at_step": 0
+    },
+    {
+      "step": 5,
+      "satisfaction": 0.5978577206174481,
+      "churn_rate": 0.033,
+      "digital_adoption": 0.47541747088598385,
+      "events_at_step": 1
+    },
+    {
+      "step": 10,
+      "satisfaction": 0.5995636578628075,
+      "churn_rate": 0.021,
+      "digital_adoption": 0.47541747088598385,
+      "events_at_step": 0
+    },
+    {
+      "step": 15,
+      "satisfaction": 0.6008996495889806,
+      "churn_rate": 0.014,
+      "digital_adoption": 0.5731304708859839,
+      "events_at_step": 1
+    }
+  ],
+  "timeline": [
+    {
+      "step": 5,
+      "events": [
+        "MarketingCampaignEvent"
+      ]
+    },
+    {
+      "step": 15,
+      "events": [
+        "DigitalTransformationEvent"
+      ]
+    }
+  ]
+}
