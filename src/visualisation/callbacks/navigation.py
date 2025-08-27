@@ -1,8 +1,10 @@
 """
-Navigation callbacks for the Bank Client Simulation Platform
+callbacks/navigation.py - Updated to handle profile and settings routes
+Drop this into src/visualisation/callbacks/navigation.py
 """
-from dash import Input, Output, callback_context
-from config.colors import COLORS
+
+import dash
+from dash import Input, Output, State, html, no_update
 from pages.home import create_simulation_homepage_content
 from pages.economic import create_economic_simulation_content
 from pages.geographic import create_geographic_simulation_content
@@ -12,100 +14,59 @@ from pages.settings import create_simulation_settings_content
 
 
 def register_navigation_callbacks(app):
-    """Register all navigation-related callbacks."""
+    """Register navigation callbacks for the dashboard"""
     
     @app.callback(
-        [Output('page-content', 'children'),
-         Output('page-title', 'children')],
-        [Input('nav-home', 'n_clicks'),
-         Input('nav-economic', 'n_clicks'),
-         Input('nav-geographic', 'n_clicks'),
-         Input('nav-chat', 'n_clicks'),
-         Input('nav-profile', 'n_clicks'),
-         Input('nav-settings', 'n_clicks')],
-        prevent_initial_call=False
+        [Output("page-content", "children"),
+         Output("page-title", "children"),
+         Output("page-store", "data")],
+        [Input("url", "pathname"),
+         Input("nav-home", "n_clicks"),
+         Input("nav-economic", "n_clicks"),
+         Input("nav-geographic", "n_clicks"),
+         Input("nav-chat", "n_clicks"),
+         Input("nav-settings", "n_clicks"),
+         Input("nav-profile", "n_clicks")],
+        [State("page-store", "data")]
     )
-    def update_page_content(home_clicks, economic_clicks, geographic_clicks, 
-                           chat_clicks, profile_clicks, settings_clicks):
-        """Update page content based on navigation clicks."""
-        ctx = callback_context
+    def update_page_content(pathname, home_clicks, econ_clicks, geo_clicks, 
+                           chat_clicks, settings_clicks, profile_clicks, current_page):
+        """Update page content based on navigation"""
         
+        # Handle URL-based navigation first (for direct links)
+        if pathname:
+            if pathname == "/profile":
+                return create_profile_page_content(), "Profile", "profile"
+            elif pathname == "/settings":
+                return create_simulation_settings_content(), "Settings", "settings"
+            elif pathname == "/economic":
+                return create_economic_simulation_content(), "Economic Simulation", "economic"
+            elif pathname == "/geographic":
+                return create_geographic_simulation_content(), "Geographic Analysis", "geographic"
+            elif pathname == "/chat":
+                return create_simulation_chat_content(), "AI Assistant", "chat"
+            elif pathname == "/" or pathname == "/home":
+                return create_simulation_homepage_content(), "Dashboard Overview", "home"
+        
+        # Handle sidebar navigation clicks
+        ctx = dash.callback_context
         if not ctx.triggered:
-            return create_simulation_homepage_content(), "Dashboard Overview"
+            return create_simulation_homepage_content(), "Dashboard Overview", "home"
         
-        button_id = ctx.triggered[0]['prop_id'].split('.')[0]
+        button_id = ctx.triggered[0]["prop_id"].split(".")[0]
         
-        page_map = {
-            'nav-home': (create_simulation_homepage_content(), "Dashboard Overview"),
-            'nav-economic': (create_economic_simulation_content(), "Economic Analysis"),
-            'nav-geographic': (create_geographic_simulation_content(), "Geographic Analysis"),
-            'nav-chat': (create_simulation_chat_content(), "AI Chat Assistant"),
-            'nav-profile': (create_profile_page_content(), "User Profile"),
-            'nav-settings': (create_simulation_settings_content(), "Settings")
-        }
+        if button_id == "nav-home":
+            return create_simulation_homepage_content(), "Dashboard Overview", "home"
+        elif button_id == "nav-economic":
+            return create_economic_simulation_content(), "Economic Simulation", "economic"
+        elif button_id == "nav-geographic":
+            return create_geographic_simulation_content(), "Geographic Analysis", "geographic"
+        elif button_id == "nav-chat":
+            return create_simulation_chat_content(), "AI Assistant", "chat"
+        elif button_id == "nav-settings":
+            return create_simulation_settings_content(), "Settings", "settings"
+        elif button_id == "nav-profile":
+            return create_profile_page_content(), "Profile", "profile"
         
-        return page_map.get(button_id, (create_simulation_homepage_content(), "Dashboard Overview"))
-
-    @app.callback(
-        [Output('nav-home', 'style'),
-         Output('nav-economic', 'style'),
-         Output('nav-geographic', 'style'),
-         Output('nav-chat', 'style'),
-         Output('nav-profile', 'style'),
-         Output('nav-settings', 'style')],
-        [Input('nav-home', 'n_clicks'),
-         Input('nav-economic', 'n_clicks'),
-         Input('nav-geographic', 'n_clicks'),
-         Input('nav-chat', 'n_clicks'),
-         Input('nav-profile', 'n_clicks'),
-         Input('nav-settings', 'n_clicks')]
-    )
-    def update_nav_styles(home_clicks, economic_clicks, geographic_clicks, 
-                         chat_clicks, profile_clicks, settings_clicks):
-        """Update navigation button styles based on active page."""
-        ctx = callback_context
-        
-        base_style = {
-            'padding': '15px 20px',
-            'margin': '0 15px 8px 15px',
-            'borderRadius': '12px',
-            'cursor': 'pointer',
-            'transition': 'all 0.3s ease',
-            'color': COLORS['dark'],
-            'display': 'flex',
-            'alignItems': 'center',
-            'backgroundColor': 'transparent',
-            'border': 'none',
-            'width': 'calc(100% - 30px)',
-            'textAlign': 'left',
-            'fontFamily': 'Inter, sans-serif',
-            'fontSize': '0.9rem',
-            'fontWeight': '500'
-        }
-        
-        active_style = base_style.copy()
-        active_style.update({
-            'backgroundColor': COLORS['primary'],
-            'color': 'white',
-            'fontWeight': '600'
-        })
-        
-        styles = [base_style] * 6  # Default style for all buttons
-        
-        if ctx.triggered:
-            button_id = ctx.triggered[0]['prop_id'].split('.')[0]
-            button_map = {
-                'nav-home': 0,
-                'nav-economic': 1,
-                'nav-geographic': 2,
-                'nav-chat': 3,
-                'nav-profile': 4,
-                'nav-settings': 5
-            }
-            
-            if button_id in button_map:
-                styles[button_map[button_id]] = active_style
-        else:
-            styles[0] = active_style  # Default to home active
-        
-        return styles
+        # Default to home
+        return create_simulation_homepage_content(), "Dashboard Overview", "home"
