@@ -1,0 +1,265 @@
+{
+  "scenario_name": "Branch Closure Impact Analysis",
+  "start_time": "2025-08-28T19:57:35.679667",
+  "metadata": {
+    "name": "Branch Closure Impact Analysis",
+    "description": "Simulate the impact of closing the Sfax branch on client behavior and market share",
+    "version": "1.0",
+    "author": "Maryem - Simulation Interface Lead",
+    "created_date": "2024-01-15",
+    "tags": [
+      "branch_strategy",
+      "cost_optimization",
+      "client_retention"
+    ],
+    "difficulty_level": "medium",
+    "estimated_duration": 100
+  },
+  "metrics": [
+    {
+      "step": 10,
+      "metric": "average_satisfaction",
+      "value": 0.5984958256883307,
+      "timestamp": "2025-08-28T19:57:43.673372"
+    },
+    {
+      "step": 10,
+      "metric": "churn_rate",
+      "value": 0.019,
+      "timestamp": "2025-08-28T19:57:43.673372"
+    },
+    {
+      "step": 10,
+      "metric": "digital_usage",
+      "value": 0.4690939440556179,
+      "timestamp": "2025-08-28T19:57:43.673372"
+    },
+    {
+      "step": 20,
+      "metric": "average_satisfaction",
+      "value": 0.5990006925733032,
+      "timestamp": "2025-08-28T19:57:43.849379"
+    },
+    {
+      "step": 20,
+      "metric": "churn_rate",
+      "value": 0.01,
+      "timestamp": "2025-08-28T19:57:43.849379"
+    },
+    {
+      "step": 20,
+      "metric": "digital_usage",
+      "value": 0.5668519440556173,
+      "timestamp": "2025-08-28T19:57:43.849987"
+    },
+    {
+      "step": 30,
+      "metric": "average_satisfaction",
+      "value": 0.601934443336002,
+      "timestamp": "2025-08-28T19:57:44.001060"
+    },
+    {
+      "step": 30,
+      "metric": "churn_rate",
+      "value": 0.009,
+      "timestamp": "2025-08-28T19:57:44.002684"
+    },
+    {
+      "step": 30,
+      "metric": "digital_usage",
+      "value": 0.5668519440556173,
+      "timestamp": "2025-08-28T19:57:44.002684"
+    },
+    {
+      "step": 40,
+      "metric": "average_satisfaction",
+      "value": 0.604939742320891,
+      "timestamp": "2025-08-28T19:57:44.126053"
+    },
+    {
+      "step": 40,
+      "metric": "churn_rate",
+      "value": 0.007,
+      "timestamp": "2025-08-28T19:57:44.126053"
+    },
+    {
+      "step": 40,
+      "metric": "digital_usage",
+      "value": 0.5668519440556173,
+      "timestamp": "2025-08-28T19:57:44.126053"
+    },
+    {
+      "step": 50,
+      "metric": "average_satisfaction",
+      "value": 0.6068473260998898,
+      "timestamp": "2025-08-28T19:57:44.254184"
+    },
+    {
+      "step": 50,
+      "metric": "churn_rate",
+      "value": 0.005,
+      "timestamp": "2025-08-28T19:57:44.255231"
+    },
+    {
+      "step": 50,
+      "metric": "digital_usage",
+      "value": 0.5668519440556173,
+      "timestamp": "2025-08-28T19:57:44.255231"
+    },
+    {
+      "step": 60,
+      "metric": "average_satisfaction",
+      "value": 0.6072102874017556,
+      "timestamp": "2025-08-28T19:57:44.422223"
+    },
+    {
+      "step": 60,
+      "metric": "churn_rate",
+      "value": 0.005,
+      "timestamp": "2025-08-28T19:57:44.422223"
+    },
+    {
+      "step": 60,
+      "metric": "digital_usage",
+      "value": 0.5668519440556173,
+      "timestamp": "2025-08-28T19:57:44.423717"
+    },
+    {
+      "step": 70,
+      "metric": "average_satisfaction",
+      "value": 0.6098692388195314,
+      "timestamp": "2025-08-28T19:57:44.569570"
+    },
+    {
+      "step": 70,
+      "metric": "churn_rate",
+      "value": 0.005,
+      "timestamp": "2025-08-28T19:57:44.569570"
+    },
+    {
+      "step": 70,
+      "metric": "digital_usage",
+      "value": 0.5668519440556173,
+      "timestamp": "2025-08-28T19:57:44.570588"
+    },
+    {
+      "step": 80,
+      "metric": "average_satisfaction",
+      "value": 0.6099484075783042,
+      "timestamp": "2025-08-28T19:57:44.777125"
+    },
+    {
+      "step": 80,
+      "metric": "churn_rate",
+      "value": 0.004,
+      "timestamp": "2025-08-28T19:57:44.777125"
+    },
+    {
+      "step": 80,
+      "metric": "digital_usage",
+      "value": 0.5668519440556173,
+      "timestamp": "2025-08-28T19:57:44.777125"
+    },
+    {
+      "step": 90,
+      "metric": "average_satisfaction",
+      "value": 0.6073755541180987,
+      "timestamp": "2025-08-28T19:57:44.886347"
+    },
+    {
+      "step": 90,
+      "metric": "churn_rate",
+      "value": 0.001,
+      "timestamp": "2025-08-28T19:57:44.886347"
+    },
+    {
+      "step": 90,
+      "metric": "digital_usage",
+      "value": 0.5668519440556173,
+      "timestamp": "2025-08-28T19:57:44.887329"
+    },
+    {
+      "step": 100,
+      "metric": "average_satisfaction",
+      "value": 0.6077941576472733,
+      "timestamp": "2025-08-28T19:57:45.005799"
+    },
+    {
+      "step": 100,
+      "metric": "churn_rate",
+      "value": 0.002,
+      "timestamp": "2025-08-28T19:57:45.005799"
+    },
+    {
+      "step": 100,
+      "metric": "digital_usage",
+      "value": 0.5668519440556173,
+      "timestamp": "2025-08-28T19:57:45.006717"
+    }
+  ],
+  "events": [
+    {
+      "step": 5,
+      "event_type": "MarketingCampaignEvent",
+      "description": "Marketing campaign targeting ['digital_first']",
+      "impact": {
+        "target_segments": [
+          "digital_first"
+        ],
+        "effectiveness": 0.2
+      },
+      "timestamp": "2025-08-28T19:57:43.595348"
+    },
+    {
+      "step": 15,
+      "event_type": "DigitalTransformationEvent",
+      "description": "Digital transformation with boost 0.1",
+      "impact": {
+        "engagement_boost": 0.1
+      },
+      "timestamp": "2025-08-28T19:57:43.753052"
+    },
+    {
+      "step": 20,
+      "event_type": "BranchClosureEvent",
+      "description": "Branch closure with impact -0.1",
+      "impact": {
+        "impact": -0.1
+      },
+      "timestamp": "2025-08-28T19:57:43.830690"
+    }
+  ],
+  "final_results": {
+    "average_satisfaction": 0.6077941576472733,
+    "churn_rate": 0.002,
+    "digital_usage": 0.5668519440556173,
+    "active_products": 1.752
+  },
+  "end_time": "2025-08-28T19:57:45.008741",
+  "outcome_validation": [
+    {
+      "metric": "client_retention_rate",
+      "target": 0.75,
+      "actual": 0,
+      "valid": false
+    },
+    {
+      "metric": "digital_adoption_increase",
+      "target": 0.4,
+      "actual": 0,
+      "valid": false
+    },
+    {
+      "metric": "cost_reduction",
+      "target": 200000,
+      "actual": 0,
+      "valid": false
+    },
+    {
+      "metric": "market_share_impact",
+      "target": -0.05,
+      "actual": 0,
+      "valid": false
+    }
+  ]
+}

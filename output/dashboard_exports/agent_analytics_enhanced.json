@@ -1,104 +1,104 @@
 {
   "schema_version": "2.0",
-  "generated_at": "2025-08-27T16:12:25.933071",
+  "generated_at": "2025-09-02T02:29:17.942814",
   "summary": {
-    "total_agents": 1000,
+    "total_agents": 800,
     "data_completeness": "100%"
   },
   "segmentation": {
     "by_type": {
-      "retail": 800,
+      "retail": 600,
       "corporate": 200
     },
     "by_status": {
-      "active": 1000
+      "active": 800
     },
     "by_channel": {
-      "branch": 1000
+      "branch": 800
     },
     "by_governorate": {
-      "Tunis": 310,
-      "Sfax": 141,
-      "Sousse": 106,
-      "Ariana": 89,
-      "Monastir": 49,
-      "Nabeul": 47,
-      "Mahdia": 46,
-      "Ben Arous": 44,
-      "Manouba": 43,
-      "Gafsa": 42,
-      "Bizerte": 42,
-      "Kairouan": 41
+      "Tunis": 255,
+      "Sfax": 108,
+      "Sousse": 89,
+      "Ariana": 71,
+      "Monastir": 43,
+      "Bizerte": 38,
+      "Ben Arous": 37,
+      "Mahdia": 35,
+      "Gafsa": 34,
+      "Kairouan": 34,
+      "Nabeul": 31,
+      "Manouba": 25
     },
     "by_satisfaction_tier": {
-      "high": 146,
-      "medium": 846,
-      "low": 8
+      "high": 151,
+      "medium": 645,
+      "low": 4
     },
     "by_value_tier": {
       "premium": 114,
-      "standard": 130,
-      "basic": 756
+      "standard": 121,
+      "basic": 565
     }
   },
   "statistics": {
     "satisfaction": {
-      "mean": 0.6193,
-      "median": 0.6195,
-      "std": 0.0774,
-      "q25": 0.5711,
-      "q75": 0.6674
+      "mean": 0.6341,
+      "median": 0.6314,
+      "std": 0.0805,
+      "q25": 0.585,
+      "q75": 0.6856
     },
     "demographics": {
       "age": {
-        "mean": 39.4,
+        "mean": 39.7,
         "median": 40.0,
         "min": 18,
         "max": 74
       },
       "income": {
-        "mean": 6310.18,
-        "median": 1140.76,
-        "total": 6310181.42
+        "mean": 7615.37,
+        "median": 1191.18,
+        "total": 6092300.0
       }
     }
   },
   "top_governorates": {
-    "Tunis": 310,
-    "Sfax": 141,
-    "Sousse": 106,
-    "Ariana": 89,
-    "Monastir": 49
+    "Tunis": 255,
+    "Sfax": 108,
+    "Sousse": 89,
+    "Ariana": 71,
+    "Monastir": 43
   },
   "sample_agents": [
     {
       "agent_id": 1,
       "client_type": "retail",
-      "satisfaction_level": 0.6463020726613076,
-      "age": 45,
-      "income": 711.77,
-      "products": 1,
+      "satisfaction_level": 0.7192948764777835,
+      "age": 32,
+      "income": 1458.23,
+      "products": 2,
       "status": "active",
       "preferred_channel": "branch",
-      "governorate": "Manouba"
+      "governorate": "Sousse"
     },
     {
       "agent_id": 2,
       "client_type": "retail",
-      "satisfaction_level": 0.6603434688524839,
-      "age": 39,
-      "income": 445.44,
+      "satisfaction_level": 0.5838245700128648,
+      "age": 35,
+      "income": 1885.67,
       "products": 1,
       "status": "active",
       "preferred_channel": "branch",
-      "governorate": "Gafsa"
+      "governorate": "Tunis"
     },
     {
       "agent_id": 3,
       "client_type": "retail",
-      "satisfaction_level": 0.6570109292141276,
-      "age": 25,
-      "income": 1175.57,
+      "satisfaction_level": 0.6628182461849236,
+      "age": 61,
+      "income": 2027.88,
       "products": 1,
       "status": "active",
       "preferred_channel": "branch",
@@ -107,43 +107,43 @@
     {
       "agent_id": 4,
       "client_type": "retail",
-      "satisfaction_level": 0.6141688555039565,
-      "age": 19,
-      "income": 687.82,
-      "products": 1,
+      "satisfaction_level": 0.7776223693945341,
+      "age": 18,
+      "income": 868.4706841855069,
+      "products": 2,
       "status": "active",
       "preferred_channel": "branch",
-      "governorate": "Sfax"
+      "governorate": "Ben Arous"
     },
     {
       "agent_id": 5,
       "client_type": "retail",
-      "satisfaction_level": 0.6723528752611627,
-      "age": 34,
-      "income": 2380.89,
+      "satisfaction_level": 0.6181198096606547,
+      "age": 54,
+      "income": 1247.56,
       "products": 2,
       "status": "active",
       "preferred_channel": "branch",
-      "governorate": "Ariana"
+      "governorate": "Monastir"
     },
     {
       "agent_id": 6,
       "client_type": "retail",
-      "satisfaction_level": 0.6690939628958119,
-      "age": 58,
-      "income": 1628.08,
-      "products": 4,
+      "satisfaction_level": 0.6042045730293706,
+      "age": 45,
+      "income": 2317.18,
+      "products": 2,
       "status": "active",
       "preferred_channel": "branch",
-      "governorate": "Kairouan"
+      "governorate": "Tunis"
     },
     {
       "agent_id": 7,
       "client_type": "retail",
-      "satisfaction_level": 0.6596202620954463,
-      "age": 34,
-      "income": 1433.62,
-      "products": 1,
+      "satisfaction_level": 0.5459132986274494,
+      "age": 49,
+      "income": 2158.31,
+      "products": 3,
       "status": "active",
       "preferred_channel": "branch",
       "governorate": "Tunis"
@@ -151,10 +151,10 @@
     {
       "agent_id": 8,
       "client_type": "retail",
-      "satisfaction_level": 0.6460716739023182,
-      "age": 39,
-      "income": 1229.427148750147,
-      "products": 2,
+      "satisfaction_level": 0.7499512718446737,
+      "age": 19,
+      "income": 1132.9,
+      "products": 6,
       "status": "active",
       "preferred_channel": "branch",
       "governorate": "Tunis"
@@ -162,134 +162,134 @@
     {
       "agent_id": 9,
       "client_type": "retail",
-      "satisfaction_level": 0.5712658777926577,
-      "age": 46,
-      "income": 1750.8,
-      "products": 1,
-      "status": "active",
-      "preferred_channel": "branch",
-      "governorate": "Bizerte"
-    },
-    {
-      "agent_id": 10,
-      "client_type": "retail",
-      "satisfaction_level": 0.6505800894139852,
-      "age": 38,
-      "income": 2260.53,
+      "satisfaction_level": 0.7002455805016321,
+      "age": 50,
+      "income": 2093.99,
       "products": 2,
       "status": "active",
       "preferred_channel": "branch",
       "governorate": "Tunis"
     },
     {
+      "agent_id": 10,
+      "client_type": "retail",
+      "satisfaction_level": 0.712458985624714,
+      "age": 38,
+      "income": 699.56,
+      "products": 2,
+      "status": "active",
+      "preferred_channel": "branch",
+      "governorate": "Sousse"
+    },
+    {
       "agent_id": 11,
       "client_type": "retail",
-      "satisfaction_level": 0.7253526953959198,
-      "age": 54,
-      "income": 1566.86,
+      "satisfaction_level": 0.5731786125728889,
+      "age": 40,
+      "income": 924.91,
+      "products": 1,
+      "status": "active",
+      "preferred_channel": "branch",
+      "governorate": "Sfax"
+    },
+    {
+      "agent_id": 12,
+      "client_type": "retail",
+      "satisfaction_level": 0.7473031903654208,
+      "age": 25,
+      "income": 1567.11,
+      "products": 3,
+      "status": "active",
+      "preferred_channel": "branch",
+      "governorate": "Tunis"
+    },
+    {
+      "agent_id": 13,
+      "client_type": "retail",
+      "satisfaction_level": 0.6219777907051737,
+      "age": 44,
+      "income": 1903.95,
+      "products": 2,
+      "status": "active",
+      "preferred_channel": "branch",
+      "governorate": "Mahdia"
+    },
+    {
+      "agent_id": 14,
+      "client_type": "retail",
+      "satisfaction_level": 0.6125900246106419,
+      "age": 23,
+      "income": 1397.9,
       "products": 1,
       "status": "active",
       "preferred_channel": "branch",
       "governorate": "Tunis"
     },
     {
-      "agent_id": 12,
-      "client_type": "retail",
-      "satisfaction_level": 0.7344864104052435,
-      "age": 40,
-      "income": 739.31,
-      "products": 4,
-      "status": "active",
-      "preferred_channel": "branch",
-      "governorate": "Sfax"
-    },
-    {
-      "agent_id": 13,
-      "client_type": "retail",
-      "satisfaction_level": 0.5750243557909875,
-      "age": 47,
-      "income": 635.54,
-      "products": 1,
-      "status": "active",
-      "preferred_channel": "branch",
-      "governorate": "Gafsa"
-    },
-    {
-      "agent_id": 14,
-      "client_type": "retail",
-      "satisfaction_level": 0.7145172574771463,
-      "age": 38,
-      "income": 1484.95,
-      "products": 1,
-      "status": "active",
-      "preferred_channel": "branch",
-      "governorate": "Mahdia"
-    },
-    {
       "agent_id": 15,
       "client_type": "retail",
-      "satisfaction_level": 0.8149634123885396,
-      "age": 54,
-      "income": 806.29,
-      "products": 3,
+      "satisfaction_level": 0.5897319700400501,
+      "age": 30,
+      "income": 962.05,
+      "products": 2,
+      "status": "active",
+      "preferred_channel": "branch",
+      "governorate": "Tunis"
+    },
+    {
+      "agent_id": 16,
+      "client_type": "retail",
+      "satisfaction_level": 0.611923303659711,
+      "age": 43,
+      "income": 868.87,
+      "products": 2,
       "status": "active",
       "preferred_channel": "branch",
       "governorate": "Bizerte"
     },
     {
-      "agent_id": 16,
-      "client_type": "retail",
-      "satisfaction_level": 0.6765686163599893,
-      "age": 22,
-      "income": 400.0,
-      "products": 1,
-      "status": "active",
-      "preferred_channel": "branch",
-      "governorate": "Sfax"
-    },
-    {
       "agent_id": 17,
       "client_type": "retail",
-      "satisfaction_level": 0.7145065194633958,
-      "age": 41,
-      "income": 1379.9,
+      "satisfaction_level": 0.6121771357269793,
+      "age": 26,
+      "income": 508.51,
       "products": 1,
       "status": "active",
       "preferred_channel": "branch",
-      "governorate": "Ariana"
+      "governorate": "Sousse"
     },
     {
       "agent_id": 18,
       "client_type": "retail",
-      "satisfaction_level": 0.4267131346817548,
-      "age": 48,
-      "income": 1533.37,
+      "satisfaction_level": 0.7718866130428338,
+      "age": 32,
+      "income": 819.88,
       "products": 1,
       "status": "active",
       "preferred_channel": "branch",
-      "governorate": "Ariana"
+      "governorate": "Bizerte"
     },
     {
       "agent_id": 19,
       "client_type": "retail",
-      "satisfaction_level": 0.5664303477652518,
-      "age": 21,
-      "income": 750.27,
+      "satisfaction_level": 0.4671021962337469,
+      "age": 51,
+      "income": 912.24,
       "products": 1,
       "status": "active",
       "preferred_channel": "branch",
-      "governorate": "Monastir"
+      "governorate": "Tunis"
     },
     {
       "agent_id": 20,
       "client_type": "retail",
-      "satisfaction_level": 0.5695068864041909,
-      "age": 57,
-      "income": 1318.48,
-      "products": 3,
+      "satisfaction_level": 0.619922335651823,
+      "age": 32,
+      "income": 1688.81,
+      "products": 1,
       "status": "active",
       "preferred_channel": "branch",
-      "governorate": "Manouba"
+      "governorate": "Tunis"
     }
   ]
 }

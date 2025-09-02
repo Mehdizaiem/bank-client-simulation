@@ -54,3 +54,13 @@ Thumbs.db
 # Model artifacts
 models/
 checkpoints/
+agent_data_step_100.csv
+agent_data_step_120.csv
+agent_data_step_150.csv
+agent_data_step_300.csv
+agent_data_step_140.csv
+agent_data_step_100.csv
+agent_data_step_100.csv
+agent_data_step_101.csv
+agent_data_step_500.csv
+agent_data_step_100.csv

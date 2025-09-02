@@ -1,21 +1,21 @@
 {
-  "scenario_name": "Digital Transformation Impact Analysis",
-  "total_steps": 962,
-  "events_processed": 3,
+  "scenario_name": "Digital Banking Marketing Campaign",
+  "total_steps": 120,
+  "events_processed": 10,
   "agent_metrics": {
     "total_agents": 1200,
     "retail_agents": 1000,
     "corporate_agents": 200,
-    "average_satisfaction": 0.8176439496973923,
+    "average_satisfaction": 0.6377407779629986,
     "churn_rate": 0.0,
-    "digital_usage_rate": 0.5622154227246968,
-    "active_products": 6.9975
+    "digital_usage_rate": 0.6557413738013612,
+    "active_products": 2.0125
   },
   "final_metrics": {
-    "average_satisfaction": 0.8176439496973923,
+    "average_satisfaction": 0.6377407779629986,
     "churn_rate": 0.0,
-    "digital_usage": 0.5622154227246968,
-    "active_products": 6.9975
+    "digital_usage": 0.6557413738013612,
+    "active_products": 2.0125
   },
   "segment_performance": {
     "high_value_retail": {
@@ -37,7 +37,7 @@
   },
   "outcome_validation": [],
   "market_conditions": {
-    "volatility": 0.07393499653476089,
-    "economic_climate": 0.5735452074291878
+    "volatility": 0.07575728727288691,
+    "economic_climate": 0.2529430160982017
   }
 }

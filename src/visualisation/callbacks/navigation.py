@@ -1,72 +1,106 @@
 """
-callbacks/navigation.py - Updated to handle profile and settings routes
-Drop this into src/visualisation/callbacks/navigation.py
+callbacks/navigation.py - Simplified navigation callback handlers
 """
-
-import dash
-from dash import Input, Output, State, html, no_update
+from dash import Input, Output, callback_context, no_update
 from pages.home import create_simulation_homepage_content
-from pages.economic import create_economic_simulation_content
 from pages.geographic import create_geographic_simulation_content
-from pages.chat import create_simulation_chat_content
 from pages.profile import create_profile_page_content
-from pages.settings import create_simulation_settings_content
-
 
 def register_navigation_callbacks(app):
-    """Register navigation callbacks for the dashboard"""
+    """Register simplified navigation-related callbacks."""
     
     @app.callback(
-        [Output("page-content", "children"),
-         Output("page-title", "children"),
-         Output("page-store", "data")],
-        [Input("url", "pathname"),
-         Input("nav-home", "n_clicks"),
-         Input("nav-economic", "n_clicks"),
-         Input("nav-geographic", "n_clicks"),
-         Input("nav-chat", "n_clicks"),
-         Input("nav-settings", "n_clicks"),
-         Input("nav-profile", "n_clicks")],
-        [State("page-store", "data")]
+        Output('page-content', 'children'),
+        Output('page-store', 'data'),
+        [
+            Input('nav-home', 'n_clicks'),
+            Input('nav-geographic', 'n_clicks'),
+            Input('nav-profile', 'n_clicks'),
+            Input('url', 'pathname')
+        ]
     )
-    def update_page_content(pathname, home_clicks, econ_clicks, geo_clicks, 
-                           chat_clicks, settings_clicks, profile_clicks, current_page):
-        """Update page content based on navigation"""
+    def update_page_content(*args):
+        """Update page content based on navigation clicks."""
+        ctx = callback_context
         
-        # Handle URL-based navigation first (for direct links)
-        if pathname:
-            if pathname == "/profile":
-                return create_profile_page_content(), "Profile", "profile"
-            elif pathname == "/settings":
-                return create_simulation_settings_content(), "Settings", "settings"
-            elif pathname == "/economic":
-                return create_economic_simulation_content(), "Economic Simulation", "economic"
-            elif pathname == "/geographic":
-                return create_geographic_simulation_content(), "Geographic Analysis", "geographic"
-            elif pathname == "/chat":
-                return create_simulation_chat_content(), "AI Assistant", "chat"
-            elif pathname == "/" or pathname == "/home":
-                return create_simulation_homepage_content(), "Dashboard Overview", "home"
-        
-        # Handle sidebar navigation clicks
-        ctx = dash.callback_context
         if not ctx.triggered:
-            return create_simulation_homepage_content(), "Dashboard Overview", "home"
+            return create_simulation_homepage_content(), 'home'
         
-        button_id = ctx.triggered[0]["prop_id"].split(".")[0]
+        trigger_id = ctx.triggered[0]['prop_id'].split('.')[0]
         
-        if button_id == "nav-home":
-            return create_simulation_homepage_content(), "Dashboard Overview", "home"
-        elif button_id == "nav-economic":
-            return create_economic_simulation_content(), "Economic Simulation", "economic"
-        elif button_id == "nav-geographic":
-            return create_geographic_simulation_content(), "Geographic Analysis", "geographic"
-        elif button_id == "nav-chat":
-            return create_simulation_chat_content(), "AI Assistant", "chat"
-        elif button_id == "nav-settings":
-            return create_simulation_settings_content(), "Settings", "settings"
-        elif button_id == "nav-profile":
-            return create_profile_page_content(), "Profile", "profile"
+        # Navigation button clicks
+        if trigger_id == 'nav-home':
+            return create_simulation_homepage_content(), 'home'
+        elif trigger_id == 'nav-geographic':
+            return create_geographic_simulation_content(), 'geographic'
+        elif trigger_id == 'nav-profile':
+            return create_profile_page_content(), 'profile'
+      
+        # URL pathname changes
+        elif trigger_id == 'url':
+            pathname = args[-1] or '/'
+            if pathname == '/':
+                return create_simulation_homepage_content(), 'home'
+            elif pathname == '/geographic':
+                return create_geographic_simulation_content(), 'geographic'
+            elif pathname == '/profile':
+                return create_profile_page_content(), 'profile'
+           
         
         # Default to home
-        return create_simulation_homepage_content(), "Dashboard Overview", "home"
+        return create_simulation_homepage_content(), 'home'
+
+    @app.callback(
+        Output('url', 'pathname'),
+        [
+            Input('nav-home', 'n_clicks'),
+            Input('nav-geographic', 'n_clicks'),
+            Input('nav-profile', 'n_clicks'),
+        ],
+        prevent_initial_call=True
+    )
+    def update_url(*args):
+        """Update URL based on navigation clicks."""
+        ctx = callback_context
+        
+        if not ctx.triggered:
+            return no_update
+        
+        trigger_id = ctx.triggered[0]['prop_id'].split('.')[0]
+        
+        url_map = {
+            'nav-home': '/',
+            'nav-geographic': '/geographic',
+            'nav-profile': '/profile',
+        }
+        
+        return url_map.get(trigger_id, '/')
+
+    @app.callback(
+        Output('nav-home', 'style'),
+        Output('nav-geographic', 'style'),
+        Output('nav-profile', 'style'),
+        Input('page-store', 'data')
+    )
+    def update_nav_button_styles(current_page):
+        """Update navigation button styles based on current page."""
+        from components.sidebar import get_nav_button_style, get_active_nav_button_style
+        
+        default_style = get_nav_button_style()
+        active_style = get_active_nav_button_style()
+        
+        styles = {
+            'home': default_style,
+            'geographic': default_style,
+            'profile': default_style,
+        }
+        
+        # Set active style for current page
+        if current_page in styles:
+            styles[current_page] = active_style
+        
+        return (
+            styles['home'],
+            styles['geographic'],
+            styles['profile'],
+        )

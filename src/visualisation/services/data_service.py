@@ -263,19 +263,6 @@ class DataService:
         """Get key metrics (legacy compatibility)."""
         return DataService.get_simulation_metrics()
     
-    @staticmethod
-    def get_client_growth_data() -> Tuple[List[str], List[int]]:
-        """Generate client growth data over time."""
-        months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun']
-        clients = [11500, 12000, 12250, 12500, 12800, 12847]
-        return months, clients
-    
-    @staticmethod
-    def get_revenue_data() -> Tuple[List[str], List[int]]:
-        """Generate monthly revenue data."""
-        months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun']
-        revenue = [200, 250, 260, 270, 310, 340]
-        return months, revenue
     
     @staticmethod
     def get_client_segmentation_data() -> Tuple[List[str], List[int]]:
@@ -297,17 +284,3 @@ class DataService:
         indicators = ['GDP Growth', 'Inflation', 'Unemployment', 'Consumer Confidence']
         values = [random.uniform(1, 8) for _ in indicators]
         return indicators, values
-    
-    @staticmethod
-    def get_economic_trends() -> Tuple[List[str], List[float]]:
-        """Generate economic trends over time."""
-        months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun']
-        economic_data = [100, 102, 104, 103, 105, 107]
-        return months, economic_data
-    
-    @staticmethod
-    def get_branch_distribution() -> Tuple[List[str], List[int]]:
-        """Generate branch type distribution data."""
-        branch_types = ['Main Branch', 'Sub Branch', 'ATM Only', 'Digital Point']
-        branch_counts = [random.randint(5, 25) for _ in branch_types]
-        return branch_types, branch_counts

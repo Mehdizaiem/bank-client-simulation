@@ -1,0 +1,68 @@
+{
+  "scenario_name": "Branch Closure Impact Analysis",
+  "total_steps": 100,
+  "events_processed": 4,
+  "agent_metrics": {
+    "total_agents": 1000,
+    "retail_agents": 800,
+    "corporate_agents": 200,
+    "average_satisfaction": 0.6077941576472733,
+    "churn_rate": 0.002,
+    "digital_usage_rate": 0.5668519440556173,
+    "active_products": 1.752
+  },
+  "final_metrics": {
+    "average_satisfaction": 0.6077941576472733,
+    "churn_rate": 0.002,
+    "digital_usage": 0.5668519440556173,
+    "active_products": 1.752
+  },
+  "segment_performance": {
+    "high_value_retail": {
+      "size": 0,
+      "avg_satisfaction": 0.0
+    },
+    "young_digital": {
+      "size": 0,
+      "avg_satisfaction": 0.0
+    },
+    "large_corporates": {
+      "size": 0,
+      "avg_satisfaction": 0.0
+    },
+    "tech_companies": {
+      "size": 0,
+      "avg_satisfaction": 0.0
+    }
+  },
+  "outcome_validation": [
+    {
+      "metric": "client_retention_rate",
+      "target": 0.75,
+      "actual": 0,
+      "valid": false
+    },
+    {
+      "metric": "digital_adoption_increase",
+      "target": 0.4,
+      "actual": 0,
+      "valid": false
+    },
+    {
+      "metric": "cost_reduction",
+      "target": 200000,
+      "actual": 0,
+      "valid": false
+    },
+    {
+      "metric": "market_share_impact",
+      "target": -0.05,
+      "actual": 0,
+      "valid": false
+    }
+  ],
+  "market_conditions": {
+    "volatility": 0.0682142687056322,
+    "economic_climate": 0.24681657226352063
+  }
+}

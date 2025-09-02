@@ -1,0 +1,19 @@
+{
+  "integration_version": "1.0",
+  "simulation_backend": {
+    "data_directory": "data/processed",
+    "scenario_directory": "configs/scenario_templates",
+    "output_directory": "output/dashboard_exports"
+  },
+  "dashboard_settings": {
+    "default_agent_count": 1000,
+    "refresh_interval_ms": 2000,
+    "enable_live_updates": true
+  },
+  "features": {
+    "real_scenarios": true,
+    "live_simulation": true,
+    "data_export": true,
+    "real_time_charts": true
+  }
+}

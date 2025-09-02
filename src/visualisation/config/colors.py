@@ -9,6 +9,7 @@ COLORS = {
     'success': '#10B981',      # Green
     'danger': '#EF4444',       # Red
     'warning': '#F59E0B',      # Amber
+    'info': '#0EA5E9',         # Sky Blue (used in charts/KPIs)
     'accent': '#8B5CF6',       # Violet
     'dark': '#1F2937',         # Dark Gray
     'light': '#F9FAFB',        # Light Gray
