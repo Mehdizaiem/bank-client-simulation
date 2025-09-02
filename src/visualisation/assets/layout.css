@@ -121,3 +121,33 @@ input[type="text"],input[type="number"],input[type="email"],input[type="password
 
 /* Hide Dash undo/redo */
 ._dash-undo-redo{display:none!important}
+/* Force proper chart sizing on load */
+.js-plotly-plot, .plotly, .plotly-graph-div {
+    width: 100% !important;
+    height: 350px !important;
+    min-width: 0 !important;
+    min-height: 350px !important;
+}
+
+/* Ensure containers are properly sized before charts load */
+.chart-container {
+    width: calc(50% - 10px) !important;
+    min-width: 300px !important;
+    max-width: calc(50% - 10px) !important;
+    box-sizing: border-box !important;
+    opacity: 0;
+    animation: fadeInChart 0.5s ease-in-out 0.3s forwards;
+}
+
+@keyframes fadeInChart {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* Charts row container */
+.charts-row {
+    display: flex !important;
+    gap: 20px !important;
+    width: 100% !important;
+    flex-wrap: wrap !important;
+}
