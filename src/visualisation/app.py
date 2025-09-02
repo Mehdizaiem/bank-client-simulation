@@ -296,32 +296,67 @@ app.validation_layout = html.Div([
 # Enhanced session token callback
 @app.callback(
     Output("session-token", "data", allow_duplicate=True),
-    Input("url", "href"),
+    [Input("url", "href"),
+     Input("url", "pathname")],  # Also listen to pathname changes
     prevent_initial_call=True,
 )
-def set_session_from_url(href):
-    """Set session token from URL"""
-    if not href:
-        return no_update
-    qs = parse_qs(urlparse(href).query)
-    if qs.get("logged_in", ["0"])[0] != "1":
-        return no_update
-
-    token = session.get("local_token")
-    if token:
-        print("Session token found in Flask session")
-        return token
-
+def set_session_from_url(href, pathname):
+    """Set session token from URL with better persistence"""
     try:
+        # Always try to maintain existing session first
+        existing_token = session.get("local_token")
+        if existing_token:
+            # Verify the session is still valid
+            sm = get_session_manager()
+            user = sm.get_current_user(existing_token)
+            if user:
+                print(f"Maintaining existing session for {user.get('first_name', 'User')}")
+                return existing_token
+        
+        # Check for login success in URL
+        if href:
+            qs = parse_qs(urlparse(href).query)
+            if qs.get("logged_in", ["0"])[0] == "1":
+                token = session.get("local_token")
+                if token:
+                    print("New session established from login")
+                    return token
+        
+        # Try to recover from session manager if Flask session lost
         sm = get_session_manager()
         if sm.active_sessions:
-            latest = list(sm.active_sessions.values())[-1]
-            print("Using latest session from session manager")
-            return latest["local_token"]
-    except:
-        pass
-    return no_update
-
+            # Find any active session (fallback)
+            for session_data in sm.active_sessions.values():
+                if session_data.get("persistent"):
+                    print("Recovering session from session manager")
+                    return session_data["local_token"]
+        
+        return no_update
+        
+    except Exception as e:
+        print(f"Session token callback error: {e}")
+        return no_update
+@app.callback(
+    Output("session-debug-info", "children"),
+    [Input("session-token", "data"),
+     Input("url", "pathname")],
+    prevent_initial_call=True
+)
+def maintain_session_debug(token, pathname):
+    """Debug session state and maintain it during navigation"""
+    try:
+        if token:
+            sm = get_session_manager()
+            user = sm.get_current_user(token)
+            if user:
+                # Store in Flask session as backup
+                session["local_token"] = token
+                session["user_id"] = user.get("id")
+                print(f"Session maintained for {user.get('first_name', 'User')} on {pathname}")
+        return ""
+    except Exception as e:
+        print(f"Session maintenance error: {e}")
+        return ""
 # Register all callbacks
 print("Registering callbacks...")
 register_auth_callbacks(app)
