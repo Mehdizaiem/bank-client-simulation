@@ -1,4 +1,4 @@
-# Core Data Science (existing)
+# Core Data Science
 pandas>=1.5.0
 numpy>=1.21.0
 scikit-learn>=1.1.0
@@ -7,30 +7,66 @@ scikit-learn>=1.1.0
 sdv>=1.0.0
 ctgan>=0.7.0
 
+# Web framework and HTTP
+flask==2.3.3
+requests==2.31.0
+
 # Agent-Based Modeling
 mesa>=2.0.0
 
-# Visualization (existing)
+# Machine Learning
+torch>=1.12.0
+transformers>=4.20.0
+
+# Visualization
 plotly>=5.10.0
 dash>=2.6.0
 streamlit>=1.12.0
 folium>=0.12.0
 
-# Data Processing (existing)
+# Data Processing
 openpyxl>=3.0.0
 xlsxwriter>=3.0.0
 
-# Database and Infrastructure (existing)
-psycopg2-binary>=2.9.0
-redis>=4.0.0
-
-# Configuration and Monitoring
+# Configuration
 pyyaml>=6.0
 python-dotenv>=0.20.0
 
-# Development and Testing (existing + enhanced)
+# Development
 pytest>=7.0.0
-pytest-cov>=4.0.0
 black>=22.0.0
 flake8>=5.0.0
 jupyter>=1.0.0
+
+dash-bootstrap-components>=1.4.0
+dash-mantine-components>=0.12.0
+python-dotenv>=1.0.0
+# Core Dash dependencies
+dash==2.14.1
+plotly==5.15.0
+pandas==2.0.3
+
+# Additional utilities
+numpy==1.24.3
+python-dateutil==2.8.2
+
+
+# Authentication and Security
+PyJWT==2.8.0
+cryptography==41.0.7
+python-jose[cryptography]==3.3.0
+
+# Date and Time
+python-dateutil==2.8.2
+
+
+# Development dependencies (optional)
+# dash[dev]==2.14.1  # For development tools
+
+# API dependencies (for future use - can be installed later)
+# flask==2.3.2
+# flask-cors==4.0.0
+# requests==2.31.0
+
+# Development dependencies (optional)
+# dash[dev]==2.14.1  # For development tools
