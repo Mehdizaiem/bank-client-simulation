@@ -5,7 +5,36 @@ from dash import html, Input, Output
 from components.cards import create_metric_card
 from config.colors import COLORS
 import datetime
+from urllib.parse import quote
 
+def normalize_google_picture(url: str, size: int = 120) -> str:
+    """Normalize Google profile picture URLs for better loading"""
+    if not url:
+        return ""
+    
+    url = str(url).strip()
+    
+    # Force https
+    if url.startswith("http://"):
+        url = "https://" + url[len("http://"):]
+    
+    # Google images commonly look like:
+    # https://lh3.googleusercontent.com/a/....=s96-c
+    # We want to normalize them to a specific size
+    if "googleusercontent.com" in url:
+        # Remove any existing '=sXX-c' suffix
+        if "=s" in url and "-c" in url and url.rfind("=s") < url.rfind("-c"):
+            base = url[:url.rfind("=s")]
+        else:
+            base = url
+        
+        # Add proper size parameter
+        if "?" in base:
+            url = f"{base}&sz={size}"
+        else:
+            url = f"{base}?sz={size}"
+    
+    return url
 
 def create_profile_page_content():
     """Create the complete profile page content that updates dynamically"""
@@ -95,31 +124,65 @@ def create_authenticated_profile(user_data):
 
 
 def create_dynamic_profile_header(full_name, email, initials, profile_image, provider):
-    """Create dynamic profile header based on user data"""
+    """Create dynamic profile header with working Google profile images via proxy"""
     
-    # Avatar - use profile image if available, otherwise initials
+    # Create avatar with proxy support
+    avatar = None
+    
+    print(f"Profile page - processing image: '{profile_image}'")
+    
     if profile_image:
-        avatar = html.Img(
-            src=profile_image,
-            style={
-                'width': '120px', 'height': '120px', 'borderRadius': '50%',
-                'marginRight': '30px', 'objectFit': 'cover',
-                'boxShadow': '0 10px 30px rgba(30, 64, 175, 0.3)',
-                'border': f'4px solid {COLORS["primary"]}'
-            }
-        )
-    else:
+        try:
+            # Normalize the Google image URL for larger size (120px for profile page)
+            normalized_url = normalize_google_picture(profile_image, size=120)
+            print(f"Profile page - normalized URL: '{normalized_url}'")
+            
+            if normalized_url:
+                # Create proxied URL to avoid CORS issues
+                proxied_url = f"/_img?u={quote(normalized_url, safe='')}"
+                print(f"Profile page - proxied URL: '{proxied_url}'")
+                
+                avatar = html.Img(
+                    src=proxied_url,
+                    alt=f"{full_name} profile picture",
+                    style={
+                        'width': '120px', 
+                        'height': '120px', 
+                        'borderRadius': '50%',
+                        'marginRight': '30px', 
+                        'objectFit': 'cover',
+                        'boxShadow': '0 10px 30px rgba(30, 64, 175, 0.3)',
+                        'border': f'4px solid {COLORS["primary"]}',
+                        'backgroundColor': '#f3f4f6',  # Light background while loading
+                    }
+                )
+                print("✅ Profile page - created Google profile image element")
+            else:
+                print("❌ Profile page - URL normalization failed")
+        except Exception as e:
+            print(f"❌ Profile page - profile image processing error: {e}")
+    
+    # Fallback to initials if no image or processing failed
+    if avatar is None:
+        print("Profile page - using initials fallback")
         avatar = html.Div(initials, style={
-            'width': '120px', 'height': '120px', 'borderRadius': '50%',
-            'backgroundColor': COLORS['primary'], 'color': 'white',
-            'display': 'flex', 'alignItems': 'center', 'justifyContent': 'center',
-            'fontWeight': '700', 'fontSize': '3rem', 'marginRight': '30px',
+            'width': '120px', 
+            'height': '120px', 
+            'borderRadius': '50%',
+            'backgroundColor': COLORS['primary'], 
+            'color': 'white',
+            'display': 'flex', 
+            'alignItems': 'center', 
+            'justifyContent': 'center',
+            'fontWeight': '700', 
+            'fontSize': '3rem', 
+            'marginRight': '30px',
             'boxShadow': '0 10px 30px rgba(30, 64, 175, 0.3)'
         })
     
     return html.Div([
         html.Div([
-            avatar,
+            avatar,  # This is now either the Google image or initials fallback
             html.Div([
                 html.H1(full_name or "Welcome!", style={
                     'fontSize': '2.5rem', 'fontWeight': '700', 
@@ -151,7 +214,6 @@ def create_dynamic_profile_header(full_name, email, initials, profile_image, pro
         'backgroundColor': 'white', 'padding': '40px', 'borderRadius': '15px',
         'boxShadow': '0 4px 20px rgba(0,0,0,0.1)', 'marginBottom': '30px'
     })
-
 
 def create_dynamic_profile_stats(provider):
     """Create profile statistics that update based on authentication"""

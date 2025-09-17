@@ -1,16 +1,46 @@
 """
-callbacks/auth_callback.py – Auth0 UI callbacks - SIMPLIFIED FIX
-Drop this into src/visualisation/callbacks/auth_callback.py
+callbacks/auth_callback.py – Fixed auth callbacks with proper error handling
+Replace your entire auth_callback.py with this version
 """
 
 from dash import Input, Output, State, ctx, no_update, html, dcc, ALL
 from datetime import datetime
 from config.colors import COLORS
 from services.auth_service import get_session_manager
+from dash.exceptions import PreventUpdate
+from urllib.parse import quote
 
+def normalize_google_picture(url: str, size: int = 64) -> str:
+    """Normalize Google profile picture URLs for better loading"""
+    if not url:
+        return ""
+    
+    url = str(url).strip()
+    
+    # Force https
+    if url.startswith("http://"):
+        url = "https://" + url[len("http://"):]
+    
+    # Google images commonly look like:
+    # https://lh3.googleusercontent.com/a/....=s96-c
+    # We want to normalize them to a specific size
+    if "googleusercontent.com" in url:
+        # Remove any existing '=sXX-c' suffix
+        if "=s" in url and "-c" in url and url.rfind("=s") < url.rfind("-c"):
+            base = url[:url.rfind("=s")]
+        else:
+            base = url
+        
+        # Add proper size parameter
+        if "?" in base:
+            url = f"{base}&sz={size}"
+        else:
+            url = f"{base}?sz={size}"
+    
+    return url
 
 def register_auth_callbacks(app):
-    """Register authentication UI callbacks."""
+    """Register authentication UI callbacks with comprehensive error handling."""
 
     # Open modal
     @app.callback(
@@ -19,9 +49,13 @@ def register_auth_callbacks(app):
         prevent_initial_call=True,
     )
     def show_login_modal(n_clicks):
-        if n_clicks and n_clicks > 0:
-            return create_oauth_login_modal()
-        return []
+        try:
+            if n_clicks and n_clicks > 0:
+                return create_oauth_login_modal()
+            return []
+        except Exception as e:
+            print(f"Login modal error: {e}")
+            return []
 
     # Close modal
     @app.callback(
@@ -30,9 +64,13 @@ def register_auth_callbacks(app):
         prevent_initial_call=True,
     )
     def close_login_modal(n_clicks):
-        if n_clicks and n_clicks > 0:
+        try:
+            if n_clicks and n_clicks > 0:
+                return []
+            return no_update
+        except Exception as e:
+            print(f"Close modal error: {e}")
             return []
-        return no_update
 
     # Update header + auth state when session-token changes
     @app.callback(
@@ -41,20 +79,34 @@ def register_auth_callbacks(app):
             Output("header-user-section", "children"),
         ],
         Input("session-token", "data"),
+        prevent_initial_call=False,  # Allow initial call to set default state
     )
     def update_auth_state(session_token):
-        sm = get_session_manager()
+        try:
+            sm = get_session_manager()
 
-        if session_token:
-            user = sm.get_current_user(session_token)
-            if user:
-                auth_state = {"authenticated": True, "user": user, "last_check": datetime.utcnow().isoformat()}
-                header = create_authenticated_header(user)
-                return auth_state, header
-        
-        # Not authenticated - return default header
-        auth_state = {"authenticated": False, "user": None}
-        return auth_state, create_default_header()
+            if session_token:
+                user = sm.get_current_user(session_token)
+                if user:
+                    print(f"✅ Updating header for authenticated user: {user.get('first_name', 'User')}")
+                    auth_state = {
+                        "authenticated": True, 
+                        "user": user, 
+                        "last_check": datetime.utcnow().isoformat()
+                    }
+                    header = create_authenticated_header(user)
+                    return auth_state, header
+            
+            # Not authenticated - return default header
+            print("📝 Setting default header (not authenticated)")
+            auth_state = {"authenticated": False, "user": None}
+            return auth_state, create_default_header()
+            
+        except Exception as e:
+            print(f"❌ Auth state callback error: {e}")
+            # Return safe defaults
+            auth_state = {"authenticated": False, "user": None}
+            return auth_state, create_default_header()
 
     # Handle OAuth redirects
     @app.callback(
@@ -65,25 +117,29 @@ def register_auth_callbacks(app):
         prevent_initial_call=True,
     )
     def oauth_redirect(oauth_clicks):
-        if not ctx.triggered:
-            return no_update
+        try:
+            if not ctx.triggered:
+                return no_update
+                
+            trig = ctx.triggered_id
+            if isinstance(trig, dict) and trig.get("type") == "oauth-btn":
+                if oauth_clicks and any(oauth_clicks):
+                    provider = trig.get("provider")
+                    connection_map = {
+                        "google": "google-oauth2",
+                        "github": "github",
+                        "linkedin": "linkedin",
+                    }
+                    connection = connection_map.get(provider)
+                    href = f"/auth/login?connection={connection}" if connection else "/auth/login"
+                    return dcc.Location(href=href, id="oauth-redirect")
             
-        trig = ctx.triggered_id
-        if isinstance(trig, dict) and trig.get("type") == "oauth-btn":
-            if oauth_clicks and any(oauth_clicks):
-                provider = trig.get("provider")
-                connection_map = {
-                    "google": "google-oauth2",
-                    "github": "github",
-                    "linkedin": "linkedin",
-                }
-                connection = connection_map.get(provider)
-                href = f"/auth/login?connection={connection}" if connection else "/auth/login"
-                return dcc.Location(href=href, id="oauth-redirect")
-        
-        return no_update
+            return no_update
+        except Exception as e:
+            print(f"OAuth redirect error: {e}")
+            return no_update
 
-    # Toggle profile dropdown
+    # Toggle profile dropdown (only if profile elements exist)
     @app.callback(
         Output("profile-dropdown", "style"),
         [Input("profile-trigger", "n_clicks")],
@@ -91,36 +147,65 @@ def register_auth_callbacks(app):
         prevent_initial_call=True,
     )
     def toggle_profile_dropdown(n_clicks, current_style):
-        if n_clicks:
-            # Toggle between display: none and display: block
-            if current_style and current_style.get("display") == "none":
-                return {**current_style, "display": "block"}
-            else:
-                return {**current_style, "display": "none"}
-        return no_update
+        try:
+            if n_clicks:
+                # Toggle between display: none and display: block
+                if current_style and current_style.get("display") == "none":
+                    return {**current_style, "display": "block"}
+                else:
+                    return {**current_style, "display": "none"}
+            return no_update
+        except Exception as e:
+            print(f"Profile dropdown toggle error: {e}")
+            return no_update
 
-    # Close dropdown when clicking elsewhere (optional, uses clientside callback)
+   # Add this clientside callback to your auth_callback.py to debug image loading
+
     app.clientside_callback(
         """
         function(n_clicks) {
-            // Close dropdown when clicking outside
-            document.addEventListener('click', function(event) {
-                const trigger = document.getElementById('profile-trigger');
-                const dropdown = document.getElementById('profile-dropdown');
-                if (trigger && dropdown && !trigger.contains(event.target) && !dropdown.contains(event.target)) {
-                    dropdown.style.display = 'none';
+            // Debug profile image loading
+            setTimeout(function() {
+                const profileImg = document.querySelector('img[data-fallback="true"]');
+                const debugDiv = document.getElementById('debug-image-url');
+                
+                if (profileImg) {
+                    console.log('Profile image found:', profileImg.src);
+                    
+                    // Test if image loads
+                    const testImg = new Image();
+                    testImg.onload = function() {
+                        console.log('✅ Image loaded successfully:', profileImg.src);
+                    };
+                    testImg.onerror = function() {
+                        console.log('❌ Image failed to load:', profileImg.src);
+                        console.log('Error details:', this);
+                    };
+                    testImg.src = profileImg.src;
+                    
+                    // Show debug info on hover
+                    if (debugDiv) {
+                        profileImg.addEventListener('mouseenter', function() {
+                            debugDiv.style.display = 'block';
+                        });
+                        profileImg.addEventListener('mouseleave', function() {
+                            debugDiv.style.display = 'none';
+                        });
+                    }
+                } else {
+                    console.log('No profile image found - using initials fallback');
                 }
-            });
+            }, 1000);
+            
             return window.dash_clientside.no_update;
         }
         """,
-        Output("profile-dropdown", "style", allow_duplicate=True),
+        Output("profile-trigger", "style", allow_duplicate=True),
         Input("profile-trigger", "n_clicks"),
         prevent_initial_call=True,
     )
 
-
-# ---------- UI helpers ----------
+# ---------- UI Helper Functions ----------
 
 def create_oauth_login_modal():
     return html.Div([
@@ -200,11 +285,78 @@ def btn_style(bg):
     }
 
 
+# Add this enhanced debugging to your auth_callback.py
+
 def create_authenticated_header(user):
+    """Create authenticated header with working Google profile images via proxy"""
     first_name = user.get("first_name", "User")
     provider = user.get("provider", "oauth")
     profile_image = user.get("profile_image_url", "")
     email = user.get("email", "")
+
+    # Debug output
+    print("=" * 50)
+    print("PROFILE IMAGE DEBUG:")
+    print(f"Raw profile_image_url: '{profile_image}'")
+    
+    # Process the profile image through proxy
+    avatar_element = None
+    
+    if profile_image:
+        try:
+            # Normalize the Google image URL
+            normalized_url = normalize_google_picture(profile_image, size=64)
+            print(f"Normalized URL: '{normalized_url}'")
+            
+            if normalized_url:
+                # Create proxied URL to avoid CORS issues
+                proxied_url = f"/_img?u={quote(normalized_url, safe='')}"
+                print(f"Proxied URL: '{proxied_url}'")
+                
+                avatar_element = html.Img(
+                    src=proxied_url,
+                    alt=f"{first_name} profile picture",
+                    style={
+                        "width": "40px",
+                        "height": "40px",
+                        "borderRadius": "50%",
+                        "cursor": "pointer",
+                        "border": f"2px solid {COLORS['primary']}",
+                        "objectFit": "cover",
+                        "display": "block",
+                        "backgroundColor": "#f3f4f6",  # Light background while loading
+                    },
+                    title=f"{first_name} - Google Profile Image"
+                )
+                print("✅ Created Google profile image element")
+            else:
+                print("❌ URL normalization failed")
+        except Exception as e:
+            print(f"❌ Profile image processing error: {e}")
+    
+    # Fallback to initials if no image or processing failed
+    if avatar_element is None:
+        print("Using initials fallback")
+        avatar_element = html.Div(
+            first_name[0].upper() if first_name else "U",
+            style={
+                "width": "40px",
+                "height": "40px",
+                "borderRadius": "50%",
+                "backgroundColor": COLORS["primary"],
+                "color": "white",
+                "display": "flex",
+                "alignItems": "center",
+                "justifyContent": "center",
+                "fontWeight": "600",
+                "cursor": "pointer",
+                "fontSize": "1.1rem",
+                "border": f"2px solid {COLORS['primary']}",
+            },
+            title=f"Initials: {first_name[0]} - No profile image available"
+        )
+    
+    print("=" * 50)
 
     return html.Div([
         html.Div([
@@ -212,50 +364,31 @@ def create_authenticated_header(user):
                 id="global-search",
                 placeholder="Search simulations, scenarios...",
                 style={
-                    "padding": "10px 15px", "border": f'1px solid {COLORS["hover"]}',
-                    "borderRadius": "25px", "width": "300px", "fontSize": "0.9rem", "outline": "none",
+                    "padding": "10px 15px", 
+                    "border": f'1px solid {COLORS["hover"]}',
+                    "borderRadius": "25px", 
+                    "width": "300px", 
+                    "fontSize": "0.9rem", 
+                    "outline": "none",
                 },
             )
         ], style={"marginRight": "20px"}),
 
         html.Div([
             html.Span(f"Connected via {provider.title()}", style={
-                "fontSize": "0.8rem", "color": COLORS["success"], "marginRight": "15px"}),
+                "fontSize": "0.8rem", 
+                "color": COLORS["success"], 
+                "marginRight": "15px"
+            }),
 
             # Profile dropdown container
             html.Div([
                 # Profile image/avatar that triggers dropdown
                 html.Div([
-                    # If profile image exists, use it, otherwise show initials
-                    html.Img(
-                        src=profile_image,
-                        style={
-                            "width": "40px", 
-                            "height": "40px", 
-                            "borderRadius": "50%",
-                            "cursor": "pointer",
-                            "border": f"2px solid {COLORS['primary']}",
-                            "objectFit": "cover",
-                        }
-                    ) if profile_image else html.Div(
-                        first_name[0].upper(), 
-                        style={
-                            "width": "40px", 
-                            "height": "40px", 
-                            "borderRadius": "50%",
-                            "backgroundColor": COLORS["primary"], 
-                            "color": "white",
-                            "display": "flex", 
-                            "alignItems": "center", 
-                            "justifyContent": "center",
-                            "fontWeight": "600", 
-                            "cursor": "pointer",
-                            "fontSize": "1.1rem",
-                        }
-                    ),
+                    avatar_element  # This is either the Google image or initials fallback
                 ], id="profile-trigger", n_clicks=0),
                 
-                # Dropdown menu (initially hidden)
+                # Dropdown menu (keep existing)
                 html.Div([
                     html.Div([
                         # User info section
@@ -275,7 +408,7 @@ def create_authenticated_header(user):
                             "textDecoration": "none",
                             "fontSize": "0.9rem",
                             "transition": "background-color 0.2s",
-                        }, className="dropdown-item"),
+                        }),
                         
                         html.A([
                             html.I(className="fas fa-cog", style={"marginRight": "8px", "width": "16px"}),
@@ -287,7 +420,7 @@ def create_authenticated_header(user):
                             "textDecoration": "none",
                             "fontSize": "0.9rem",
                             "transition": "background-color 0.2s",
-                        }, className="dropdown-item"),
+                        }),
                         
                         html.Div(style={"height": "1px", "backgroundColor": COLORS["hover"], "margin": "5px 0"}),
                         
@@ -302,7 +435,7 @@ def create_authenticated_header(user):
                             "fontSize": "0.9rem",
                             "fontWeight": "500",
                             "transition": "background-color 0.2s",
-                        }, className="dropdown-item"),
+                        }),
                     ], style={
                         "backgroundColor": "white",
                         "borderRadius": "8px",
@@ -313,24 +446,28 @@ def create_authenticated_header(user):
                     "position": "absolute",
                     "top": "45px",
                     "right": "0",
-                    "display": "none",  # Initially hidden
+                    "display": "none",
                     "zIndex": "1000",
                 }),
-            ], style={"position": "relative"}),  # Container needs relative positioning
+            ], style={"position": "relative"}),
             
         ], style={"display": "flex", "alignItems": "center"}),
     ], style={"display": "flex", "alignItems": "center"})
 
-
 def create_default_header():
+    """Create default header for non-authenticated users"""
     return html.Div([
         html.Div([
             dcc.Input(
                 id="global-search",
                 placeholder="Search simulations, scenarios...",
                 style={
-                    "padding": "10px 15px", "border": f'1px solid {COLORS["hover"]}',
-                    "borderRadius": "25px", "width": "300px", "fontSize": "0.9rem", "outline": "none",
+                    "padding": "10px 15px", 
+                    "border": f'1px solid {COLORS["hover"]}',
+                    "borderRadius": "25px", 
+                    "width": "300px", 
+                    "fontSize": "0.9rem", 
+                    "outline": "none",
                 },
             )
         ], style={"marginRight": "20px"}),
@@ -340,15 +477,29 @@ def create_default_header():
             id="login-button",
             n_clicks=0,
             style={
-                "padding": "10px 20px", "backgroundColor": COLORS["primary"], "color": "white",
-                "border": "none", "borderRadius": "25px", "cursor": "pointer",
-                "fontSize": "0.9rem", "fontWeight": "600",
+                "padding": "10px 20px", 
+                "backgroundColor": COLORS["primary"], 
+                "color": "white",
+                "border": "none", 
+                "borderRadius": "25px", 
+                "cursor": "pointer",
+                "fontSize": "0.9rem", 
+                "fontWeight": "600",
+                "marginRight": "10px",
             },
         ),
 
         html.Div("N", style={
-            "width": "35px", "height": "35px", "borderRadius": "50%", "backgroundColor": COLORS["secondary"],
-            "color": "white", "display": "flex", "alignItems": "center", "justifyContent": "center",
-            "marginLeft": "15px",
+            "width": "35px", 
+            "height": "35px", 
+            "borderRadius": "50%", 
+            "backgroundColor": COLORS["secondary"],
+            "color": "white", 
+            "display": "flex", 
+            "alignItems": "center", 
+            "justifyContent": "center",
+            "fontWeight": "600",
+            "fontSize": "0.9rem",
         }),
     ], style={"display": "flex", "alignItems": "center"})
+

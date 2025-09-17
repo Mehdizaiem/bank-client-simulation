@@ -5,6 +5,9 @@ Replace src/visualisation/app.py with this version
 
 import os
 import sys
+import requests
+from flask import Response
+from urllib.parse import quote
 from urllib.parse import urlencode, urlparse, parse_qs
 
 from dotenv import load_dotenv, find_dotenv
@@ -146,6 +149,43 @@ if AUTH0_DOMAIN and AUTH0_CLIENT_ID and AUTH0_CLIENT_SECRET:
             })
         )
         return redirect(logout_url)
+    @server.route("/_img")
+    def img_proxy():
+        """Image proxy to avoid CORS issues with external images"""
+        url = request.args.get("u", "")
+        if not url:
+            return Response(status=404)
+
+        try:
+            # Fetch the external image
+            r = requests.get(url, timeout=5, headers={
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
+            })
+            
+            if r.status_code != 200 or not r.content:
+                print(f"Image proxy failed: HTTP {r.status_code} for {url}")
+                return Response(status=404)
+
+            # Pass through the content-type if present
+            content_type = r.headers.get("Content-Type", "image/jpeg")
+            print(f"Image proxy success: Serving {len(r.content)} bytes as {content_type}")
+            
+            return Response(
+                r.content, 
+                status=200, 
+                content_type=content_type,
+                headers={
+                    'Cache-Control': 'public, max-age=3600',  # Cache for 1 hour
+                }
+            )
+            
+        except requests.exceptions.RequestException as e:
+            print(f"Image proxy error: {e}")
+            return Response(status=404)
+        except Exception as e:
+            print(f"Image proxy unexpected error: {e}")
+            return Response(status=404)
+    
 else:
     print("Warning: Auth0 credentials not configured. Authentication disabled.")
 
@@ -296,21 +336,19 @@ app.validation_layout = html.Div([
 # Enhanced session token callback
 @app.callback(
     Output("session-token", "data", allow_duplicate=True),
-    [Input("url", "href"),
-     Input("url", "pathname")],  # Also listen to pathname changes
+    [Input("url", "href")],
     prevent_initial_call=True,
 )
-def set_session_from_url(href, pathname):
-    """Set session token from URL with better persistence"""
+def set_session_from_url(href):
+    """Simplified session token management"""
     try:
-        # Always try to maintain existing session first
+        # First check Flask session
         existing_token = session.get("local_token")
         if existing_token:
-            # Verify the session is still valid
+            # Verify token is still valid
             sm = get_session_manager()
             user = sm.get_current_user(existing_token)
             if user:
-                print(f"Maintaining existing session for {user.get('first_name', 'User')}")
                 return existing_token
         
         # Check for login success in URL
@@ -319,31 +357,49 @@ def set_session_from_url(href, pathname):
             if qs.get("logged_in", ["0"])[0] == "1":
                 token = session.get("local_token")
                 if token:
-                    print("New session established from login")
                     return token
-        
-        # Try to recover from session manager if Flask session lost
-        sm = get_session_manager()
-        if sm.active_sessions:
-            # Find any active session (fallback)
-            for session_data in sm.active_sessions.values():
-                if session_data.get("persistent"):
-                    print("Recovering session from session manager")
-                    return session_data["local_token"]
         
         return no_update
         
     except Exception as e:
-        print(f"Session token callback error: {e}")
+        print(f"Session token error: {e}")
         return no_update
 @app.callback(
+    Output("session-debug-info", "children"),
+    [Input("session-token", "data")],
+    prevent_initial_call=True
+)
+def maintain_session_simple(token):
+    """Simple session maintenance with debugging"""
+    try:
+        if token:
+            sm = get_session_manager()
+            user = sm.get_current_user(token)
+            if user:
+                # Sync Flask session
+                session["local_token"] = token
+                session["user_id"] = user.get("id")
+                print(f"✅ Session synced for {user.get('first_name', 'User')}")
+                
+                # Debug profile image
+                profile_image = user.get("profile_image_url", "")
+                print(f"🖼️ Profile image in session: '{profile_image}'")
+            else:
+                print("❌ Token exists but no user found")
+        else:
+            print("📝 No session token")
+        return ""
+    except Exception as e:
+        print(f"❌ Session maintenance error: {e}")
+        return ""
+"""@app.callback(
     Output("session-debug-info", "children"),
     [Input("session-token", "data"),
      Input("url", "pathname")],
     prevent_initial_call=True
 )
 def maintain_session_debug(token, pathname):
-    """Debug session state and maintain it during navigation"""
+    Debug session state and maintain it during navigation
     try:
         if token:
             sm = get_session_manager()
@@ -356,7 +412,8 @@ def maintain_session_debug(token, pathname):
         return ""
     except Exception as e:
         print(f"Session maintenance error: {e}")
-        return ""
+        return "" 
+        """
 # Register all callbacks
 print("Registering callbacks...")
 register_auth_callbacks(app)

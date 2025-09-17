@@ -12,9 +12,11 @@ from dash.exceptions import PreventUpdate
 from config.colors import COLORS
 import io
 from datetime import datetime
+from dash.exceptions import PreventUpdate
+from dash import callback_context
 
 def register_simulation_callbacks(app):
-    """Register simulation-related callbacks"""
+    """Register simulation-related callbacks with proper error handling"""
     
     @app.callback(
         [Output('simulation-status-display', 'children'),
@@ -30,39 +32,62 @@ def register_simulation_callbacks(app):
          State('time-steps-input', 'value'),
          State('seed-input', 'value'),
          State('scenario-selector', 'value'),
-         State('data-refresh-token', 'data')]
+         State('data-refresh-token', 'data')],
+        prevent_initial_call=True
     )
     def handle_simulation_controls(run_clicks, load_clicks, reset_clicks, 
                                  num_agents, retail_ratio, time_steps, seed, scenario, refresh_token):
-        """Handle all simulation control buttons"""
+        """Handle all simulation control buttons with error protection"""
         
-        # Determine which input fired
-        if ctx.triggered:
-            trigger_id = ctx.triggered_id
-        else:
-            return (no_update, no_update, False,
+        try:
+            # Check if we have a valid trigger
+            if not callback_context.triggered:
+                raise PreventUpdate
+            
+            trigger_id = callback_context.triggered_id
+            
+            # Provide default values for missing inputs
+            num_agents = num_agents or 1000
+            retail_ratio = retail_ratio if retail_ratio is not None else 0.75
+            time_steps = time_steps or 100
+            seed = seed or 42
+            scenario = scenario or 'normal'
+            refresh_token = refresh_token or 0
+            
+            # Reset button
+            if trigger_id == 'reset-simulation-btn' and reset_clicks:
+                return (
+                    create_status_message("Ready to run simulation", "info"),
+                    refresh_token + 1,
+                    False,
                     [html.Span("🚀 ", style={'fontSize': '18px'}), "Run Simulation"],
-                    no_update)
-        
-        # Reset button
-        if trigger_id == 'reset-simulation-btn' and reset_clicks:
+                    []
+                )
+            
+            # Load latest results
+            if trigger_id == 'load-results-btn' and load_clicks:
+                return load_simulation_results(refresh_token)
+            
+            # Run simulation
+            if trigger_id == 'run-simulation-btn' and run_clicks:
+                return run_simulation(num_agents, retail_ratio, time_steps, seed, scenario, refresh_token)
+            
+            # Default return - no changes
+            raise PreventUpdate
+            
+        except PreventUpdate:
+            raise
+        except Exception as e:
+            print(f"Simulation callback error: {e}")
+            error_msg = create_status_message(f"Error in simulation callback: {str(e)}", "error")
             return (
-                create_status_message("Ready to run simulation", "info"),
-                refresh_token + 1,
+                error_msg,
+                refresh_token or 0,
                 False,
                 [html.Span("🚀 ", style={'fontSize': '18px'}), "Run Simulation"],
                 []
             )
-        
-        # Load latest results
-        if trigger_id == 'load-results-btn' and load_clicks:
-            return load_simulation_results(refresh_token)
-        
-        # Run simulation
-        if trigger_id == 'run-simulation-btn' and run_clicks:
-            return run_simulation(num_agents, retail_ratio, time_steps, seed, scenario, refresh_token)
-        
-        return no_update, no_update, False, [html.Span("🚀 ", style={'fontSize': '18px'}), "Run Simulation"], no_update
+
     @app.callback(
         Output('download-pdf', 'data'),
         Output('download-excel', 'data'),
