@@ -30,8 +30,8 @@ def parse_dashboard_arguments():
                       help='Ratio of retail to total clients (default: 0.8)')
     parser.add_argument('--time_steps', type=int, default=100,
                       help='Number of simulation time steps (default: 100)')
-    parser.add_argument('--random_seed', type=int, default=42,
-                      help='Random seed for reproducibility (default: 42)')
+    parser.add_argument('--random_seed', type=int, default=None,
+                      help='Random seed for reproducibility (default: random)')
     parser.add_argument('--scenario', type=str, default='normal',
                       choices=['normal', 'digital', 'downturn', 'marketing', 'service'],
                       help='Simulation scenario (default: normal)')
@@ -50,11 +50,22 @@ def enhance_dashboard_export():
     """
     # Parse dashboard arguments
     args = parse_dashboard_arguments()
-    
+
     print("\nDASHBOARD EXPORT GENERATOR")
     print("="*80)
-    
+
     try:
+        # Set ALL random seeds for reproducibility/variability
+        import random
+
+        # If no seed provided, generate a truly random one
+        if args.random_seed is None:
+            args.random_seed = random.randint(1, 1000000)
+            print(f"Generated random seed: {args.random_seed}")
+
+        random.seed(args.random_seed)
+        np.random.seed(args.random_seed)
+
         from src.agent_engine.mesa_setup import BankSimulationModel
         
         # Configuration from dashboard parameters

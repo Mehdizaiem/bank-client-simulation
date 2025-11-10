@@ -50,7 +50,8 @@ def register_simulation_callbacks(app):
             num_agents = num_agents or 1000
             retail_ratio = retail_ratio if retail_ratio is not None else 0.75
             time_steps = time_steps or 100
-            seed = seed or 42
+            # Use None for seed to generate a random one each time, unless user specifies one
+            seed = seed if seed is not None else None
             scenario = scenario or 'normal'
             refresh_token = refresh_token or 0
             
@@ -326,12 +327,16 @@ def run_simulation(num_agents, retail_ratio, time_steps, seed, scenario, refresh
         env['PYTHONLEGACYWINDOWSSTDIO'] = '1'
         
         # Execute with dashboard parameters
+        # If seed is None, generate a random one for this run
+        import random
+        actual_seed = seed if seed is not None else random.randint(1, 1000000)
+
         cmd = [
             'python', simulation_script.name,
             '--num_agents', str(num_agents),
             '--retail_ratio', str(retail_ratio),
             '--time_steps', str(time_steps),
-            '--random_seed', str(seed),
+            '--random_seed', str(actual_seed),
             '--scenario', scenario
         ]
         

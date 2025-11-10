@@ -50,6 +50,7 @@ logs/
 # OS
 .DS_Store
 Thumbs.db
+nul
 
 # Model artifacts
 models/
@@ -64,3 +65,4 @@ agent_data_step_100.csv
 agent_data_step_101.csv
 agent_data_step_500.csv
 agent_data_step_100.csv
+.env

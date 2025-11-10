@@ -198,13 +198,14 @@ def create_simulation_control_panel():
                 ], style={'marginBottom': '15px'}),
                 
                 html.Div([
-                    html.Label("Seed:", style=create_compact_label_style()),
+                    html.Label("Seed (optional):", style=create_compact_label_style()),
                     dcc.Input(
                         id='seed-input',
                         type='number',
-                        value=42,
+                        value=None,
+                        placeholder="Random",
                         min=0,
-                        max=9999,
+                        max=999999,
                         style=create_compact_input_style()
                     )
                 ])
